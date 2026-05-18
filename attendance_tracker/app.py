@@ -30,3 +30,11 @@ def home():
        acards.append(tuple(i) + tuple(acount[0]))
 
     return render_template("cardpage.html", acards=acards)
+@app.route("/edit", METHOD = ['GET'])            
+def edit_page():  
+    #userinp = request.form["user_inp"].strip()
+    s_id = request.args.get('student_id')
+    db = get_db()
+    get_student = db.cursor()
+    student = get_student.execute("SELECT * FROM STUDENTS WHERE student_id = ?" (s_id,)).fetchall()
+    return render_template("editpage.html", student=student)

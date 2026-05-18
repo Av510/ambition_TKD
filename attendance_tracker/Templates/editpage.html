@@ -1,0 +1,14 @@
+<form method="POST" action="/edit"></form>
+    <input type = "text" name ="user_inp" placeholder = "Enter...">
+    <button type = "submit">confirm</button>
+</form>
+
+        {% for i in student %}
+          <tr>
+              <td> {{i[0]}} </td>
+              <td> {{i[1]}} </td>
+              <td> {{i[2]}} </td>
+              <td> {{i[3]}} </td>
+              <td> {{i[4]}} </td>
+            </tr>
+        {% endfor %}
