@@ -30,7 +30,7 @@ def home():
        acards.append(tuple(i) + tuple(acount[0]))
 
     return render_template("cardpage.html", acards=acards)
-@app.route("/edit", METHOD = ['GET'])            
+@app.route("/edit", methods = ['GET'])            
 def edit_page():  
     #userinp = request.form["user_inp"].strip()
     s_id = request.args.get('student_id')
