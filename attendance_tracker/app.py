@@ -5,7 +5,7 @@ from flask import Flask, g, render_template, request
 import sqlite3
 
 app = Flask(__name__)
-DATABASE = "TKD - Copy (2).db"
+DATABASE = "TKD.db"
 
 def get_db():
     if "db" not in g:
