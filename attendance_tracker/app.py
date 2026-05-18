@@ -26,7 +26,7 @@ def home():
     all = get_all.execute("SELECT * FROM STUDENTS").fetchall()
     acards = []
     for i in all:
-       acount =db.cursor().execute("SELECT attendance_count FROM ATTENDANCES WHERE attendance_card_id = ?", (i[3],)).fetchall()
+       acount =db.cursor().execute("SELECT attendance_count FROM ATTENDANCES WHERE attendance_card_id = ?", (i["attendance_card_id"],)).fetchall()
        acards.append(tuple(i) + tuple(acount[0]))
 
     return render_template("cardpage.html", acards=acards)
