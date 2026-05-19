@@ -2,13 +2,31 @@
     <input type = "text" name ="user_inp" placeholder = "Enter...">
     <button type = "submit">confirm</button>
 </form>
-
+</br>        
         {% for i in student %}
           <tr>
-              <td> {{i[0]}} </td>
-              <td> {{i[1]}} </td>
-              <td> {{i[2]}} </td>
-              <td> {{i[3]}} </td>
-              <td> {{i[4]}} </td>
+              <td>student id: {{i[0]}} </td></br>
+              <td>name: {{i[1]}} </td></br>
+              <td>surname:  {{i[2]}} </td></br>
+              <td>attendance card id: {{i[3]}} </td>
+            </tr>
+        {% endfor %}
+          </br>
+          
+        <p>class: </p>
+        {% for i in sclass %}
+        
+          <tr>
+              <td>{{i[0]}} </td></br>
+            </tr>
+        {% endfor %}
+
+          </br>
+        
+        <p>contacts: </p>
+        {% for i in contact_l %}
+          <tr>
+              <td>phone: {{i[0]}} </td></br>
+              <td>email: {{i[1]}} </td></br>
             </tr>
         {% endfor %}
