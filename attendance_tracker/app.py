@@ -50,4 +50,4 @@ def edit_page():
         for t in scontact:
             contact_l.append((t["phone"], t["email"]))
 
-    return render_template("editpage.html", student=student, sclass=sclass, contact_l=contact_l, contactid=contactid)
+    return render_template("editpage.html", student=student, sclass=sclass, contact_l=contact_l)
