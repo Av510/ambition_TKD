@@ -36,5 +36,18 @@ def edit_page():
     s_id = request.args.get('student_id')
     db = get_db()
     get_student = db.cursor()
+    contact_l = []
+    sclass = []
     student = get_student.execute("SELECT * FROM STUDENTS WHERE student_id = ?", (s_id,)).fetchall()
-    return render_template("editpage.html", student=student)
+    
+    contactid = get_student.execute("SELECT contact_id FROM STUDENTS_CONTACTS WHERE student_id = ?", (s_id,)).fetchall()
+    classid = get_student.execute("SELECT class_id FROM STUDENTS_CLASSES WHERE student_id = ?", (s_id,)).fetchall()
+    for b in classid:
+        classday = get_student.execute("SELECT week_day FROM CLASSES WHERE class_id = ?", (b["class_id"],)).fetchall()
+        sclass.append(classday[0])
+    for i in contactid:
+        scontact = get_student.execute("SELECT phone, email FROM CONTACTS WHERE contact_id = ?", (i["contact_id"],)).fetchall()
+        for t in scontact:
+            contact_l.append((t["phone"], t["email"]))
+
+    return render_template("editpage.html", student=student, sclass=sclass, contact_l=contact_l)
