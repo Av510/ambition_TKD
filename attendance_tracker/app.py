@@ -36,5 +36,5 @@ def edit_page():
     s_id = request.args.get('student_id')
     db = get_db()
     get_student = db.cursor()
-    student = get_student.execute("SELECT * FROM STUDENTS WHERE student_id = ?" (s_id,)).fetchall()
+    student = get_student.execute("SELECT * FROM STUDENTS WHERE student_id = ?", (s_id,)).fetchall()
     return render_template("editpage.html", student=student)
