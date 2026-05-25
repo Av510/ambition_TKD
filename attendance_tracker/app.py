@@ -1,6 +1,6 @@
 import re #python -m flask run and ctrl c to quit work
 
-from flask import Flask, g, render_template, request
+from flask import Flask, g, render_template, request, redirect
 
 import sqlite3
 
@@ -24,14 +24,12 @@ def home():
     db = get_db()
     get_all = db.cursor()
     all = get_all.execute("SELECT * FROM STUDENTS").fetchall()
-    
-    boxes = [" o ", " o "," o "," o "," o "," o "," o "," o "," o "," o "," o "]
     acards = []
     for i in all:
        acount =db.cursor().execute("SELECT attendance_count FROM ATTENDANCES WHERE attendance_card_id = ?", (i["attendance_card_id"],)).fetchall()
        acards.append(tuple(i) + tuple(acount[0]))
 
-    return render_template("cardpage.html", acards=acards, boxes=boxes)
+    return render_template("cardpage.html", acards=acards)
 @app.route("/edit", methods = ['GET'])            
 def edit_page():  
     #userinp = request.form["user_inp"].strip()
@@ -53,3 +51,20 @@ def edit_page():
             contact_l.append((t["phone"], t["email"]))
 
     return render_template("editpage.html", student=student, sclass=sclass, contact_l=contact_l)
+
+@app.route("/updateattendance", methods = ['POST'])
+def update_attendance():
+    change = int(request.form["attendancechange"])
+    card_id = request.form["cardid"]
+    db = get_db()
+    get_update = db.cursor()
+    count = get_update.execute("SELECT attendance_count FROM ATTENDANCES WHERE attendance_card_id = ?", (card_id,)).fetchall()
+    if count[0]["attendance_count"] == None:
+        count = 0
+    else:
+        count = count[0]["attendance_count"]
+    get_update.execute("UPDATE ATTENDANCES SET attendance_count = ? WHERE attendance_card_id = ?", (count, card_id))
+    db.commit()
+    get_update.execute("UPDATE ATTENDANCES SET attendance_count = attendance_count + ? WHERE attendance_card_id = ?", (change, card_id))
+    db.commit()
+    return redirect("/")
