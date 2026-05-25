@@ -1,4 +1,4 @@
-import re #python -m flask run and ctrl c to quit work
+import re #python -m flask --app app run and ctrl c to quit work
 
 from flask import Flask, g, render_template, request, redirect
 
