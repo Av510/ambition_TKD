@@ -17,14 +17,5 @@ for t in acards:
             share.append((tuple(t), tuple(v)))
             remove.append(t[3])
             
-        students.append(t)
-print(acards)
-#for h in students:
-    
- #   for n in remove:
-  #      if h[3] == n :
-   #         print(h)
-    #        students.remove(h)
+    students.append(t)
 
-#for p in students:
- #   print(p)
