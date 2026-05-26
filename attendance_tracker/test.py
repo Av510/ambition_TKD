@@ -19,3 +19,8 @@ for t in acards:
             
     students.append(t)
 
+for v in students:
+    if v[3] in remove:
+        students.remove(v)
+for g in students:
+    print(g)
