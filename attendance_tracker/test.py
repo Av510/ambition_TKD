@@ -1,3 +1,5 @@
+import sqlite3
+db = sqlite3.connect("TKD.db")
 
 get_all = db.cursor()
 all = get_all.execute("SELECT * FROM STUDENTS").fetchall()
