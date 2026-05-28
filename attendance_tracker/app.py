@@ -25,11 +25,17 @@ def home():
     get_all = db.cursor()
     all = get_all.execute("SELECT * FROM STUDENTS").fetchall()
     acards = []
+    attedance_cards_d ={}
     for i in all:
        acount =db.cursor().execute("SELECT attendance_count FROM ATTENDANCES WHERE attendance_card_id = ?", (i["attendance_card_id"],)).fetchall()
        acards.append(tuple(i) + tuple(acount[0]))
-
-    return render_template("cardpage.html", acards=acards)
+    for h in acards:
+        card_id = h[3]
+        if card_id in attedance_cards_d:
+            attedance_cards_d[card_id].append(h)
+        else:
+            attedance_cards_d[card_id] = [h]
+    return render_template("test.html", attedance_cards_d=attedance_cards_d)
 @app.route("/edit", methods = ['GET'])            
 def edit_page():  
     #userinp = request.form["user_inp"].strip()
