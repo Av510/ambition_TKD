@@ -35,7 +35,7 @@ def home():
             attedance_cards_d[card_id].append(h)
         else:
             attedance_cards_d[card_id] = [h]
-    return render_template("test.html", attedance_cards_d=attedance_cards_d)
+    return render_template("cardpage.html", attedance_cards_d=attedance_cards_d)
 @app.route("/edit", methods = ['GET'])            
 def edit_page():  
     #userinp = request.form["user_inp"].strip()

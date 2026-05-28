@@ -1,10 +1,6 @@
         {% for i in attedance_cards_d %}
           <tr>
-              <td> {{i[0]}} </td>
-              <td> {{i[1]}} </td>
-              <td> {{i[2]}} </td>
-              <td> {{i[3]}} </td>
-              <td> {{i[4]}} </td>
+              <td>{{i}}, , {{ attedance_cards_d[i] }}</td></br>
               {% for b in range(10) %}
                   <form method="POST" action="/updateattendance">
                       <input type = "hidden" name ="cardid" value = "{{i[3]}}">
