@@ -1,17 +1,15 @@
         {% for i in attedance_cards_d %}
+          <div  style="display: block; padding: 5px;">
           <tr>
               <td>{{i}}</td>
               {% for t in attedance_cards_d[i] %}
-                    <td>{{t[0]}}</td>
                     <td>{{t[1]}}</td>
                     <td>{{t[2]}}</td>
-                    <td>{{t[3]}}</td>
-                    <td>{{t[4]}}</td>
                     </br>
               {% endfor %}
               
               {% for b in range(10) %}
-                  <form method="POST" action="/updateattendance">
+                  <form method="POST" action="/updateattendance" style="display: inline-block; margin: 5px;">
                       <input type = "hidden" name ="cardid" value = "{{i}}">
                       {% if b < (attedance_cards_d[i][0][4] or 0) %}
                           <input type = "hidden" name ="attendancechange" value = "-1">
@@ -21,6 +19,13 @@
                       <button type = "submit">-</button>
                       {% endif %}
                   </form>
+                  {% if loop.index % 5 == 0 %}
+                        </br>
+                  {% endif %}
               {% endfor %}
+            
+            <td> {{attedance_cards_d[i][0][4]}}/10 </td>
          </tr>
+         </div>
+         </br>
           {% endfor %}
