@@ -1,6 +1,6 @@
 import re #python -m flask --app app run and ctrl c to quit work
 
-from flask import Flask, g, render_template, request, redirect
+from flask import Flask, g, render_template, request, redirect, url_for
 
 import sqlite3
 
@@ -73,4 +73,4 @@ def update_attendance():
     db.commit()
     get_update.execute("UPDATE ATTENDANCES SET attendance_count = attendance_count + ? WHERE attendance_card_id = ?", (change, card_id))
     db.commit()
-    return redirect("/")
+    return redirect(url_for(("home"), _anchor=card_id))
