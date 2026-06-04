@@ -1,28 +1,15 @@
 import sqlite3
 db = sqlite3.connect("TKD.db")
 
-get_all = db.cursor()
-all = get_all.execute("SELECT * FROM STUDENTS").fetchall()
-acards = []
-students = []
-share = []
-remove = []
-ind = []
-for i in all:
-    acount =db.cursor().execute("SELECT attendance_count FROM ATTENDANCES WHERE attendance_card_id = ?", (i[3],)).fetchall()
-    acards.append(tuple(i) + tuple(acount[0]))
-for t in acards:
-    for v in students:
-        if t[3] == v[3]: 
-            share.append((tuple(t), tuple(v)))
-            remove.append(v[3])
-            
-    students.append(t)
-
-for s in students:
-    if s[3] not in remove:
-        ind.append(s)
-for stu in ind:
-    print(stu)
-for stud in share:
-    print(stud)
+get_students = db.cursor()
+student_infos = {}
+contact_id = []
+students = get_students.execute("SELECT * FROM STUDENTS").fetchall()
+for i in students:
+    student_infos[i[0]] = (i[1], i[2], i[3])
+    scontact = get_students.execute("SELECT * FROM STUDENTS_CONTACTS WHERE student_id =?", (i[0],)).fetchall()
+    for c in scontact:
+        contact_id.append(c[0])
+    print(i[0])
+print(contact_id)
+print(student_infos)

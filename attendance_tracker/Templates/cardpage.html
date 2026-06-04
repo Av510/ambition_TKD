@@ -1,8 +1,8 @@
-        {% for i in attedance_cards_d %}
+        {% for i in attendance_cards_d %}
           <div  style="display: block; padding: 5px;" id={{i}}>
           <tr>
               <td>{{i}} </td>
-              {% for t in attedance_cards_d[i] %}
+              {% for t in attendance_cards_d[i] %}
                     <td>{{t[1]}}</td>
                     <td>{{t[2]}}</td>
                     </br>
@@ -12,7 +12,7 @@
 
                   <form method="POST" action="/updateattendance" style="display: inline-block; margin: 5px;">
                       <input type = "hidden" name ="cardid" value = "{{i}}">
-                      {% if b < (attedance_cards_d[i][0][4] or 0) %}
+                      {% if b < (attendance_cards_d[i][0][4] or 0) %}
                           <input type = "hidden" name ="attendancechange" value = "-1">
                           <button type = "submit">o</button>
                       {% else %}
@@ -25,7 +25,7 @@
                   {% endif %}
               {% endfor %}
             
-            <td> {{attedance_cards_d[i][0][4]}}/10 </td>
+            <td> {{attendance_cards_d[i][0][4]}}/10 </td>
          </tr>
          </div>
          </br>

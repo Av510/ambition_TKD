@@ -25,17 +25,17 @@ def home():
     get_all = db.cursor()
     all = get_all.execute("SELECT * FROM STUDENTS").fetchall()
     acards = []
-    attedance_cards_d ={}
+    attendance_cards_d ={}
     for i in all:
        acount =db.cursor().execute("SELECT attendance_count FROM ATTENDANCES WHERE attendance_card_id = ?", (i["attendance_card_id"],)).fetchall()
        acards.append(tuple(i) + tuple(acount[0]))
     for h in acards:
         card_id = h[3]
-        if card_id in attedance_cards_d:
-            attedance_cards_d[card_id].append(h)
+        if card_id in attendance_cards_d:
+            attendance_cards_d[card_id].append(h)
         else:
-            attedance_cards_d[card_id] = [h]
-    return render_template("cardpage.html", attedance_cards_d=attedance_cards_d)
+            attendance_cards_d[card_id] = [h]
+    return render_template("cardpage.html", attendance_cards_d=attendance_cards_d)
 @app.route("/edit", methods = ['GET'])            
 def edit_page():  
     #userinp = request.form["user_inp"].strip()
@@ -74,3 +74,16 @@ def update_attendance():
     get_update.execute("UPDATE ATTENDANCES SET attendance_count = attendance_count + ? WHERE attendance_card_id = ?", (change, card_id))
     db.commit()
     return redirect(url_for(("home"), _anchor=card_id))
+
+@app.route("/students")
+def student(): 
+    db = get_db()
+    get_students = db.cursor()
+    contact_id = []
+    student_info =[]
+    students = get_students.execute("SELECT * FROM STUDENTS").fetchall()
+    for i in students:
+        scontact = get_students.execute("SELECT contact_id FROM STUDENTS_CONTACTS WHERE student_id =?", (i[3],)).fetchall()
+        for c in scontact:
+            contact_id.append(c)
+    return render_template("studentpage.html", student_info=student_info, contact_id=contact_id)
