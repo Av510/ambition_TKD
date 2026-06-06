@@ -1,44 +1,10 @@
-
-<h1>Student page</h1>
- <table>
-    
-        <thead>
-            <tr>
-                <th>Student ID</th>
-                <th>Name</th>
-                <th>Surname</th>
-                <th>Card ID</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Relation to student</th>
-
-            </tr>
-        </thead>
-        <tbody>
-            {% for i in student_info %}
-              <tr>
-                 <td>{{i[0]}}</td>
-                 <td>{{i[1]}}</td>
-                 <td>{{i[2]}}</td>
-                 <td>{{i[3]}}</td>
-                 <td>{{i[4]}}</td>
-                 <td>{{i[5]}}</td>
-                 <td>{{i[6]}}</td>
-              </tr>
-
-            {% endfor %}
-        </tbody>
-  </table>
-
-{% for i in contact_id %}
-              <tr>
-                 <td>{{i[0]}}</td>
-                 <td>{{i[1]}}</td>
-                 <td>{{i[2]}}</td>
-                 <td>{{i[3]}}</td>
-                 <td>{{i[4]}}</td>
-                 <td>{{i[5]}}</td>
-                 <td>{{i[6]}}</td>
-              </tr>
-
+{% for i in student_infos %}
+    <h2>{{ i }}: {{ student_infos[i] }}</h2>
+    <h3>Contacts: </h3>
+    {% for c in contact_d[i] %}
+        <p>Contact ID: {{ c[0] }}</p>
+        <p>Relationship to student: {{ c[1] }}</p>
+        <p>Phone: {{ c[2] }}</p>
+        <p>Email: {{ c[3] }}</p>
+    {% endfor %}
 {% endfor %}
