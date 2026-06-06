@@ -79,11 +79,16 @@ def update_attendance():
 def student(): 
     db = get_db()
     get_students = db.cursor()
-    contact_id = []
-    student_info =[]
+    student_infos = {}
+    contact_d = {}
     students = get_students.execute("SELECT * FROM STUDENTS").fetchall()
     for i in students:
-        scontact = get_students.execute("SELECT contact_id FROM STUDENTS_CONTACTS WHERE student_id =?", (i[3],)).fetchall()
+        student_infos[i["student_id"]] = (i["first_name"], i["surname"], i["attendance_card_id"])
+        contact_d[i["student_id"]] = []
+        scontact = get_students.execute("SELECT * FROM STUDENTS_CONTACTS WHERE student_id =?", (i["student_id"],)).fetchall()
         for c in scontact:
-            contact_id.append(c)
-    return render_template("studentpage.html", student_info=student_info, contact_id=contact_id)
+            contactinfo = get_students.execute("SELECT phone, email FROM CONTACTS WHERE contact_id =?", (c["contact_id"],)).fetchall()
+            print(tuple(c) + tuple(contactinfo[0]))
+            if c["student_id"] in contact_d:
+                contact_d[c["student_id"]] += ((c["contact_id"], c["relationship_to_student"]) + tuple(contactinfo[0]),)
+    return render_template("studentpage.html", student_infos=student_infos, contact_d=contact_d)
