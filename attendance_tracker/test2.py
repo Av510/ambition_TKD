@@ -11,12 +11,24 @@ for i in students:
     scontact = get_students.execute("SELECT * FROM STUDENTS_CONTACTS WHERE student_id =?", (i[0],)).fetchall()
     for c in scontact:
         contactinfo = get_students.execute("SELECT phone, email FROM CONTACTS WHERE contact_id =?", (c[1],)).fetchall()
-        print(c + tuple(contactinfo[0]))
+  #      print(c + tuple(contactinfo[0]))
         if c[0] in contact_id:
             contact_id[c[0]] += ((c[1], c[2]) + tuple(contactinfo[0]),)
-for a in contact_id:
-    print(a, contact_id[a])
+#for a in contact_id:
+ #   print(a, contact_id[a])
 
-for num in student_infos:
-    print(num, student_infos[num])  
-    print("Contacts:", contact_id[num])
+#for num in student_infos:
+   # print(num, student_infos[num])  
+  #  print("Contacts:", contact_id[num])
+student_infos_list =[]
+student_infos = get_students.execute("SELECT STUDENTS.student_id, STUDENTS.first_name, STUDENTS.surname,STUDENTS.attendance_card_id, " \
+"CLASSES.week_day, CLASSES.time FROM STUDENTS JOIN STUDENTS_CLASSES ON STUDENTS.student_id = STUDENTS_CLASSES.student_id JOIN CLASSES ON " \
+"STUDENTS_CLASSES.class_id = CLASSES.class_id").fetchall()
+for y in student_infos:
+    print(y)
+    scontact = get_students.execute("SELECT CONTACTS.phone, CONTACTS.email, STUDENTS_CONTACTS.relationship_to_student FROM STUDENTS_CONTACTS JOIN CONTACTS ON STUDENTS_CONTACTS.contact_id = CONTACTS.contact_id WHERE student_id =?", (y[0],)).fetchall()
+    student_infos_list.append((y, scontact))
+ #   scday = get_students.execute("SELECT week_day FROM CLASSES WHERE class_id =?", (y[5],)).fetchall()
+#    print(scday)
+for l in student_infos_list:
+    print(l)   
