@@ -1,5 +1,7 @@
 {% for i in student_d %}
-    <h3>{{student_d[i]["Info"]}}</h3>
+    <h4>Info: </h4>
+      <p><h5>ID: </h5>{{student_d[i]["Info"][0]}} <h5>Name </h5>{{student_d[i]["Info"][1]}}</p> <h5>Surname: </h5>{{student_d[i]["Info"][2]}} <h5>Card ID: </h5>{{student_d[i]["Info"][3]}}</p>
+
     <h4>Classes: </h4>
     {% for classes in student_d[i]["Classes"] %}
       <p><h5>Day: </h5>{{classes[0]}} <h5>Time: </h5>{{classes[1]}}</p>
