@@ -1,10 +1,3 @@
-{% for i in student_infos %}
-    <h2>{{ i }}: {{ student_infos[i] }}</h2>
-    <h3>Contacts: </h3>
-    {% for c in contact_d[i] %}
-        <p>Contact ID: {{ c[0] }}</p>
-        <p>Relationship to student: {{ c[1] }}</p>
-        <p>Phone: {{ c[2] }}</p>
-        <p>Email: {{ c[3] }}</p>
-    {% endfor %}
+{% for i in student_d %}
+    <h2>{{ i }}: {{ student_d[i] }}</h2>
 {% endfor %}

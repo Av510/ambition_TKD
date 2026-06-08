@@ -79,16 +79,12 @@ def update_attendance():
 def student(): 
     db = get_db()
     get_students = db.cursor()
-    student_infos = {}
-    contact_d = {}
-    students = get_students.execute("SELECT * FROM STUDENTS").fetchall()
-    for i in students:
-        student_infos[i["student_id"]] = (i["first_name"], i["surname"], i["attendance_card_id"])
-        contact_d[i["student_id"]] = []
-        scontact = get_students.execute("SELECT * FROM STUDENTS_CONTACTS WHERE student_id =?", (i["student_id"],)).fetchall()
-        for c in scontact:
-            contactinfo = get_students.execute("SELECT phone, email FROM CONTACTS WHERE contact_id =?", (c["contact_id"],)).fetchall()
-            print(tuple(c) + tuple(contactinfo[0]))
-            if c["student_id"] in contact_d:
-                contact_d[c["student_id"]] += ((c["contact_id"], c["relationship_to_student"]) + tuple(contactinfo[0]),)
-    return render_template("studentpage.html", student_infos=student_infos, contact_d=contact_d)
+    student_d = {}
+    student_infos = get_students.execute("SELECT * FROM STUDENTS ").fetchall()
+    for y in student_infos:
+        student_class = get_students.execute("SELECT week_day, time FROM STUDENTS_CLASSES LEFT JOIN CLASSES ON STUDENTS_CLASSES.class_id = CLASSES.class_id WHERE student_id= ? ", (y["student_id"],)).fetchall()
+
+        student_contacts = get_students.execute("SELECT CONTACTS.phone, CONTACTS.email, STUDENTS_CONTACTS.relationship_to_student FROM STUDENTS_CONTACTS LEFT JOIN CONTACTS ON STUDENTS_CONTACTS.contact_id = CONTACTS.contact_id WHERE student_id =?", (y["student_id"],)).fetchall()
+
+        student_d[y["student_id"]] = {"Info" : tuple(y) , "Class" : [tuple(row) for row in student_class] , "Contacts" : [tuple(row) for row in student_contacts]}
+    return render_template("studentpage.html", student_d=student_d)
