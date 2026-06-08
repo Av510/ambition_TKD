@@ -86,5 +86,5 @@ def student():
 
         student_contacts = get_students.execute("SELECT CONTACTS.phone, CONTACTS.email, STUDENTS_CONTACTS.relationship_to_student FROM STUDENTS_CONTACTS LEFT JOIN CONTACTS ON STUDENTS_CONTACTS.contact_id = CONTACTS.contact_id WHERE student_id =?", (y["student_id"],)).fetchall()
 
-        student_d[y["student_id"]] = {"Info" : tuple(y) , "Class" : [tuple(row) for row in student_class] , "Contacts" : [tuple(row) for row in student_contacts]}
+        student_d[y["student_id"]] = {"Info" : tuple(y) , "Classes" : [tuple(row) for row in student_class] , "Contacts" : [tuple(row) for row in student_contacts]}
     return render_template("studentpage.html", student_d=student_d)
