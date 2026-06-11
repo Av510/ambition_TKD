@@ -36,27 +36,7 @@ def home():
         else:
             attendance_cards_d[card_id] = [h]
     return render_template("cardpage.html", attendance_cards_d=attendance_cards_d)
-@app.route("/edit", methods = ['GET'])            
-def edit_page():  
-    #userinp = request.form["user_inp"].strip()
-    s_id = request.args.get('student_id')
-    db = get_db()
-    get_student = db.cursor()
-    contact_l = []
-    sclass = []
-    student = get_student.execute("SELECT * FROM STUDENTS WHERE student_id = ?", (s_id,)).fetchall()
-    
-    contactid = get_student.execute("SELECT contact_id FROM STUDENTS_CONTACTS WHERE student_id = ?", (s_id,)).fetchall()
-    classid = get_student.execute("SELECT class_id FROM STUDENTS_CLASSES WHERE student_id = ?", (s_id,)).fetchall()
-    for b in classid:
-        classday = get_student.execute("SELECT week_day FROM CLASSES WHERE class_id = ?", (b["class_id"],)).fetchall()
-        sclass.append(classday[0])
-    for i in contactid:
-        scontact = get_student.execute("SELECT phone, email FROM CONTACTS WHERE contact_id = ?", (i["contact_id"],)).fetchall()
-        for t in scontact:
-            contact_l.append((t["phone"], t["email"]))
 
-    return render_template("editpage.html", student=student, sclass=sclass, contact_l=contact_l)
 
 @app.route("/updateattendance", methods = ['POST'])
 def update_attendance():
@@ -88,3 +68,7 @@ def student():
 
         student_d[y["student_id"]] = {"Info" : tuple(y) , "Classes" : [tuple(row) for row in student_class] , "Contacts" : [tuple(row) for row in student_contacts]}
     return render_template("studentpage.html", student_d=student_d)
+
+@app.route("/edit")
+def edit_page(): 
+    return render_template("editpage.html")
