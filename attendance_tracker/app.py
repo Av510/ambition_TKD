@@ -69,6 +69,7 @@ def student():
         student_d[y["student_id"]] = {"Info" : tuple(y) , "Classes" : [tuple(row) for row in student_class] , "Contacts" : [tuple(row) for row in student_contacts]}
     return render_template("studentpage.html", student_d=student_d)
 
-@app.route("/edit")
+@app.route("/edit", methods = ['GET'] )
 def edit_page(): 
-    return render_template("editpage.html")
+    student_d = request.args.get("student_d")
+    return render_template("editpage.html", student_d=student_d)

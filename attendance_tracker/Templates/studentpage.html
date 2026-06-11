@@ -10,5 +10,5 @@
       <p><h5>Phone: </h5>{{contacts[0]}} <h5>Email: </h5> {{contacts[1]}} <h5>Relation: </h5>{{contacts[2]}}</p>
     {% endfor %}
 
-    <a href="{{ url_for('edit_page')}}">EDIT</a>
+    <a href="{{ url_for('edit_page', student_d=student_d)}}">EDIT</a>
 {% endfor %}
