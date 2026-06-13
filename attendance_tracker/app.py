@@ -71,5 +71,5 @@ def student():
 
 @app.route("/edit", methods = ['GET'] )
 def edit_page(): 
-    student_d = request.args.get("student_d")
+    student_d = request.args.get("student_id")
     return render_template("editpage.html", student_d=student_d)
