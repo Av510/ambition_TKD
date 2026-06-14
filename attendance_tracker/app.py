@@ -71,5 +71,22 @@ def student():
 
 @app.route("/edit", methods = ['GET'] )
 def edit_page(): 
-    student_d = request.args.get("student_id")
-    return render_template("editpage.html", student_d=student_d)
+    student_id = request.args.get("student_id")
+    db = get_db()
+    student = db.execute("SELECT * FROM STUDENTS WHERE student_id = ?", (student_id,)).fetchone()
+
+    classes = db.execute("SELECT CLASSES.class_id, CLASSES.week_day, CLASSES.time FROM STUDENTS_CLASSES JOIN CLASSES ON STUDENTS_CLASSES.class_id = CLASSES.class_id WHERE STUDENTS_CLASSES.student_id = ?", (student_id,)).fetchall()
+
+    contacts = db.execute("SELECT CONTACTS.contact_id, CONTACTS.phone, CONTACTS.email, STUDENTS_CONTACTS.relationship_to_student FROM STUDENTS_CONTACTS JOIN CONTACTS ON STUDENTS_CONTACTS.contact_id = CONTACTS.contact_id WHERE STUDENTS_CONTACTS.student_id = ?", (student_id,)).fetchall()
+    return render_template("editpage.html", student_id=student_id, student=tuple(student), classes=[tuple(row) for row in classes], contacts=[tuple(row) for row in contacts])
+
+@app.route("/updatestudent/<student_id>", methods = ['POST'] )
+def update_student(student_id): 
+
+    first_name = request.form["first_name"]
+    surname = request.form["surname"]
+
+    db = get_db()
+    db.execute("UPDATE STUDENTS SET first_name = ?, surname = ? WHERE student_id = ?", (first_name, surname, student_id))
+    db.commit()
+    return redirect("/students")
