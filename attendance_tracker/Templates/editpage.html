@@ -1,5 +1,21 @@
-<form method="POST" action="/edit"></form>
-    <input type = "text" name ="user_inp" placeholder = "Enter...">
-    <button type = "submit">confirm</button>
+<h4>{{student_id}}</h4>
+<form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
+    First name:
+    <input type="text"
+           name="first_name"
+           value="{{student[1]}}">
+
+    Surname:
+    <input type="text"
+           name="surname"
+           value="{{student[2]}}">
+
+    Attendance card ID:
+    <input type="text"
+           name="attendance_card_id"
+           value="{{student[3]}}">
+
+    <button type="submit">
+        Save
+    </button>
 </form>
-<td>{{student_id}}</td>
