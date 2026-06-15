@@ -85,8 +85,9 @@ def update_student(student_id):
 
     first_name = request.form["first_name"]
     surname = request.form["surname"]
-
+    card_id = request.form["attendance_card_id"]
     db = get_db()
-    db.execute("UPDATE STUDENTS SET first_name = ?, surname = ? WHERE student_id = ?", (first_name, surname, student_id))
+    db.execute("UPDATE STUDENTS SET first_name = ?, surname = ?, attendance_card_id = ? WHERE student_id = ?", (first_name, surname, card_id, student_id))
     db.commit()
+
     return redirect("/students")
