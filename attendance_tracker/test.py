@@ -13,5 +13,20 @@ for y in student_infos:
     s_id = y[0]
     student_d[y[0]] = {"Info" : y , "Class" : student_class , "Contacts" : student_contacts}
 #students have multiple or zero contact and class days
-for a in student_d:
-    print(a, student_d[a])
+card_id = 1
+first_name = "Ryan"
+surname = "Seven"
+student_id = 1
+check_card = db.execute("SELECT attendance_card_id FROM ATTENDANCES WHERE attendance_card_id = ?", (card_id,)).fetchone()
+
+if check_card:
+    print("Yes")
+    db.execute("UPDATE STUDENTS SET first_name = ?, surname = ?, attendance_card_id = ? WHERE student_id = ?", (first_name, surname, card_id, student_id))
+    db.commit()
+else:
+    db.execute("INSERT INTO ATTENDANCES VALUES (?, 0)", (card_id,))
+    db.commit()
+
+    db.execute("UPDATE STUDENTS SET first_name = ?, surname = ?, attendance_card_id = ? WHERE student_id = ?", (first_name, surname, card_id, student_id))
+    db.commit()
+print(check_card)
