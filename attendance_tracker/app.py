@@ -69,6 +69,11 @@ def student():
         student_d[y["student_id"]] = {"Info" : tuple(y) , "Classes" : [tuple(row) for row in student_class] , "Contacts" : [tuple(row) for row in student_contacts]}
     return render_template("studentpage.html", student_d=student_d)
 
+
+
+
+
+
 @app.route("/edit", methods = ['GET'] )
 def edit_page(): 
     student_id = request.args.get("student_id")
@@ -78,14 +83,21 @@ def edit_page():
     classes = db.execute("SELECT CLASSES.class_id, CLASSES.week_day, CLASSES.time FROM STUDENTS_CLASSES JOIN CLASSES ON STUDENTS_CLASSES.class_id = CLASSES.class_id WHERE STUDENTS_CLASSES.student_id = ?", (student_id,)).fetchall()
 
     contacts = db.execute("SELECT CONTACTS.contact_id, CONTACTS.phone, CONTACTS.email, STUDENTS_CONTACTS.relationship_to_student FROM STUDENTS_CONTACTS JOIN CONTACTS ON STUDENTS_CONTACTS.contact_id = CONTACTS.contact_id WHERE STUDENTS_CONTACTS.student_id = ?", (student_id,)).fetchall()
+    
     return render_template("editpage.html", student_id=student_id, student=tuple(student), classes=[tuple(row) for row in classes], contacts=[tuple(row) for row in contacts])
+
+
+
+
+
 
 @app.route("/updatestudent/<student_id>", methods = ['POST'] )
 def update_student(student_id): 
-
+#STUDENT INFO
     first_name = request.form["first_name"]
     surname = request.form["surname"]
     card_id = request.form["attendance_card_id"]
+    
     db = get_db()
     check_card = db.execute("SELECT attendance_card_id FROM ATTENDANCES WHERE attendance_card_id = ?", (card_id,)).fetchone()
     if not check_card:
@@ -94,5 +106,20 @@ def update_student(student_id):
 
     db.execute("UPDATE STUDENTS SET first_name = ?, surname = ?, attendance_card_id = ? WHERE student_id = ?", (first_name, surname, card_id, student_id))
     db.commit()
+
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#CONTACTS
+    
+    contact_id = request.form["contact_id"]
+    phone = request.form["phone"]
+    email = request.form["email"]
+    relation = request.form["relation"]
+
+    db.execute("UPDATE CONTACTS SET phone = ?, email = ? WHERE contact_id = ?", (phone, email, contact_id))
+    db.commit()
+    db.execute("UPDATE CONTACTS_STUDENTS SET relationship_to_student = ? WHERE contact_id = ? AND student_id =?", (relation, contact_id, student_id))
+    db.commit()
+
+    
 
     return redirect("/students")
