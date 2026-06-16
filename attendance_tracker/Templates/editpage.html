@@ -1,3 +1,4 @@
+<h4>Student info:</h4>
 <h4>{{student_id}}</h4>
 <form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
     First name:
@@ -18,4 +19,37 @@
     <button type="submit">
         Save
     </button>
+</form>
+
+
+<h4>Contacts info:</h4>
+<form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
+    {% for c in contacts %}
+       Contact ID:
+      <input type="text"
+             name="contact_id"
+             value="{{c[0]}}">
+
+      Phone:
+      <input type="text"
+             name="phone"
+             value="{{c[1]}}">
+
+       Email:
+      <input type="text"
+             name="email"
+             value="{{c[2]}}">
+       
+       Relationship to student:
+      <input type="text"
+             name="relation"
+             value="{{c[3]}}">
+       <br>
+       {% endfor %}
+
+      <button type="submit">
+          Save
+      </button>
+    
+
 </form>
