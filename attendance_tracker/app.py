@@ -94,32 +94,29 @@ def edit_page():
 @app.route("/updatestudent/<student_id>", methods = ['POST'] )
 def update_student(student_id): 
 #STUDENT INFO
-    first_name = request.form["first_name"]
-    surname = request.form["surname"]
-    card_id = request.form["attendance_card_id"]
-    
     db = get_db()
-    check_card = db.execute("SELECT attendance_card_id FROM ATTENDANCES WHERE attendance_card_id = ?", (card_id,)).fetchone()
-    if not check_card:
-        db.execute("INSERT INTO ATTENDANCES VALUES (?, 0)", (card_id,))
-        db.commit()
+    if "first_name" in request.form:
+        first_name = request.form["first_name"]
+        surname = request.form["surname"]
+        card_id = request.form["attendance_card_id"]
+    
+        
+        check_card = db.execute("SELECT attendance_card_id FROM ATTENDANCES WHERE attendance_card_id = ?", (card_id,)).fetchone()
+        if not check_card:
+            db.execute("INSERT INTO ATTENDANCES VALUES (?, 0)", (card_id,))
+            db.commit()
 
-    db.execute("UPDATE STUDENTS SET first_name = ?, surname = ?, attendance_card_id = ? WHERE student_id = ?", (first_name, surname, card_id, student_id))
-    db.commit()
+        db.execute("UPDATE STUDENTS SET first_name = ?, surname = ?, attendance_card_id = ? WHERE student_id = ?", (first_name, surname, card_id, student_id))
+        db.commit()
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #CONTACTS
+    if "contact_id" in request.form:
+        contact_id = request.form["contact_id"]
+
+        db.execute("DELETE FROM STUDENTS_CONTACTS WHERE contact_id = ? AND student_id = ?", (contact_id, student_id))
+        db.commit()
     
-    contact_id = request.form["contact_id"]
-    phone = request.form["phone"]
-    email = request.form["email"]
-    relation = request.form["relation"]
-
-    db.execute("UPDATE CONTACTS SET phone = ?, email = ? WHERE contact_id = ?", (phone, email, contact_id))
-    db.commit()
-    db.execute("UPDATE CONTACTS_STUDENTS SET relationship_to_student = ? WHERE contact_id = ? AND student_id =?", (relation, contact_id, student_id))
-    db.commit()
-
     
 
     return redirect("/students")
