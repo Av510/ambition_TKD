@@ -95,7 +95,8 @@ def edit_page():
 def update_student(student_id): 
 #STUDENT INFO
     db = get_db()
-    if "first_name" in request.form:
+    which_form = request.form["which_form"]
+    if which_form == "update_student":
         first_name = request.form["first_name"]
         surname = request.form["surname"]
         card_id = request.form["attendance_card_id"]
@@ -111,12 +112,23 @@ def update_student(student_id):
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #CONTACTS
-    if "contact_id" in request.form:
+    #delete
+    elif which_form == "delete_contact":
         contact_id = request.form["contact_id"]
 
         db.execute("DELETE FROM STUDENTS_CONTACTS WHERE contact_id = ? AND student_id = ?", (contact_id, student_id))
         db.commit()
-    
-    
+    #add
+    elif which_form == "add_contact":
+        phone = request.form["phone"]
+        email = request.form["email"]
+        relationship_to_student = request.form["relationship_to_student"]
+
+        contacts_r = db.execute("INSERT INTO CONTACTS (phone, email) VALUES (?, ?)", (phone, email))
+        db.commit()
+
+        contact_id = contacts_r.lastrowid
+        db.execute("INSERT INTO STUDENTS_CONTACTS VALUES (?, ?, ?)", (student_id, contact_id, relationship_to_student))
+        db.commit()
 
     return redirect("/students")
