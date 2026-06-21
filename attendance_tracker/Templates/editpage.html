@@ -2,6 +2,7 @@
 <h4>{{student_id}}</h4>
 <form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
     <h4>{{student_id}}</h4>
+    <input type="hidden" name="which_form" value="update_student">
     First name:
     <input type="text"
            name="first_name"
@@ -29,8 +30,9 @@
 
     {% for c in contacts %}
       <form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
+        <input type="hidden" name="which_form" value="delete_contact">
         Contact ID: 
-       <input type="hidden"
+        <input type="hidden"
               name="contact_id"
               value="{{c[0]}}">
 
@@ -46,3 +48,26 @@
         <br>
       </form>
     {% endfor %}
+
+<details>
+       <summary>Add contact</summary>
+       <form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
+         <input type="hidden" name="which_form" value="add_contact">
+
+         Phone:
+         <input type="text"
+                 name="phone">
+       
+         Email:
+         <input type="text"
+                 name="email">
+       
+         Relationship to student:
+         <input type="text"
+                 name="relationship_to_student">
+       
+         <button type="submit">
+                ADD
+         </button>
+       </form>
+</details>
