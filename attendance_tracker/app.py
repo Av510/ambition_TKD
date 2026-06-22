@@ -86,7 +86,7 @@ def edit_page():
     classes = db.execute("SELECT * FROM CLASSES").fetchall()
     student_classes = db.execute("SELECT class_id FROM STUDENTS_CLASSES WHERE student_id = ?", (student_id,)).fetchall()
     
-    return render_template("editpage.html", student_id=student_id, student_classes=[row[0] for row in student_classes], student=tuple(student), classes=[tuple(row) for row in classes], contacts=[tuple(row) for row in contacts])
+    return render_template("editpage.html", student_id=student_id, student_classes=[row["class_id"] for row in student_classes], student=tuple(student), classes=[tuple(row) for row in classes], contacts=[tuple(row) for row in contacts])
 
 
 
