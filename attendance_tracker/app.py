@@ -122,13 +122,14 @@ def update_student(student_id):
     elif which_form == "add_contact":
         phone = request.form["phone"]
         email = request.form["email"]
-        relationship_to_student = request.form["relationship_to_student"]
+        if (phone != "") or (email != ""):
+            relationship_to_student = request.form["relationship_to_student"]
 
-        contacts_r = db.execute("INSERT INTO CONTACTS (phone, email) VALUES (?, ?)", (phone, email))
-        db.commit()
+            contacts_r = db.execute("INSERT INTO CONTACTS (phone, email) VALUES (?, ?)", (phone, email))
+            db.commit()
 
-        contact_id = contacts_r.lastrowid
-        db.execute("INSERT INTO STUDENTS_CONTACTS VALUES (?, ?, ?)", (student_id, contact_id, relationship_to_student))
-        db.commit()
+            contact_id = contacts_r.lastrowid
+            db.execute("INSERT INTO STUDENTS_CONTACTS VALUES (?, ?, ?)", (student_id, contact_id, relationship_to_student))
+            db.commit()
 
-    return redirect("/students")
+    return redirect(url_for(("edit_page"), student_id=student_id))
