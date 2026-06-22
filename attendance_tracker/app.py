@@ -137,6 +137,8 @@ def update_student(student_id):
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #CLASSES
     elif which_form == "change_classes":
+        db.execute("DELETE FROM STUDENTS_CLASSES WHERE student_id = ?", (student_id,))
+        db.commit()
         selected_classes = request.form["class_ids"]
         for cid in selected_classes:
             db.execute("INSERT INTO STUDENTS_CLASSES VALUES (?, ?)", (student_id, cid))
