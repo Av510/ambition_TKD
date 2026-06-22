@@ -80,11 +80,13 @@ def edit_page():
     db = get_db()
     student = db.execute("SELECT * FROM STUDENTS WHERE student_id = ?", (student_id,)).fetchone()
 
-    classes = db.execute("SELECT CLASSES.class_id, CLASSES.week_day, CLASSES.time FROM STUDENTS_CLASSES JOIN CLASSES ON STUDENTS_CLASSES.class_id = CLASSES.class_id WHERE STUDENTS_CLASSES.student_id = ?", (student_id,)).fetchall()
 
     contacts = db.execute("SELECT CONTACTS.contact_id, CONTACTS.phone, CONTACTS.email, STUDENTS_CONTACTS.relationship_to_student FROM STUDENTS_CONTACTS JOIN CONTACTS ON STUDENTS_CONTACTS.contact_id = CONTACTS.contact_id WHERE STUDENTS_CONTACTS.student_id = ?", (student_id,)).fetchall()
     
-    return render_template("editpage.html", student_id=student_id, student=tuple(student), classes=[tuple(row) for row in classes], contacts=[tuple(row) for row in contacts])
+    classes = db.execute("SELECT * FROM CLASSES").fetchall()
+    student_classes = db.execute("SELECT class_id FROM STUDENTS_CLASSES WHERE student_id = ?", (student_id,)).fetchall()
+    
+    return render_template("editpage.html", student_id=student_id, student_classes=[row[0] for row in student_classes], student=tuple(student), classes=[tuple(row) for row in classes], contacts=[tuple(row) for row in contacts])
 
 
 
