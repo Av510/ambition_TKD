@@ -134,4 +134,14 @@ def update_student(student_id):
             db.execute("INSERT INTO STUDENTS_CONTACTS VALUES (?, ?, ?)", (student_id, contact_id, relationship_to_student))
             db.commit()
 
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#CLASSES
+    elif which_form == "change_classes":
+        selected_classes = request.form["class_ids"]
+        for cid in selected_classes:
+            db.execute("INSERT INTO STUDENTS_CLASSES VALUES (?, ?)", (student_id, cid))
+            db.commit()
+
+
+
     return redirect(url_for(("edit_page"), student_id=student_id))

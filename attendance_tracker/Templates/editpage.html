@@ -75,9 +75,13 @@
 <h4>Classes:</h4>
     
 <form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
+    <input type="hidden" name="which_form" value="change_classes">
     {% for class in classes %}
-        <input type="checkbox" name="{{class[0]}}" value="1" {% if class[0] in student_classes %} checked {% endif %}> 
-        <label for="{{class[0]}}">{{class[1]}}</label><br>
+        <input type="checkbox" name="class_ids" value="{{class[0]}}" {% if class[0] in student_classes %} checked {% endif %}> 
+        <label for="{{class[0]}}">{{class[1]}} - {{class[2]}} </label><br>
         <br>
     {% endfor %}
+    <button type="submit">
+          Save
+    </button>
 </form>
