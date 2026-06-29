@@ -116,10 +116,12 @@ def update_student(student_id):
         card_id = request.form["attendance_card_id"]
     
         
-        check_card = db.execute("SELECT attendance_card_id FROM ATTENDANCES WHERE attendance_card_id = ?", (card_id,)).fetchone()
-        if not check_card:
-            db.execute("INSERT INTO ATTENDANCES VALUES (?, 0)", (card_id,))
+        check_card = request.form.get("new_card")
+        if check_card:
+            new_card = db.execute("INSERT INTO ATTENDANCES (attendance_count) VALUES (0)")
             db.commit()
+            card_id = new_card.lastrowid
+
 
         db.execute("UPDATE STUDENTS SET first_name = ?, surname = ?, attendance_card_id = ? WHERE student_id = ?", (first_name, surname, card_id, student_id))
         db.commit()
