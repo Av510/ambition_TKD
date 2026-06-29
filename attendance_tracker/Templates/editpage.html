@@ -14,19 +14,28 @@
            name="surname"
            value="{{student[2]}}">
 
-    Attendance card ID:
-    <input type="text"
-           name="attendance_card_id"
-           value="{{student[3]}}">
 
-
-
+    <label for="attendance_card_id">Attendance card ID:</label>
+    <select name="attendance_card_id">
+      <p>card id | name | attendance count</p>
+      {% for cards in at_d %}
+        <option value="{{cards}}" {% if cards == student[3] %}selected{% endif %}>
+            {{cards}}: 
+            {% for i in at_d[cards] %}
+              |
+              {{i[0]}} {{i[1]}}
+              |
+            {% endfor %}
+            {{at_d[cards][0][3]}}
+        </option>
+      {% endfor %}
+    </select>
       <button type="submit">
           Save
       </button>
     
 </form>
-
+<br>
 <h4>Contacts info:</h4>
 
     {% for c in contacts %}
