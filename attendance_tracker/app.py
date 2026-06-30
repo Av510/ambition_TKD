@@ -83,7 +83,7 @@ def edit_page():
     student = db.execute("SELECT * FROM STUDENTS WHERE student_id = ?", (student_id,)).fetchone()
   
 
-    attendance_cards = db.execute("SELECT STUDENTS.first_name, STUDENTS.surname, ATTENDANCES.attendance_card_id, ATTENDANCES.attendance_count FROM ATTENDANCES JOIN STUDENTS ON ATTENDANCES.attendance_card_id = STUDENTS.attendance_card_id").fetchall()
+    attendance_cards = db.execute("SELECT STUDENTS.first_name, STUDENTS.surname, ATTENDANCES.attendance_card_id, ATTENDANCES.attendance_count FROM ATTENDANCES LEFT JOIN STUDENTS ON ATTENDANCES.attendance_card_id = STUDENTS.attendance_card_id").fetchall()
     
     for i in attendance_cards:
         acard_id = i[2]
