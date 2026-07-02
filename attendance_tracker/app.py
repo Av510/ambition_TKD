@@ -158,6 +158,18 @@ def update_student(student_id):
             db.execute("INSERT INTO STUDENTS_CLASSES VALUES (?, ?)", (student_id, cid))
             db.commit()
 
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#DELETE STUDENT !!!
 
+    elif which_form == "delete_student":
+        db.execute("DELETE FROM STUDENTS_CLASSES WHERE student_id = ?", (student_id,))
+        
+        
+        db.execute("DELETE FROM STUDENTS_CONTACTS WHERE student_id = ?", (student_id,))
+        
+
+        db.execute("DELETE FROM STUDENTS WHERE student_id = ?", (student_id,))
+        
+        db.commit()
 
     return redirect(url_for(("edit_page"), student_id=student_id))

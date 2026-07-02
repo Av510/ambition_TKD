@@ -1,4 +1,7 @@
 <a href="{{ url_for('student')}}">Back</a>
+
+
+
 <h4>Student info:</h4>
 <h4>{{student_id}}</h4>
 <form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
@@ -38,6 +41,9 @@
     
 </form>
 <br>
+
+
+
 <h4>Contacts info:</h4>
 
     {% for c in contacts %}
@@ -84,6 +90,9 @@
        </form>
 </details>
 
+
+
+
 <h4>Classes:</h4>
     
 <form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
@@ -95,5 +104,18 @@
     {% endfor %}
     <button type="submit">
           Save
+    </button>
+</form>
+
+
+
+
+<h4>DELETE STUDENT:</h4>
+    
+<form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
+    <input type="hidden" name="which_form" value="delete_student">
+
+    <button type="submit">
+          ! DELETE STUDENT !
     </button>
 </form>
