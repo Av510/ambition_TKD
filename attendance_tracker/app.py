@@ -126,7 +126,7 @@ def update_student(student_id):
         db.execute("UPDATE STUDENTS SET first_name = ?, surname = ?, attendance_card_id = ? WHERE student_id = ?", (first_name, surname, card_id, student_id))
         db.commit()
 
-#-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #CONTACTS
     #delete
     elif which_form == "delete_contact":
@@ -148,7 +148,7 @@ def update_student(student_id):
             db.execute("INSERT INTO STUDENTS_CONTACTS VALUES (?, ?, ?)", (student_id, contact_id, relationship_to_student))
             db.commit()
 
-#-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #CLASSES
     elif which_form == "change_classes":
         db.execute("DELETE FROM STUDENTS_CLASSES WHERE student_id = ?", (student_id,))
@@ -158,7 +158,7 @@ def update_student(student_id):
             db.execute("INSERT INTO STUDENTS_CLASSES VALUES (?, ?)", (student_id, cid))
             db.commit()
 
-#-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #DELETE STUDENT !!!
 
     elif which_form == "delete_student":
@@ -169,7 +169,7 @@ def update_student(student_id):
         
 
         db.execute("DELETE FROM STUDENTS WHERE student_id = ?", (student_id,))
-        
+
         db.commit()
 
     return redirect(url_for(("edit_page"), student_id=student_id))
