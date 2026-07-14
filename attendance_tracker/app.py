@@ -22,13 +22,8 @@ def close_db(e=None):
 @app.route("/")
 def home():  
     db = get_db()
-    get_all = db.cursor()
-    all = get_all.execute("SELECT * FROM STUDENTS").fetchall()
-    acards = []
-    attendance_cards_d ={}
-    for i in all:
-       acount =db.cursor().execute("SELECT attendance_count FROM ATTENDANCES WHERE attendance_card_id = ?", (i["attendance_card_id"],)).fetchall()
-       acards.append(tuple(i) + tuple(acount[0]))
+    attendance_cards_d = {}
+    acards = db.execute("SELECT STUDENTS.student_id, STUDENTS.first_name, STUDENTS.surname, STUDENTS.attendance_card_id, ATTENDANCES.attendance_count FROM STUDENTS JOIN ATTENDANCES ON STUDENTS.attendance_card_id = ATTENDANCES.attendance_card_id").fetchall()
     for h in acards:
         card_id = h[3]
         if card_id in attendance_cards_d:
@@ -43,28 +38,26 @@ def update_attendance():
     change = int(request.form["attendancechange"])
     card_id = request.form["cardid"]
     db = get_db()
-    get_update = db.cursor()
-    count = get_update.execute("SELECT attendance_count FROM ATTENDANCES WHERE attendance_card_id = ?", (card_id,)).fetchall()
+    count = db.execute("SELECT attendance_count FROM ATTENDANCES WHERE attendance_card_id = ?", (card_id,)).fetchall()
     if count[0]["attendance_count"] == None:
         count = 0
     else:
         count = count[0]["attendance_count"]
-    get_update.execute("UPDATE ATTENDANCES SET attendance_count = ? WHERE attendance_card_id = ?", (count, card_id))
+    db.execute("UPDATE ATTENDANCES SET attendance_count = ? WHERE attendance_card_id = ?", (count, card_id))
     db.commit()
-    get_update.execute("UPDATE ATTENDANCES SET attendance_count = attendance_count + ? WHERE attendance_card_id = ?", (change, card_id))
+    db.execute("UPDATE ATTENDANCES SET attendance_count = attendance_count + ? WHERE attendance_card_id = ?", (change, card_id))
     db.commit()
     return redirect(url_for(("home"), _anchor=card_id))
 
 @app.route("/students")
 def student(): 
     db = get_db()
-    get_students = db.cursor()
     student_d = {}
-    student_infos = get_students.execute("SELECT * FROM STUDENTS ").fetchall()
+    student_infos = db.execute("SELECT * FROM STUDENTS ").fetchall()
     for y in student_infos:
-        student_class = get_students.execute("SELECT week_day, time FROM STUDENTS_CLASSES LEFT JOIN CLASSES ON STUDENTS_CLASSES.class_id = CLASSES.class_id WHERE student_id= ? ", (y["student_id"],)).fetchall()
+        student_class = db.execute("SELECT week_day, time FROM STUDENTS_CLASSES LEFT JOIN CLASSES ON STUDENTS_CLASSES.class_id = CLASSES.class_id WHERE student_id= ? ", (y["student_id"],)).fetchall()
 
-        student_contacts = get_students.execute("SELECT CONTACTS.phone, CONTACTS.email, STUDENTS_CONTACTS.relationship_to_student FROM STUDENTS_CONTACTS LEFT JOIN CONTACTS ON STUDENTS_CONTACTS.contact_id = CONTACTS.contact_id WHERE student_id =?", (y["student_id"],)).fetchall()
+        student_contacts = db.execute("SELECT CONTACTS.phone, CONTACTS.email, STUDENTS_CONTACTS.relationship_to_student FROM STUDENTS_CONTACTS LEFT JOIN CONTACTS ON STUDENTS_CONTACTS.contact_id = CONTACTS.contact_id WHERE student_id =?", (y["student_id"],)).fetchall()
 
         student_d[y["student_id"]] = {"Info" : tuple(y) , "Classes" : [tuple(row) for row in student_class] , "Contacts" : [tuple(row) for row in student_contacts]}
     return render_template("studentpage.html", student_d=student_d)
@@ -172,4 +165,84 @@ def update_student(student_id):
 
         db.commit()
 
+        return redirect(url_for("student"))
+
     return redirect(url_for(("edit_page"), student_id=student_id))
+
+
+
+
+@app.route("/newstudent")
+def add_student():
+
+    db = get_db()
+    at_d = {}
+  
+
+    attendance_cards = db.execute("SELECT STUDENTS.first_name, STUDENTS.surname, ATTENDANCES.attendance_card_id, ATTENDANCES.attendance_count FROM ATTENDANCES LEFT JOIN STUDENTS ON ATTENDANCES.attendance_card_id = STUDENTS.attendance_card_id").fetchall()
+    
+    for i in attendance_cards:
+        acard_id = i[2]
+        if acard_id in at_d:
+            at_d[acard_id].append(tuple(i))
+        else:
+            at_d[acard_id] = [tuple(i)]
+
+    classes = db.execute("SELECT * FROM CLASSES").fetchall()
+
+    return render_template("addstudent.html", at_d=at_d, classes=classes)
+
+
+@app.route("/createstudent", methods=["POST"])
+def create_student():
+    db = get_db()
+
+    name = request.form["name"]
+    surname = request.form["surname"]
+    card_id = request.form["attendance_card_id"]
+
+    phone = request.form["phone"]
+    email = request.form["email"]
+    relation = request.form["relationship_to_student"]
+    phone2 = request.form["phone2"]
+    email2 = request.form["email2"]
+    relation2 = request.form["relationship_to_student2"]
+
+    selected_classes = request.form.getlist("class_ids")
+    #NEW Card---------------------------------------------------------------------------------------------------------------------------------------
+    check_card = request.form.get("new_card")
+    if check_card:
+        new_card = db.execute("INSERT INTO ATTENDANCES (attendance_count) VALUES (0)")
+        
+        card_id = new_card.lastrowid
+#NEW Student-------------------------------------------------------------------------------------------------------------------------------
+    new_student = db.execute("INSERT INTO STUDENTS (first_name, surname, attendance_card_id) VALUES (?, ?, ?)", (name, surname, card_id))
+    
+
+    student_id = new_student.lastrowid
+#NEW Contact(s)---------------------------------------------------------------------------------------------------------------------------------------
+    if (phone.strip() != "") or (email.strip() != ""):
+
+        contacts_r = db.execute("INSERT INTO CONTACTS (phone, email) VALUES (?, ?)", (phone, email))
+        
+
+        contact_id = contacts_r.lastrowid
+        db.execute("INSERT INTO STUDENTS_CONTACTS VALUES (?, ?, ?)", (student_id, contact_id, relation))
+        
+
+    if (phone2.strip() != "") or (email2.strip() != ""):
+
+        contacts_r2 = db.execute("INSERT INTO CONTACTS (phone, email) VALUES (?, ?)", (phone2, email2))
+
+        contact_id2 = contacts_r2.lastrowid
+        db.execute("INSERT INTO STUDENTS_CONTACTS VALUES (?, ?, ?)", (student_id, contact_id2, relation2))
+        
+
+
+#Classes----------------------------------------------------------------------------------------------------------------------------------------------
+    for cid in selected_classes:
+            db.execute("INSERT INTO STUDENTS_CLASSES VALUES (?, ?)", (student_id, cid))
+
+    db.commit()
+
+    return redirect(url_for("student"))
