@@ -78,7 +78,19 @@ def student():
 def edit_page(): 
     student_id = request.args.get("student_id")
     db = get_db()
+    at_d = {}
+    
     student = db.execute("SELECT * FROM STUDENTS WHERE student_id = ?", (student_id,)).fetchone()
+  
+
+    attendance_cards = db.execute("SELECT STUDENTS.first_name, STUDENTS.surname, ATTENDANCES.attendance_card_id, ATTENDANCES.attendance_count FROM ATTENDANCES LEFT JOIN STUDENTS ON ATTENDANCES.attendance_card_id = STUDENTS.attendance_card_id").fetchall()
+    
+    for i in attendance_cards:
+        acard_id = i[2]
+        if acard_id in at_d:
+            at_d[acard_id].append(tuple(i))
+        else:
+            at_d[acard_id] = [tuple(i)]
 
 
     contacts = db.execute("SELECT CONTACTS.contact_id, CONTACTS.phone, CONTACTS.email, STUDENTS_CONTACTS.relationship_to_student FROM STUDENTS_CONTACTS JOIN CONTACTS ON STUDENTS_CONTACTS.contact_id = CONTACTS.contact_id WHERE STUDENTS_CONTACTS.student_id = ?", (student_id,)).fetchall()
@@ -86,7 +98,7 @@ def edit_page():
     classes = db.execute("SELECT * FROM CLASSES").fetchall()
     student_classes = db.execute("SELECT class_id FROM STUDENTS_CLASSES WHERE student_id = ?", (student_id,)).fetchall()
     
-    return render_template("editpage.html", student_id=student_id, student_classes=[row["class_id"] for row in student_classes], student=tuple(student), classes=[tuple(row) for row in classes], contacts=[tuple(row) for row in contacts])
+    return render_template("editpage.html", student_id=student_id, student_classes=[row["class_id"] for row in student_classes], student=tuple(student), classes=[tuple(row) for row in classes], contacts=[tuple(row) for row in contacts], at_d=at_d)
 
 
 
@@ -104,15 +116,17 @@ def update_student(student_id):
         card_id = request.form["attendance_card_id"]
     
         
-        check_card = db.execute("SELECT attendance_card_id FROM ATTENDANCES WHERE attendance_card_id = ?", (card_id,)).fetchone()
-        if not check_card:
-            db.execute("INSERT INTO ATTENDANCES VALUES (?, 0)", (card_id,))
+        check_card = request.form.get("new_card")
+        if check_card:
+            new_card = db.execute("INSERT INTO ATTENDANCES (attendance_count) VALUES (0)")
             db.commit()
+            card_id = new_card.lastrowid
+
 
         db.execute("UPDATE STUDENTS SET first_name = ?, surname = ?, attendance_card_id = ? WHERE student_id = ?", (first_name, surname, card_id, student_id))
         db.commit()
 
-#-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #CONTACTS
     #delete
     elif which_form == "delete_contact":
@@ -134,7 +148,7 @@ def update_student(student_id):
             db.execute("INSERT INTO STUDENTS_CONTACTS VALUES (?, ?, ?)", (student_id, contact_id, relationship_to_student))
             db.commit()
 
-#-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #CLASSES
     elif which_form == "change_classes":
         db.execute("DELETE FROM STUDENTS_CLASSES WHERE student_id = ?", (student_id,))
@@ -144,6 +158,18 @@ def update_student(student_id):
             db.execute("INSERT INTO STUDENTS_CLASSES VALUES (?, ?)", (student_id, cid))
             db.commit()
 
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#DELETE STUDENT !!!
 
+    elif which_form == "delete_student":
+        db.execute("DELETE FROM STUDENTS_CLASSES WHERE student_id = ?", (student_id,))
+        
+        
+        db.execute("DELETE FROM STUDENTS_CONTACTS WHERE student_id = ?", (student_id,))
+        
+
+        db.execute("DELETE FROM STUDENTS WHERE student_id = ?", (student_id,))
+
+        db.commit()
 
     return redirect(url_for(("edit_page"), student_id=student_id))

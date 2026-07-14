@@ -1,4 +1,7 @@
 <a href="{{ url_for('student')}}">Back</a>
+
+
+
 <h4>Student info:</h4>
 <h4>{{student_id}}</h4>
 <form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
@@ -14,18 +17,32 @@
            name="surname"
            value="{{student[2]}}">
 
-    Attendance card ID:
-    <input type="text"
-           name="attendance_card_id"
-           value="{{student[3]}}">
 
-
-
-      <button type="submit">
-          Save
-      </button>
+    <label for="attendance_card_id">Attendance card ID:</label>
+    <select name="attendance_card_id">
+      <p>card id | name | attendance count</p>
+      {% for cards in at_d %}
+        <option value="{{cards}}" {% if cards == student[3] %}selected{% endif %}>
+            {{cards}}: 
+            {% for i in at_d[cards] %}
+              |
+              {{i[0]}} {{i[1]}}
+              |
+            {% endfor %}
+            {{at_d[cards][0][3]}}
+        </option>
+      {% endfor %}
+    </select>
+    <label> ADD new card:</label>
+    <input type="checkbox" name="new_card">
+    <button type="submit">
+        Save
+    </button>
     
 </form>
+<br>
+
+
 
 <h4>Contacts info:</h4>
 
@@ -73,6 +90,9 @@
        </form>
 </details>
 
+
+
+
 <h4>Classes:</h4>
     
 <form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
@@ -84,5 +104,18 @@
     {% endfor %}
     <button type="submit">
           Save
+    </button>
+</form>
+
+
+
+
+<h4>DELETE STUDENT:</h4>
+    
+<form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
+    <input type="hidden" name="which_form" value="delete_student">
+
+    <button type="submit">
+          ! DELETE STUDENT !
     </button>
 </form>
