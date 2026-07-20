@@ -9,7 +9,6 @@
         <br>
     <label for="attendance_card_id">Attendance card ID:</label>
         <select name="attendance_card_id">
-          <p>card id | name | attendance count</p>
           {% for cards in at_d %}
             <option value="{{cards}}">
                 {{cards}}: 
@@ -32,7 +31,7 @@
     Existing contacts:
         <br>
         <select name="existing_contact">
-          <p>card id | name | attendance count</p>
+            <option value=""> Select existing contact </option>
           {% for c in contacts %}
             <option value="{{c[0]}}">
                 {{c[0]}} |
@@ -61,8 +60,8 @@
     <br>
     Existing contacts:
         <br>
-        <select name="existing_contact2">!!!!!!!!!!!!!!!!!!!!!!!
-          <p>card id | name | attendance count</p>
+        <select name="existing_contact2">
+          <option value=""> Select existing contact </option>
           {% for c in contacts %}
             <option value="{{c[0]}}">
                 {{c[0]}} |

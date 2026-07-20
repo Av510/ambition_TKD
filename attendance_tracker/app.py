@@ -211,19 +211,21 @@ def create_student():
     relation2 = request.form["relationship_to_student2"]
     contact_ex = request.form["existing_contact"]
     relation_ex = request.form["relationship_to_student_ex"]
+    contact_ex2 = request.form["existing_contact2"]
+    relation_ex2 = request.form["relationship_to_student_ex2"]
 
     selected_classes = request.form.getlist("class_ids")
-    #NEW Card---------------------------------------------------------------------------------------------------------------------------------------
+#NEW Card---------------------------------------------------------------------------------------------------------------------------------------
     check_card = request.form.get("new_card")
     if check_card:
         new_card = db.execute("INSERT INTO ATTENDANCES (attendance_count) VALUES (0)")
         
         card_id = new_card.lastrowid
 #NEW Student-------------------------------------------------------------------------------------------------------------------------------
-    new_student = db.execute("INSERT INTO STUDENTS (first_name, surname, attendance_card_id) VALUES (?, ?, ?)", (name, surname, card_id))
-    
 
+    new_student = db.execute("INSERT INTO STUDENTS (first_name, surname, attendance_card_id) VALUES (?, ?, ?)", (name, surname, card_id))
     student_id = new_student.lastrowid
+
 #NEW Contact(s)---------------------------------------------------------------------------------------------------------------------------------------
     if (phone.strip() != "") or (email.strip() != ""):
 
@@ -240,9 +242,12 @@ def create_student():
 
         contact_id2 = contacts_r2.lastrowid
         db.execute("INSERT INTO STUDENTS_CONTACTS VALUES (?, ?, ?)", (student_id, contact_id2, relation2))
-        
+    #user select from existing contactts     
     if contact_ex:
         db.execute("INSERT INTO STUDENTS_CONTACTS VALUES (?, ?, ?)", (student_id, contact_ex, relation_ex))
+
+    if contact_ex2:
+        db.execute("INSERT INTO STUDENTS_CONTACTS VALUES (?, ?, ?)", (student_id, contact_ex2, relation_ex2))
 
 
 #Classes----------------------------------------------------------------------------------------------------------------------------------------------
