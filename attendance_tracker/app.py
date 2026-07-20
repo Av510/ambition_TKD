@@ -67,9 +67,20 @@ def student():
     return render_template("studentpage.html", student_d=student_d, class_options=class_options)
 
 
-@app.route("/sortedstudents")
+@app.route("/sortedstudents", methods = ['GET'] )
 def sorted_student(): 
-    return render_template("studentpage.html")
+    db = get_db()
+    sort_student=""
+    sort_az = request.args.get("alphabetical")
+    sort_c = request.args.get("by_class")
+    if sort_az == "first_name":
+        sort_student = db.execute("SELECT * FROM STUDENTS ORDER BY First_name, Surname").fetchall()
+    if sort_az == "surname":
+        sort_student = db.execute("SELECT * FROM STUDENTS ORDER BY Surname, First_name").fetchall()
+    
+    
+
+    return render_template("studentpage.html", sort_student=[tuple(row) for row in sort_student] )
 
 
 

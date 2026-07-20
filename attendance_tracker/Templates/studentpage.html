@@ -1,23 +1,23 @@
 <a href="{{ url_for('add_student')}}">ADD</a>
 
 Sort by: 
-<form method="POST" action="{{ url_for('sorted_student') }}">
+<form method="GET" action="{{ url_for('sorted_student') }}">
          <select name="alphabetical">
-            <option value=""> A-Z </option>
+              <option value=""> A-Z </option>
 
-            <option value="first_name">
-                 First name
-            </option>
+              <option value="first_name">
+                   First name
+              </option>
 
-            <option value="surname">
-                 Surname
-            </option>
+              <option value="surname">
+                   Surname
+              </option>
 
          </select>
-
-
-         <select name="class">
-            <option value=""> Classes </option>
+</form>
+<form method="GET" action="{{ url_for('sorted_student') }}">
+         <select name="by_class">
+              <option value=""> Classes </option>
             
             {% for c in class_options %}
               <option value="{{c[0]}}">
@@ -27,9 +27,6 @@ Sort by:
 
          </select>
 
-      <button type="submit">
-        Sort
-      </button>
 </form>
 
 
@@ -47,4 +44,12 @@ Sort by:
     {% endfor %}
 
     <a href="{{ url_for('edit_page', student_id=student_d[i]['Info'][0])}}">EDIT</a>
+{% endfor %}
+
+<h1> Here </h1>
+{{sort_student}}
+{% for s in sort_student %}
+  <h2>{{s[0]}}</h2>
+  <h2>{{s[1]}}</h2>
+  <h2>{{s[2]}}</h2>
 {% endfor %}
