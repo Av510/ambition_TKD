@@ -77,6 +77,9 @@ def sorted_student():
         sort_student = db.execute("SELECT * FROM STUDENTS ORDER BY First_name, Surname").fetchall()
     if sort_az == "surname":
         sort_student = db.execute("SELECT * FROM STUDENTS ORDER BY Surname, First_name").fetchall()
+    if sort_c != "":
+        sort_student = db.execute("SELECT * FROM STUDENTS WHERE class_id =?", sort_c ).fetchall()
+
     
     
 
