@@ -1,4 +1,39 @@
 <a href="{{ url_for('add_student')}}">ADD</a>
+
+Sort by: 
+<form method="POST" action="{{ url_for('sorted_student') }}">
+         <select name="alphabetical">
+            <option value=""> A-Z </option>
+
+            <option value="first_name">
+                 First name
+            </option>
+
+            <option value="surname">
+                 Surname
+            </option>
+
+         </select>
+
+
+         <select name="class">
+            <option value=""> Classes </option>
+            
+            {% for c in class_options %}
+              <option value="{{c[0]}}">
+                {{c[1]}} - {{c[2]}}
+              </option>
+            {% endfor %}
+
+         </select>
+
+      <button type="submit">
+        Sort
+      </button>
+</form>
+
+
+
 {% for i in student_d %}
     <p><h5>ID: </h5>{{student_d[i]["Info"][0]}} <h5>Name </h5>{{student_d[i]["Info"][1]}}</p> <h5>Surname: </h5>{{student_d[i]["Info"][2]}} <h5>Card ID: </h5>{{student_d[i]["Info"][3]}}</p>
 

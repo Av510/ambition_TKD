@@ -54,15 +54,22 @@ def student():
     db = get_db()
     student_d = {}
     student_infos = db.execute("SELECT * FROM STUDENTS ").fetchall()
+
+    class_options = db.execute("SELECT * FROM CLASSES").fetchall()
+
     for y in student_infos:
         student_class = db.execute("SELECT week_day, time FROM STUDENTS_CLASSES LEFT JOIN CLASSES ON STUDENTS_CLASSES.class_id = CLASSES.class_id WHERE student_id= ? ", (y["student_id"],)).fetchall()
 
         student_contacts = db.execute("SELECT CONTACTS.phone, CONTACTS.email, STUDENTS_CONTACTS.relationship_to_student FROM STUDENTS_CONTACTS LEFT JOIN CONTACTS ON STUDENTS_CONTACTS.contact_id = CONTACTS.contact_id WHERE student_id =?", (y["student_id"],)).fetchall()
 
         student_d[y["student_id"]] = {"Info" : tuple(y) , "Classes" : [tuple(row) for row in student_class] , "Contacts" : [tuple(row) for row in student_contacts]}
-    return render_template("studentpage.html", student_d=student_d)
+
+    return render_template("studentpage.html", student_d=student_d, class_options=class_options)
 
 
+@app.route("/sortedstudents")
+def sorted_student(): 
+    return render_template("studentpage.html")
 
 
 
