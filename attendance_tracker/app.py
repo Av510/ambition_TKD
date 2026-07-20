@@ -190,7 +190,9 @@ def add_student():
 
     classes = db.execute("SELECT * FROM CLASSES").fetchall()
 
-    return render_template("addstudent.html", at_d=at_d, classes=classes)
+    contacts = db.execute("SELECT * FROM CONTACTS").fetchall()
+
+    return render_template("addstudent.html", at_d=at_d, classes=classes, contacts=[tuple(row) for row in contacts])
 
 
 @app.route("/createstudent", methods=["POST"])
@@ -207,6 +209,8 @@ def create_student():
     phone2 = request.form["phone2"]
     email2 = request.form["email2"]
     relation2 = request.form["relationship_to_student2"]
+    contact_ex = request.form["existing_contact"]
+    relation_ex = request.form["relationship_to_student_ex"]
 
     selected_classes = request.form.getlist("class_ids")
     #NEW Card---------------------------------------------------------------------------------------------------------------------------------------
@@ -237,6 +241,8 @@ def create_student():
         contact_id2 = contacts_r2.lastrowid
         db.execute("INSERT INTO STUDENTS_CONTACTS VALUES (?, ?, ?)", (student_id, contact_id2, relation2))
         
+    if contact_ex:
+        db.execute("INSERT INTO STUDENTS_CONTACTS VALUES (?, ?, ?)", (student_id, contact_ex, relation_ex))
 
 
 #Classes----------------------------------------------------------------------------------------------------------------------------------------------
