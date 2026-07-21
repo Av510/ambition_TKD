@@ -100,7 +100,7 @@ def sorted_student():
         student_d[s["student_id"]] = {"Info" : tuple(s) , "Classes" : [tuple(row) for row in student_class] , "Contacts" : [tuple(row) for row in student_contacts]}
 
 
-    return render_template("studentpage.html", sort_student=[tuple(row) for row in sort_student], student_d=student_d, class_options=class_options)
+    return render_template("studentpage.html", student_d=student_d, class_options=class_options)
 
 
 

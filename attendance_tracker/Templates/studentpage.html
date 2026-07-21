@@ -32,23 +32,16 @@ Sort by:
 
 
 {% for i in student_d %}
-    <p><h5>ID: </h5>{{student_d[i]["Info"][0]}} <h5>Name </h5>{{student_d[i]["Info"][1]}}</p> <h5>Surname: </h5>{{student_d[i]["Info"][2]}} <h5>Card ID: </h5>{{student_d[i]["Info"][3]}}</p>
+    <p> ID: {{student_d[i]["Info"][0]}} Name: {{student_d[i]["Info"][1]}}  Surname: {{student_d[i]["Info"][2]}} | Card ID: {{student_d[i]["Info"][3]}}</p>
 
     <h4>Classes: </h4>
     {% for classes in student_d[i]["Classes"] %}
-      <p><h5>Day: </h5>{{classes[0]}} <h5>Time: </h5>{{classes[1]}}</p>
+      <p>Day: {{classes[0]}} Time: {{classes[1]}}</p>
     {% endfor %}
     <h4>Contacts: </h4>
     {% for contacts in student_d[i]["Contacts"] %}
-      <p><h5>Phone: </h5>{{contacts[0]}} <h5>Email: </h5> {{contacts[1]}} <h5>Relation: </h5>{{contacts[2]}}</p>
+      <p>Phone: {{contacts[0]}} Email: {{contacts[1]}} Relation: {{contacts[2]}}</p>
     {% endfor %}
 
     <a href="{{ url_for('edit_page', student_id=student_d[i]['Info'][0])}}">EDIT</a>
 {% endfor %}
-
-<h1> Here </h1>
-{% for s in sort_student %}
-  <h2>{{s[0]}} {{s[1]}} {{s[2]}} {{s[3]}}</h2>
-{% endfor %}
-
-<h2> {{ sort_c }} </h2>
