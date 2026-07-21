@@ -70,6 +70,7 @@ def student():
 @app.route("/sortedstudents", methods = ['GET'] )
 def sorted_student(): 
     db = get_db()
+    student_d = {}
     sort_student=""
     sort_az = request.args.get("alphabetical")
     sort_c = request.args.get("by_class")
@@ -77,13 +78,21 @@ def sorted_student():
         sort_student = db.execute("SELECT * FROM STUDENTS ORDER BY First_name, Surname").fetchall()
     if sort_az == "surname":
         sort_student = db.execute("SELECT * FROM STUDENTS ORDER BY Surname, First_name").fetchall()
-    if sort_c != "":
-        sort_student = db.execute("SELECT * FROM STUDENTS WHERE class_id =?", sort_c ).fetchall()
+    if sort_c:
+        sort_student = db.execute("SELECT STUDENTS.student_id, STUDENTS.first_name, STUDENTS.surname, STUDENTS.attendance_card_id FROM STUDENTS LEFT JOIN STUDENTS_CLASSES ON STUDENTS.student_id = STUDENTS_CLASSES.student_id WHERE class_id =?", sort_c ).fetchall()
+
+    for s in sort_student:
+        student_class = db.execute("SELECT week_day, time FROM STUDENTS_CLASSES LEFT JOIN CLASSES ON STUDENTS_CLASSES.class_id = CLASSES.class_id WHERE student_id= ? ", (s["student_id"],)).fetchall()
+
+        student_contacts = db.execute("SELECT CONTACTS.phone, CONTACTS.email, STUDENTS_CONTACTS.relationship_to_student FROM STUDENTS_CONTACTS LEFT JOIN CONTACTS ON STUDENTS_CONTACTS.contact_id = CONTACTS.contact_id WHERE student_id =?", (s["student_id"],)).fetchall()
+
+        student_d[s["student_id"]] = {"Info" : tuple(s) , "Classes" : [tuple(row) for row in student_class] , "Contacts" : [tuple(row) for row in student_contacts]}
+
 
     
     
 
-    return render_template("studentpage.html", sort_student=[tuple(row) for row in sort_student] )
+    return render_template("studentpage.html", sort_student=[tuple(row) for row in sort_student], student_d=student_d )
 
 
 
