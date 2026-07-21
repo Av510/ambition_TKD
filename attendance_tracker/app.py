@@ -19,6 +19,12 @@ def close_db(e=None):
     if db is not None:
         db.close()
 
+def get_all_classes():
+    db =get_db()
+    return  db.execute("SELECT * FROM CLASSES").fetchall()
+    
+
+    
 @app.route("/")
 def home():  
     db = get_db()
@@ -55,7 +61,7 @@ def student():
     student_d = {}
     student_infos = db.execute("SELECT * FROM STUDENTS ").fetchall()
 
-    class_options = db.execute("SELECT * FROM CLASSES").fetchall()
+    class_options = get_all_classes()
 
     for y in student_infos:
         student_class = db.execute("SELECT week_day, time FROM STUDENTS_CLASSES LEFT JOIN CLASSES ON STUDENTS_CLASSES.class_id = CLASSES.class_id WHERE student_id= ? ", (y["student_id"],)).fetchall()
@@ -69,15 +75,20 @@ def student():
 
 @app.route("/sortedstudents", methods = ['GET'] )
 def sorted_student(): 
+
     db = get_db()
     student_d = {}
     sort_student=""
+
+    class_options = get_all_classes()
     sort_az = request.args.get("alphabetical")
     sort_c = request.args.get("by_class")
+
+
     if sort_az == "first_name":
-        sort_student = db.execute("SELECT * FROM STUDENTS ORDER BY First_name, Surname").fetchall()
+        sort_student = db.execute("SELECT * FROM STUDENTS ORDER BY first_name, surname").fetchall()
     if sort_az == "surname":
-        sort_student = db.execute("SELECT * FROM STUDENTS ORDER BY Surname, First_name").fetchall()
+        sort_student = db.execute("SELECT * FROM STUDENTS ORDER BY surname, first_name").fetchall()
     if sort_c:
         sort_student = db.execute("SELECT STUDENTS.student_id, STUDENTS.first_name, STUDENTS.surname, STUDENTS.attendance_card_id FROM STUDENTS LEFT JOIN STUDENTS_CLASSES ON STUDENTS.student_id = STUDENTS_CLASSES.student_id WHERE class_id =?", sort_c ).fetchall()
 
@@ -89,10 +100,7 @@ def sorted_student():
         student_d[s["student_id"]] = {"Info" : tuple(s) , "Classes" : [tuple(row) for row in student_class] , "Contacts" : [tuple(row) for row in student_contacts]}
 
 
-    
-    
-
-    return render_template("studentpage.html", sort_student=[tuple(row) for row in sort_student], student_d=student_d )
+    return render_template("studentpage.html", sort_student=[tuple(row) for row in sort_student], student_d=student_d, class_options=class_options)
 
 
 
@@ -118,7 +126,7 @@ def edit_page():
 
     contacts = db.execute("SELECT CONTACTS.contact_id, CONTACTS.phone, CONTACTS.email, STUDENTS_CONTACTS.relationship_to_student FROM STUDENTS_CONTACTS JOIN CONTACTS ON STUDENTS_CONTACTS.contact_id = CONTACTS.contact_id WHERE STUDENTS_CONTACTS.student_id = ?", (student_id,)).fetchall()
     
-    classes = db.execute("SELECT * FROM CLASSES").fetchall()
+    classes = get_all_classes()
     student_classes = db.execute("SELECT class_id FROM STUDENTS_CLASSES WHERE student_id = ?", (student_id,)).fetchall()
     
     return render_template("editpage.html", student_id=student_id, student_classes=[row["class_id"] for row in student_classes], student=tuple(student), classes=[tuple(row) for row in classes], contacts=[tuple(row) for row in contacts], at_d=at_d)
@@ -218,7 +226,7 @@ def add_student():
         else:
             at_d[acard_id] = [tuple(i)]
 
-    classes = db.execute("SELECT * FROM CLASSES").fetchall()
+    classes = get_all_classes()
 
     contacts = db.execute("SELECT * FROM CONTACTS").fetchall()
 
