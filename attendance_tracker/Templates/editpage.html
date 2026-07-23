@@ -67,12 +67,14 @@
       </form>
     {% endfor %}
 
-!!!!!!!!!!!!!!!!
+    
 Existing contacts:
         <br>
+      <form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
+        <input type="hidden" name="which_form" value="select_contact">
         <select name="exist_contact">
           <option value=""> Select existing contact </option>
-          {% for c in contacts %}
+          {% for c in all_contacts %}
             <option value="{{c[0]}}">
                 {{c[0]}} |
                 {{c[1]}} |
@@ -83,7 +85,13 @@ Existing contacts:
         Relationship to student:
         <input type="text"name="relation_ex">
 
-!!!!!!!
+        <button type="submit">
+          Save
+       </button>
+
+      </form>
+
+
 <details>
        <summary>Add contact</summary>
        <form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">

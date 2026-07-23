@@ -128,8 +128,10 @@ def edit_page():
     
     classes = get_all_classes()
     student_classes = db.execute("SELECT class_id FROM STUDENTS_CLASSES WHERE student_id = ?", (student_id,)).fetchall()
+
+    all_contacts = db.execute("SELECT * FROM CONTACTS").fetchall()
     
-    return render_template("editpage.html", student_id=student_id, student_classes=[row["class_id"] for row in student_classes], student=tuple(student), classes=[tuple(row) for row in classes], contacts=[tuple(row) for row in contacts], at_d=at_d)
+    return render_template("editpage.html", student_id=student_id, student_classes=[row["class_id"] for row in student_classes], student=tuple(student), classes=[tuple(row) for row in classes], contacts=[tuple(row) for row in contacts], at_d=at_d, all_contacts=all_contacts)
 
 
 
@@ -178,6 +180,16 @@ def update_student(student_id):
             contact_id = contacts_r.lastrowid
             db.execute("INSERT INTO STUDENTS_CONTACTS VALUES (?, ?, ?)", (student_id, contact_id, relationship_to_student))
             db.commit()
+
+
+    elif which_form == "select_contact":
+        exist_contact = request.form["exist_contact"]
+        relation_ex = request.form["relation_ex"]
+
+        if exist_contact != "":
+            db.execute("INSERT INTO STUDENTS_CONTACTS VALUES (?, ?, ?)", (student_id, exist_contact, relation_ex))
+            db.commit()
+
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #CLASSES
