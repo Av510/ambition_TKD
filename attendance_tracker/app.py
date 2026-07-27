@@ -23,12 +23,13 @@ def get_all_classes():
     db =get_db()
     return  db.execute("SELECT * FROM CLASSES").fetchall()
     
-
+#CARD PAGE-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
 @app.route("/")
 def home():  
     db = get_db()
     attendance_cards_d = {}
+    class_options = get_all_classes()
     acards = db.execute("SELECT STUDENTS.student_id, STUDENTS.first_name, STUDENTS.surname, STUDENTS.attendance_card_id, ATTENDANCES.attendance_count FROM STUDENTS JOIN ATTENDANCES ON STUDENTS.attendance_card_id = ATTENDANCES.attendance_card_id").fetchall()
     for h in acards:
         card_id = h[3]
@@ -36,7 +37,39 @@ def home():
             attendance_cards_d[card_id].append(h)
         else:
             attendance_cards_d[card_id] = [h]
-    return render_template("cardpage.html", attendance_cards_d=attendance_cards_d)
+    return render_template("cardpage.html", attendance_cards_d=attendance_cards_d, class_options=class_options)
+    
+#SORT CARD-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+@app.route("/sortcards", methods = ['GET'])
+def sort_cards():
+
+    db = get_db()
+    sort_cards=""
+    attendance_cards_d = {}
+    
+    class_options = get_all_classes()
+    sort_az = request.args.get("alphabetical")
+    sort_c = request.args.get("by_class")
+    
+    
+    if sort_az == "first_name":
+        sort_cards = db.execute("SELECT STUDENTS.student_id, STUDENTS.first_name, STUDENTS.surname, STUDENTS.attendance_card_id, ATTENDANCES.attendance_count FROM STUDENTS JOIN ATTENDANCES ON STUDENTS.attendance_card_id = ATTENDANCES.attendance_card_id ORDER BY STUDENTS.first_name, STUDENTS.surname").fetchall()
+            
+    if sort_az == "surname":
+        sort_cards = db.execute("SELECT STUDENTS.student_id, STUDENTS.first_name, STUDENTS.surname, STUDENTS.attendance_card_id, ATTENDANCES.attendance_count FROM STUDENTS JOIN ATTENDANCES ON STUDENTS.attendance_card_id = ATTENDANCES.attendance_card_id ORDER BY STUDENTS.surname, STUDENTS.first_name").fetchall()
+        
+    if sort_c:
+        sort_cards = db.execute("SELECT STUDENTS.student_id, STUDENTS.first_name, STUDENTS.surname, STUDENTS.attendance_card_id, ATTENDANCES.attendance_count FROM STUDENTS JOIN ATTENDANCES ON STUDENTS.attendance_card_id = ATTENDANCES.attendance_card_id JOIN STUDENTS_CLASSES ON STUDENTS.student_id = STUDENTS_CLASSES.student_id WHERE STUDENTS_CLASSES.class_id = ?", (sort_c,)).fetchall()
+
+
+    for sc in sort_cards:
+            card_id = sc[3]
+            if card_id in attendance_cards_d:
+                attendance_cards_d[card_id].append(sc)
+            else:
+                attendance_cards_d[card_id] = [sc]
+
+    return render_template("cardpage.html", class_options=class_options, attendance_cards_d=attendance_cards_d)
 
 
 @app.route("/updateattendance", methods = ['POST'])
@@ -55,6 +88,8 @@ def update_attendance():
     db.commit()
     return redirect(url_for(("home"), _anchor=card_id))
 
+
+#STUDENTS-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 @app.route("/students")
 def student(): 
     db = get_db()
@@ -73,6 +108,7 @@ def student():
     return render_template("studentpage.html", student_d=student_d, class_options=class_options)
 
 
+#SORT STUDENTS--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 @app.route("/sortedstudents", methods = ['GET'] )
 def sorted_student(): 
 
@@ -90,7 +126,7 @@ def sorted_student():
     if sort_az == "surname":
         sort_student = db.execute("SELECT * FROM STUDENTS ORDER BY surname, first_name").fetchall()
     if sort_c:
-        sort_student = db.execute("SELECT STUDENTS.student_id, STUDENTS.first_name, STUDENTS.surname, STUDENTS.attendance_card_id FROM STUDENTS LEFT JOIN STUDENTS_CLASSES ON STUDENTS.student_id = STUDENTS_CLASSES.student_id WHERE class_id =?", sort_c ).fetchall()
+        sort_student = db.execute("SELECT STUDENTS.student_id, STUDENTS.first_name, STUDENTS.surname, STUDENTS.attendance_card_id FROM STUDENTS LEFT JOIN STUDENTS_CLASSES ON STUDENTS.student_id = STUDENTS_CLASSES.student_id WHERE class_id =?", (sort_c,) ).fetchall()
 
     for s in sort_student:
         student_class = db.execute("SELECT week_day, time FROM STUDENTS_CLASSES LEFT JOIN CLASSES ON STUDENTS_CLASSES.class_id = CLASSES.class_id WHERE student_id= ? ", (s["student_id"],)).fetchall()
