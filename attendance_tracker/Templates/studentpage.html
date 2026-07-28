@@ -43,5 +43,5 @@ Sort by:
       <p>Phone: {{contacts[0]}} Email: {{contacts[1]}} Relation: {{contacts[2]}}</p>
     {% endfor %}
 
-    <a href="{{ url_for('edit_page', student_id=student_d[i]['Info'][0])}}">EDIT</a>
+    <a href="{{ url_for('edit_page', student_id=student_d[i]['Info'][0], og_page=request.full_path)}}">EDIT</a>
 {% endfor %}

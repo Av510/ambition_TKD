@@ -116,6 +116,7 @@ def sorted_student():
     student_d = {}
     sort_student=""
 
+
     class_options = get_all_classes()
     sort_az = request.args.get("alphabetical")
     sort_c = request.args.get("by_class")
@@ -147,9 +148,10 @@ def edit_page():
     db = get_db()
     at_d = {}
     
+    
     student = db.execute("SELECT * FROM STUDENTS WHERE student_id = ?", (student_id,)).fetchone()
   
-
+    
     attendance_cards = db.execute("SELECT STUDENTS.first_name, STUDENTS.surname, ATTENDANCES.attendance_card_id, ATTENDANCES.attendance_count FROM ATTENDANCES LEFT JOIN STUDENTS ON ATTENDANCES.attendance_card_id = STUDENTS.attendance_card_id").fetchall()
     
     for i in attendance_cards:
