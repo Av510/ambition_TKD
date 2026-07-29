@@ -147,7 +147,8 @@ def edit_page():
     student_id = request.args.get("student_id")
     db = get_db()
     at_d = {}
-    
+
+    og_page = request.args.get("og_page")
     
     student = db.execute("SELECT * FROM STUDENTS WHERE student_id = ?", (student_id,)).fetchone()
   
@@ -169,7 +170,7 @@ def edit_page():
 
     all_contacts = db.execute("SELECT * FROM CONTACTS").fetchall()
     
-    return render_template("editpage.html", student_id=student_id, student_classes=[row["class_id"] for row in student_classes], student=tuple(student), classes=[tuple(row) for row in classes], contacts=[tuple(row) for row in contacts], at_d=at_d, all_contacts=all_contacts)
+    return render_template("editpage.html", student_id=student_id, student_classes=[row["class_id"] for row in student_classes], student=tuple(student), classes=[tuple(row) for row in classes], contacts=[tuple(row) for row in contacts], at_d=at_d, all_contacts=all_contacts, og_page=og_page)
 
 
 
