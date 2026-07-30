@@ -77,11 +77,15 @@ def sort_cards():
 
 @app.route("/updateattendance", methods = ['POST'])
 def update_attendance():
-    
+
     change = int(request.form["attendancechange"])
     card_id = request.form["cardid"]
+    og_page = request.form["og_page"]
+
     db = get_db()
+
     count = db.execute("SELECT attendance_count FROM ATTENDANCES WHERE attendance_card_id = ?", (card_id,)).fetchall()
+    
     if count[0]["attendance_count"] == None:
         count = 0
     else:
@@ -90,7 +94,7 @@ def update_attendance():
     db.commit()
     db.execute("UPDATE ATTENDANCES SET attendance_count = attendance_count + ? WHERE attendance_card_id = ?", (change, card_id))
     db.commit()
-    return redirect(url_for(("home"), _anchor=card_id))
+    return redirect(url_for((og_page), _anchor=card_id))
 
 
 
