@@ -72,8 +72,12 @@ def sort_cards():
     return render_template("cardpage.html", class_options=class_options, attendance_cards_d=attendance_cards_d)
 
 
+
+#UPDATE ATTENDANCE-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 @app.route("/updateattendance", methods = ['POST'])
 def update_attendance():
+    
     change = int(request.form["attendancechange"])
     card_id = request.form["cardid"]
     db = get_db()
@@ -87,6 +91,8 @@ def update_attendance():
     db.execute("UPDATE ATTENDANCES SET attendance_count = attendance_count + ? WHERE attendance_card_id = ?", (change, card_id))
     db.commit()
     return redirect(url_for(("home"), _anchor=card_id))
+
+
 
 
 #STUDENTS-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -106,6 +112,8 @@ def student():
         student_d[y["student_id"]] = {"Info" : tuple(y) , "Classes" : [tuple(row) for row in student_class] , "Contacts" : [tuple(row) for row in student_contacts]}
 
     return render_template("studentpage.html", student_d=student_d, class_options=class_options)
+
+
 
 
 #SORT STUDENTS--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -267,6 +275,7 @@ def add_student():
     db = get_db()
     at_d = {}
   
+    og_page = request.args.get("og_page")
 
     attendance_cards = db.execute("SELECT STUDENTS.first_name, STUDENTS.surname, ATTENDANCES.attendance_card_id, ATTENDANCES.attendance_count FROM ATTENDANCES LEFT JOIN STUDENTS ON ATTENDANCES.attendance_card_id = STUDENTS.attendance_card_id").fetchall()
     
@@ -281,7 +290,9 @@ def add_student():
 
     contacts = db.execute("SELECT * FROM CONTACTS").fetchall()
 
-    return render_template("addstudent.html", at_d=at_d, classes=classes, contacts=[tuple(row) for row in contacts])
+    return render_template("addstudent.html", at_d=at_d, classes=classes, contacts=[tuple(row) for row in contacts], og_page=og_page)
+
+
 
 
 @app.route("/createstudent", methods=["POST"])
