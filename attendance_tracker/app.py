@@ -94,7 +94,7 @@ def update_attendance():
     db.commit()
     db.execute("UPDATE ATTENDANCES SET attendance_count = attendance_count + ? WHERE attendance_card_id = ?", (change, card_id))
     db.commit()
-    return redirect(url_for( og_page, _anchor=card_id))
+    return redirect(og_page + "#" + card_id)
 
 
 
