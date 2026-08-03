@@ -1,5 +1,16 @@
 <a href="{{ url_for('add_student', og_page=request.full_path)}}">ADD</a>
 
+<h3> Search </h3>
+
+<form method = "POST" action = "{{ url_for('search_student') }}" >
+  <input type = "text" name ="user_search" placeholder="Enter student name...">
+  <button type="submit">
+          Search
+  </button>
+</form>
+
+
+
 Sort by: 
 <form method="GET" action="{{ url_for('sorted_student') }}">
          <select name="alphabetical" onchange="this.form.submit()">

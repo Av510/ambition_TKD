@@ -275,8 +275,33 @@ def update_student(student_id):
     return redirect(url_for(("edit_page"), student_id=student_id, og_page=og_page))
 
 
+#Seacrch student--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+@app.route("/searchstudent", methods=["POST"])
+def search_student():
+
+    student = request.form["user_search"]
+
+    db = get_db()
+    student_d = {}
+    student_infos = db.execute("SELECT * FROM STUDENTS WHERE first_name LIKE '?%' OR surname LIKE '?%'", (student,)).fetchall()
+    
+    class_options = get_all_classes()
+    
+    for y in student_infos:
+        student_class = db.execute("SELECT week_day, time FROM STUDENTS_CLASSES LEFT JOIN CLASSES ON STUDENTS_CLASSES.class_id = CLASSES.class_id WHERE student_id= ? ", (y["student_id"],)).fetchall()
+    
+        student_contacts = db.execute("SELECT CONTACTS.phone, CONTACTS.email, STUDENTS_CONTACTS.relationship_to_student FROM STUDENTS_CONTACTS LEFT JOIN CONTACTS ON STUDENTS_CONTACTS.contact_id = CONTACTS.contact_id WHERE student_id =?", (y["student_id"],)).fetchall()
+    
+        student_d[y["student_id"]] = {"Info" : tuple(y) , "Classes" : [tuple(row) for row in student_class] , "Contacts" : [tuple(row) for row in student_contacts]}
+    
+    return render_template("studentpage.html", student_d=student_d, class_options=class_options)
 
 
+
+
+
+#New student ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 @app.route("/newstudent")
 def add_student():
 
