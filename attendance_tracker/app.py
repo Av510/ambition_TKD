@@ -284,7 +284,7 @@ def search_student():
 
     db = get_db()
     student_d = {}
-    student_infos = db.execute("SELECT * FROM STUDENTS WHERE first_name LIKE '?%' OR surname LIKE '?%'", (student,)).fetchall()
+    student_infos = db.execute("SELECT * FROM STUDENTS WHERE first_name LIKE ? +'%' OR surname LIKE ? +'%'", (student,)).fetchall()
     
     class_options = get_all_classes()
     
