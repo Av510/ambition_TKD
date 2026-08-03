@@ -8,6 +8,8 @@
 
     <h4>{{student_id}}</h4>
     
+    <input type = "hidden" name ="og_page" value = {{ og_page }}>
+
     <input type="hidden" name="which_form" value="update_student">
     First name:
     <input type="text"
@@ -51,6 +53,9 @@
     {% for c in contacts %}
       <form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
         <input type="hidden" name="which_form" value="delete_contact">
+
+        <input type = "hidden" name ="og_page" value = {{ og_page }}>
+
         Contact ID: 
         <input type="hidden"
               name="contact_id"
@@ -74,6 +79,9 @@ Existing contacts:
         <br>
       <form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
         <input type="hidden" name="which_form" value="select_contact">
+
+        <input type = "hidden" name ="og_page" value = {{ og_page }}>
+
         <select name="exist_contact">
           <option value=""> Select existing contact </option>
           {% for c in all_contacts %}
@@ -98,6 +106,8 @@ Existing contacts:
        <summary>Add contact</summary>
        <form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
          <input type="hidden" name="which_form" value="add_contact">
+
+         <input type = "hidden" name ="og_page" value = {{ og_page }}>
 
          Phone:
          <input type="text"
@@ -124,6 +134,9 @@ Existing contacts:
     
 <form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
     <input type="hidden" name="which_form" value="change_classes">
+
+    <input type = "hidden" name ="og_page" value = {{ og_page }}>
+
     {% for c in classes %}
         <input type="checkbox" name="class_ids" value="{{c[0]}}" {% if c[0] in student_classes %} checked {% endif %}> 
         <label for="{{c[0]}}">{{c[1]}} - {{c[2]}} </label><br>

@@ -194,6 +194,7 @@ def update_student(student_id):
 #STUDENT INFO
     db = get_db()
 
+    og_page = request.form["og_page"]
     
     which_form = request.form["which_form"]
 
@@ -271,7 +272,7 @@ def update_student(student_id):
 
         return redirect(url_for("student"))
 
-    return redirect(url_for(("edit_page"), student_id=student_id))
+    return redirect(url_for(("edit_page"), student_id=student_id, og_page=og_page))
 
 
 
