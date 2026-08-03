@@ -193,7 +193,10 @@ def edit_page():
 def update_student(student_id): 
 #STUDENT INFO
     db = get_db()
+
+    
     which_form = request.form["which_form"]
+
     if which_form == "update_student":
         first_name = request.form["first_name"]
         surname = request.form["surname"]

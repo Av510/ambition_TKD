@@ -5,7 +5,9 @@
 <h4>Student info:</h4>
 <h4>{{student_id}}</h4>
 <form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
+
     <h4>{{student_id}}</h4>
+    
     <input type="hidden" name="which_form" value="update_student">
     First name:
     <input type="text"
