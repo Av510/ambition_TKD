@@ -155,7 +155,8 @@ def sorted_student():
 
 
 @app.route("/edit", methods = ['GET'] )
-def edit_page(): 
+def edit_page():
+
     student_id = request.args.get("student_id")
     db = get_db()
     at_d = {}
@@ -277,14 +278,14 @@ def update_student(student_id):
 
 #Seacrch student--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-@app.route("/searchstudent", methods=["POST"])
+@app.route("/searchstudent", methods=["GET"])
 def search_student():
 
-    student = request.form["user_search"]
+    student = request.args.get("user_search", "").lower().strip()
 
     db = get_db()
     student_d = {}
-    student_infos = db.execute("SELECT * FROM STUDENTS WHERE first_name LIKE ? +'%' OR surname LIKE ? +'%'", (student,)).fetchall()
+    student_infos = db.execute("SELECT * FROM STUDENTS WHERE TRIM(LOWER(first_name)) LIKE ? || '%' OR TRIM(LOWER(surname)) LIKE ? || '%'", (student, student)).fetchall()
     
     class_options = get_all_classes()
     

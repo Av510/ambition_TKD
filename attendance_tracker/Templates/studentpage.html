@@ -2,7 +2,8 @@
 
 <h3> Search </h3>
 
-<form method = "POST" action = "{{ url_for('search_student') }}" >
+<form method = "GET" action = "{{ url_for('search_student') }}" >
+
   <input type = "text" name ="user_search" placeholder="Enter student name...">
   <button type="submit">
           Search
