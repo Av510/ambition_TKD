@@ -194,13 +194,15 @@ def edit_page():
 def update_student(student_id): 
 #STUDENT INFO
     db = get_db()
-
-    og_page = request.form["og_page"]
     
     which_form = request.form["which_form"]
 
+    if which_form != "delete_student":
+         og_page = request.form["og_page"]
+
+#BASIC STUDENT INFO----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     if which_form == "update_student":
-        first_name = request.form["first_name"]
+        first_name = request.form["first_name"]                     
         surname = request.form["surname"]
         card_id = request.form["attendance_card_id"]
     
