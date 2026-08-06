@@ -297,8 +297,10 @@ def search_student():
         student_contacts = db.execute("SELECT CONTACTS.phone, CONTACTS.email, STUDENTS_CONTACTS.relationship_to_student FROM STUDENTS_CONTACTS LEFT JOIN CONTACTS ON STUDENTS_CONTACTS.contact_id = CONTACTS.contact_id WHERE student_id =?", (y["student_id"],)).fetchall()
     
         student_d[y["student_id"]] = {"Info" : tuple(y) , "Classes" : [tuple(row) for row in student_class] , "Contacts" : [tuple(row) for row in student_contacts]}
+
+    no_results = len(student_d) == 0
     
-    return render_template("studentpage.html", student_d=student_d, class_options=class_options)
+    return render_template("studentpage.html", student_d=student_d, class_options=class_options, no_results=no_results)
 
 
 
