@@ -95,7 +95,7 @@ def update_attendance():
 
     if change == 1:
         timestamp = datetime.now().strftime("%A-%d/%m/%Y")
-        db.execute("INSERT INTO ATTENDANCE_RECORDS (attendance_card_id, date) VALUES (?, ?)", (timestamp, card_id))
+        db.execute("INSERT INTO ATTENDANCE_RECORDS (attendance_card_id, date) VALUES (?, ?)", (card_id, timestamp))
 
     db.execute("UPDATE ATTENDANCES SET attendance_count = ? WHERE attendance_card_id = ?", (count, card_id))
     db.commit()
@@ -301,7 +301,7 @@ def search_student():
     if which_search == "student_search":
 
         student_d = {}
-        student_infos = db.execute("SELECT * FROM STUDENTS WHERE TRIM(LOWER(first_name)) LIKE ? || '%' OR TRIM(LOWER(surname)) LIKE ? || '%'", (student, student)).fetchall()
+        student_infos = db.execute("SELECT * FROM STUDENTS WHERE (TRIM(LOWER(surname)) LIKE ? || '%') OR (COALESCE(LOWER(first_name), '') || COALESCE(LOWER(surname), '') LIKE ? || '%')", (student, student)).fetchall()
     
         class_options = get_all_classes()
     
