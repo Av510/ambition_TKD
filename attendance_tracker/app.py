@@ -197,8 +197,8 @@ def update_student(student_id):
     
     which_form = request.form["which_form"]
 
-    if which_form != "delete_student":
-         og_page = request.form["og_page"]
+
+    og_page = request.form["og_page"]
 
 #BASIC STUDENT INFO----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     if which_form == "update_student":
@@ -273,7 +273,7 @@ def update_student(student_id):
 
         db.commit()
 
-        return redirect(url_for("student"))
+        return redirect(og_page)
 
     return redirect(url_for(("edit_page"), student_id=student_id, og_page=og_page))
 
