@@ -294,7 +294,7 @@ def search_student():
 
 
 
-    student = request.args.get("user_search", "").lower().strip(" ")
+    student = request.args.get("user_search", "").lower().replace(" ", "")
 
     db = get_db()
 
