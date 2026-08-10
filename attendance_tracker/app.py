@@ -283,24 +283,47 @@ def update_student(student_id):
 @app.route("/searchstudent", methods=["GET"])
 def search_student():
 
+    which_search = request.args.get("which_search")
+
+
+
     student = request.args.get("user_search", "").lower().strip()
 
     db = get_db()
-    student_d = {}
-    student_infos = db.execute("SELECT * FROM STUDENTS WHERE TRIM(LOWER(first_name)) LIKE ? || '%' OR TRIM(LOWER(surname)) LIKE ? || '%'", (student, student)).fetchall()
-    
-    class_options = get_all_classes()
-    
-    for y in student_infos:
-        student_class = db.execute("SELECT week_day, time FROM STUDENTS_CLASSES LEFT JOIN CLASSES ON STUDENTS_CLASSES.class_id = CLASSES.class_id WHERE student_id= ? ", (y["student_id"],)).fetchall()
-    
-        student_contacts = db.execute("SELECT CONTACTS.phone, CONTACTS.email, STUDENTS_CONTACTS.relationship_to_student FROM STUDENTS_CONTACTS LEFT JOIN CONTACTS ON STUDENTS_CONTACTS.contact_id = CONTACTS.contact_id WHERE student_id =?", (y["student_id"],)).fetchall()
-    
-        student_d[y["student_id"]] = {"Info" : tuple(y) , "Classes" : [tuple(row) for row in student_class] , "Contacts" : [tuple(row) for row in student_contacts]}
 
-    no_results = len(student_d) == 0
+    if which_search == "student_search":
+
+        student_d = {}
+        student_infos = db.execute("SELECT * FROM STUDENTS WHERE TRIM(LOWER(first_name)) LIKE ? || '%' OR TRIM(LOWER(surname)) LIKE ? || '%'", (student, student)).fetchall()
     
-    return render_template("studentpage.html", student_d=student_d, class_options=class_options, no_results=no_results)
+        class_options = get_all_classes()
+    
+        for y in student_infos:
+            student_class = db.execute("SELECT week_day, time FROM STUDENTS_CLASSES LEFT JOIN CLASSES ON STUDENTS_CLASSES.class_id = CLASSES.class_id WHERE student_id= ? ", (y["student_id"],)).fetchall()
+    
+            student_contacts = db.execute("SELECT CONTACTS.phone, CONTACTS.email, STUDENTS_CONTACTS.relationship_to_student FROM STUDENTS_CONTACTS LEFT JOIN CONTACTS ON STUDENTS_CONTACTS.contact_id = CONTACTS.contact_id WHERE student_id =?", (y["student_id"],)).fetchall()
+    
+            student_d[y["student_id"]] = {"Info" : tuple(y) , "Classes" : [tuple(row) for row in student_class] , "Contacts" : [tuple(row) for row in student_contacts]}
+
+        no_results = len(student_d) == 0
+
+        return render_template("studentpage.html", student_d=student_d, class_options=class_options, no_results=no_results)
+
+    elif which_search == "card_search":
+        attendance_cards_d = {}
+        class_options = get_all_classes()
+        acards = db.execute("SELECT STUDENTS.student_id, STUDENTS.first_name, STUDENTS.surname, STUDENTS.attendance_card_id, ATTENDANCES.attendance_count FROM STUDENTS JOIN ATTENDANCES ON STUDENTS.attendance_card_id = ATTENDANCES.attendance_card_id WHERE TRIM(LOWER(STUDENTS.first_name)) LIKE ? || '%' OR TRIM(LOWER(STUDENTS.surname)) LIKE ? || '%'", (student, student)).fetchall()
+        for h in acards:
+            card_id = h[3]
+            if card_id in attendance_cards_d:
+                attendance_cards_d[card_id].append(h)
+            else:
+                attendance_cards_d[card_id] = [h]
+        no_results = len(attendance_cards_d) == 0
+        return render_template("cardpage.html", attendance_cards_d=attendance_cards_d, class_options=class_options, no_results=no_results)
+        
+
+    
 
 
 
