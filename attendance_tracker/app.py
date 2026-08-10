@@ -4,6 +4,8 @@ from flask import Flask, g, render_template, request, redirect, url_for
 
 import sqlite3
 
+from datetime import datetime
+
 app = Flask(__name__)
 DATABASE = "TKD.db"
 
@@ -90,6 +92,11 @@ def update_attendance():
         count = 0
     else:
         count = count[0]["attendance_count"]
+
+    if change == 1:
+        timestamp = datetime.now().strftime("%A-%d/%m/%Y")
+        db.execute("INSERT INTO ATTENDANCE_RECORDS (attendance_card_id, date) VALUES (?, ?)", (timestamp, card_id))
+
     db.execute("UPDATE ATTENDANCES SET attendance_count = ? WHERE attendance_card_id = ?", (count, card_id))
     db.commit()
     db.execute("UPDATE ATTENDANCES SET attendance_count = attendance_count + ? WHERE attendance_card_id = ?", (change, card_id))
@@ -287,7 +294,7 @@ def search_student():
 
 
 
-    student = request.args.get("user_search", "").lower().strip()
+    student = request.args.get("user_search", "").lower().strip(" ")
 
     db = get_db()
 
