@@ -1,32 +1,162 @@
-<form method="POST" action="/edit"></form>
-    <input type = "text" name ="user_inp" placeholder = "Enter...">
-    <button type = "submit">confirm</button>
-</form>
-</br>        
-        {% for i in student %}
-          <tr>
-              <td>student id: {{i[0]}} </td></br>
-              <td>name: {{i[1]}} </td></br>
-              <td>surname:  {{i[2]}} </td></br>
-              <td>attendance card id: {{i[3]}} </td>
-            </tr>
-        {% endfor %}
-          </br>
-          
-        <p>class: </p>
-        {% for i in sclass %}
-        
-          <tr>
-              <td>{{i[0]}} </td></br>
-            </tr>
-        {% endfor %}
+<a href="{{ og_page }}">Back</a>
 
-          </br>
-        
-        <p>contacts: </p>
-        {% for i in contact_l %}
-          <tr>
-              <td>phone: {{i[0]}} </td></br>
-              <td>email: {{i[1]}} </td></br>
-            </tr>
-        {% endfor %}
+
+
+<h4>Student info:</h4>
+<h4>{{student_id}}</h4>
+<form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
+
+    <h4>{{student_id}}</h4>
+    
+    <input type = "hidden" name ="og_page" value = {{ og_page }}>
+
+    <input type="hidden" name="which_form" value="update_student">
+    First name:
+    <input type="text"
+           name="first_name"
+           value="{{student[1]}}">
+
+    Surname:
+    <input type="text"
+           name="surname"
+           value="{{student[2]}}">
+
+
+    <label for="attendance_card_id">Attendance card ID:</label>
+    <select name="attendance_card_id">
+      <p>card id | name | attendance count</p>
+      {% for cards in at_d %}
+        <option value="{{cards}}" {% if cards == student[3] %}selected{% endif %}>
+            {{cards}}: 
+            {% for i in at_d[cards] %}
+              |
+              {{i[0]}} {{i[1]}}
+              |
+            {% endfor %}
+            {{at_d[cards][0][3]}}
+        </option>
+      {% endfor %}
+    </select>
+    <label> ADD new card:</label>
+    <input type="checkbox" name="new_card">
+    <button type="submit">
+        Save
+    </button>
+    
+</form>
+<br>
+
+
+
+<h4>Contacts info:</h4>
+
+    {% for c in contacts %}
+      <form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
+        <input type="hidden" name="which_form" value="delete_contact">
+
+        <input type = "hidden" name ="og_page" value = {{ og_page }}>
+
+        Contact ID: 
+        <input type="hidden"
+              name="contact_id"
+              value="{{c[0]}}">
+
+        Phone: {{c[1]}}
+
+        Email: {{c[2]}}
+       
+        Relationship to student: {{c[3]}}
+
+       <button type="submit">
+          DELETE
+       </button>
+        <br>
+      </form>
+    {% endfor %}
+
+
+Existing contacts:
+        <br>
+      <form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
+        <input type="hidden" name="which_form" value="select_contact">
+
+        <input type = "hidden" name ="og_page" value = {{ og_page }}>
+
+        <select name="exist_contact">
+          <option value=""> Select existing contact </option>
+          {% for c in all_contacts %}
+            <option value="{{c[0]}}">
+                {{c[0]}} |
+                {{c[1]}} |
+                {{c[2]}}
+            </option>
+          {% endfor %}
+        </select>
+        Relationship to student:
+        <input type="text"name="relation_ex">
+
+        <button type="submit">
+          Save
+       </button>
+
+      </form>
+
+
+<details>
+       <summary>Add contact</summary>
+       <form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
+         <input type="hidden" name="which_form" value="add_contact">
+
+         <input type = "hidden" name ="og_page" value = {{ og_page }}>
+
+         Phone:
+         <input type="text"
+                 name="phone">
+       
+         Email:
+         <input type="text"
+                 name="email">
+       
+         Relationship to student:
+         <input type="text"
+                 name="relationship_to_student">
+       
+         <button type="submit">
+                ADD
+         </button>
+       </form>
+</details>
+
+
+
+
+<h4>Classes:</h4>
+    
+<form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
+    <input type="hidden" name="which_form" value="change_classes">
+
+    <input type = "hidden" name ="og_page" value = {{ og_page }}>
+
+    {% for c in classes %}
+        <input type="checkbox" name="class_ids" value="{{c[0]}}" {% if c[0] in student_classes %} checked {% endif %}> 
+        <label for="{{c[0]}}">{{c[1]}} - {{c[2]}} </label><br>
+        <br>
+    {% endfor %}
+    <button type="submit">
+          Save
+    </button>
+</form>
+
+
+
+<h4>DELETE STUDENT:</h4>
+    
+<form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
+    <input type="hidden" name="which_form" value="delete_student">
+
+    <input type = "hidden" name ="og_page" value = {{ og_page }}>
+
+    <button type="submit" onclick="return confirm('Are you sure you want to delete this student?')">
+          ! DELETE STUDENT !
+    </button>
+</form>

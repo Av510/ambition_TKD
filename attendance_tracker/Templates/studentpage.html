@@ -1,44 +1,65 @@
+<a href="{{ url_for('add_student', og_page=request.full_path)}}">ADD</a>
 
-<h1>Student page</h1>
- <table>
-    
-        <thead>
-            <tr>
-                <th>Student ID</th>
-                <th>Name</th>
-                <th>Surname</th>
-                <th>Card ID</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Relation to student</th>
+<h3> Search </h3>
 
-            </tr>
-        </thead>
-        <tbody>
-            {% for i in student_info %}
-              <tr>
-                 <td>{{i[0]}}</td>
-                 <td>{{i[1]}}</td>
-                 <td>{{i[2]}}</td>
-                 <td>{{i[3]}}</td>
-                 <td>{{i[4]}}</td>
-                 <td>{{i[5]}}</td>
-                 <td>{{i[6]}}</td>
-              </tr>
+<form method = "GET" action = "{{ url_for('search_student') }}" >
 
+  <input type="hidden" name="which_search" value="student_search">
+
+  <input type = "text" name ="user_search" placeholder="Enter student name...">
+  <button type="submit">
+          Search
+  </button>
+</form>
+
+{% if no_results %}
+    <h3>No results found</h3>
+    <p>make sure to check your spelling and search text only</p>
+{% endif %}
+
+
+Sort by: 
+<form method="GET" action="{{ url_for('sorted_student') }}">
+         <select name="alphabetical" onchange="this.form.submit()">
+              <option value=""> A-Z </option>
+
+              <option value="first_name">
+                   First name
+              </option>
+
+              <option value="surname">
+                   Surname
+              </option>
+
+         </select>
+</form>
+<form method="GET" action="{{ url_for('sorted_student') }}">
+         <select name="by_class" onchange="this.form.submit()">
+              <option value=""> Classes </option>
+            
+            {% for c in class_options %}
+              <option value="{{c[0]}}">
+                {{c[1]}} - {{c[2]}}
+              </option>
             {% endfor %}
-        </tbody>
-  </table>
 
-{% for i in contact_id %}
-              <tr>
-                 <td>{{i[0]}}</td>
-                 <td>{{i[1]}}</td>
-                 <td>{{i[2]}}</td>
-                 <td>{{i[3]}}</td>
-                 <td>{{i[4]}}</td>
-                 <td>{{i[5]}}</td>
-                 <td>{{i[6]}}</td>
-              </tr>
+         </select>
 
+</form>
+
+
+
+{% for i in student_d %}
+    <p> ID: {{student_d[i]["Info"][0]}} Name: {{student_d[i]["Info"][1]}}  Surname: {{student_d[i]["Info"][2]}} | Card ID: {{student_d[i]["Info"][3]}}</p>
+
+    <h4>Classes: </h4>
+    {% for classes in student_d[i]["Classes"] %}
+      <p>Day: {{classes[0]}} Time: {{classes[1]}}</p>
+    {% endfor %}
+    <h4>Contacts: </h4>
+    {% for contacts in student_d[i]["Contacts"] %}
+      <p>Phone: {{contacts[0]}} Email: {{contacts[1]}} Relation: {{contacts[2]}}</p>
+    {% endfor %}
+
+    <a href="{{ url_for('edit_page', student_id=student_d[i]['Info'][0], og_page=request.full_path)}}">EDIT</a>
 {% endfor %}
