@@ -4,12 +4,18 @@
 
 <form method = "GET" action = "{{ url_for('search_student') }}" >
 
+  <input type="hidden" name="which_search" value="student_search">
+
   <input type = "text" name ="user_search" placeholder="Enter student name...">
   <button type="submit">
           Search
   </button>
 </form>
 
+{% if no_results %}
+    <h3>No results found</h3>
+    <p>make sure to check your spelling and search text only</p>
+{% endif %}
 
 
 Sort by: 

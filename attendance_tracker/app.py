@@ -4,6 +4,8 @@ from flask import Flask, g, render_template, request, redirect, url_for
 
 import sqlite3
 
+from datetime import datetime
+
 app = Flask(__name__)
 DATABASE = "TKD.db"
 
@@ -90,6 +92,11 @@ def update_attendance():
         count = 0
     else:
         count = count[0]["attendance_count"]
+
+    if change == 1:
+        timestamp = datetime.now().strftime("%A-%d/%m/%Y")
+        db.execute("INSERT INTO ATTENDANCE_RECORDS (attendance_card_id, date) VALUES (?, ?)", (card_id, timestamp))
+
     db.execute("UPDATE ATTENDANCES SET attendance_count = ? WHERE attendance_card_id = ?", (count, card_id))
     db.commit()
     db.execute("UPDATE ATTENDANCES SET attendance_count = attendance_count + ? WHERE attendance_card_id = ?", (change, card_id))
@@ -197,8 +204,8 @@ def update_student(student_id):
     
     which_form = request.form["which_form"]
 
-    if which_form != "delete_student":
-         og_page = request.form["og_page"]
+
+    og_page = request.form["og_page"]
 
 #BASIC STUDENT INFO----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     if which_form == "update_student":
@@ -273,7 +280,7 @@ def update_student(student_id):
 
         db.commit()
 
-        return redirect(url_for("student"))
+        return redirect(og_page)
 
     return redirect(url_for(("edit_page"), student_id=student_id, og_page=og_page))
 
@@ -283,22 +290,47 @@ def update_student(student_id):
 @app.route("/searchstudent", methods=["GET"])
 def search_student():
 
-    student = request.args.get("user_search", "").lower().strip()
+    which_search = request.args.get("which_search")
+
+
+
+    student = request.args.get("user_search", "").lower().replace(" ", "")
 
     db = get_db()
-    student_d = {}
-    student_infos = db.execute("SELECT * FROM STUDENTS WHERE TRIM(LOWER(first_name)) LIKE ? || '%' OR TRIM(LOWER(surname)) LIKE ? || '%'", (student, student)).fetchall()
+
+    if which_search == "student_search":
+
+        student_d = {}
+        student_infos = db.execute("SELECT * FROM STUDENTS WHERE (TRIM(LOWER(surname)) LIKE ? || '%') OR (COALESCE(TRIM(LOWER(first_name)), '') || COALESCE(TRIM(LOWER(surname)), '') LIKE ? || '%')", (student, student)).fetchall()
     
-    class_options = get_all_classes()
+        class_options = get_all_classes()
     
-    for y in student_infos:
-        student_class = db.execute("SELECT week_day, time FROM STUDENTS_CLASSES LEFT JOIN CLASSES ON STUDENTS_CLASSES.class_id = CLASSES.class_id WHERE student_id= ? ", (y["student_id"],)).fetchall()
+        for y in student_infos:
+            student_class = db.execute("SELECT week_day, time FROM STUDENTS_CLASSES LEFT JOIN CLASSES ON STUDENTS_CLASSES.class_id = CLASSES.class_id WHERE student_id= ? ", (y["student_id"],)).fetchall()
     
-        student_contacts = db.execute("SELECT CONTACTS.phone, CONTACTS.email, STUDENTS_CONTACTS.relationship_to_student FROM STUDENTS_CONTACTS LEFT JOIN CONTACTS ON STUDENTS_CONTACTS.contact_id = CONTACTS.contact_id WHERE student_id =?", (y["student_id"],)).fetchall()
+            student_contacts = db.execute("SELECT CONTACTS.phone, CONTACTS.email, STUDENTS_CONTACTS.relationship_to_student FROM STUDENTS_CONTACTS LEFT JOIN CONTACTS ON STUDENTS_CONTACTS.contact_id = CONTACTS.contact_id WHERE student_id =?", (y["student_id"],)).fetchall()
     
-        student_d[y["student_id"]] = {"Info" : tuple(y) , "Classes" : [tuple(row) for row in student_class] , "Contacts" : [tuple(row) for row in student_contacts]}
+            student_d[y["student_id"]] = {"Info" : tuple(y) , "Classes" : [tuple(row) for row in student_class] , "Contacts" : [tuple(row) for row in student_contacts]}
+
+        no_results = len(student_d) == 0
+
+        return render_template("studentpage.html", student_d=student_d, class_options=class_options, no_results=no_results)
+
+    elif which_search == "card_search":
+        attendance_cards_d = {}
+        class_options = get_all_classes()
+        acards = db.execute("SELECT STUDENTS.student_id, STUDENTS.first_name, STUDENTS.surname, STUDENTS.attendance_card_id, ATTENDANCES.attendance_count FROM STUDENTS JOIN ATTENDANCES ON STUDENTS.attendance_card_id = ATTENDANCES.attendance_card_id WHERE (TRIM(LOWER(surname)) LIKE ? || '%') OR (COALESCE(TRIM(LOWER(first_name)), '') || COALESCE(TRIM(LOWER(surname)), '') LIKE ? || '%')", (student, student)).fetchall()
+        for h in acards:
+            card_id = h[3]
+            if card_id in attendance_cards_d:
+                attendance_cards_d[card_id].append(h)
+            else:
+                attendance_cards_d[card_id] = [h]
+        no_results = len(attendance_cards_d) == 0
+        return render_template("cardpage.html", attendance_cards_d=attendance_cards_d, class_options=class_options, no_results=no_results)
+        
+
     
-    return render_template("studentpage.html", student_d=student_d, class_options=class_options)
 
 
 
