@@ -301,7 +301,7 @@ def search_student():
     if which_search == "student_search":
 
         student_d = {}
-        student_infos = db.execute("SELECT * FROM STUDENTS WHERE (TRIM(LOWER(surname)) LIKE ? || '%') OR (COALESCE(LOWER(first_name), '') || COALESCE(LOWER(surname), '') LIKE ? || '%')", (student, student)).fetchall()
+        student_infos = db.execute("SELECT * FROM STUDENTS WHERE (TRIM(LOWER(surname)) LIKE ? || '%') OR (COALESCE(TRIM(LOWER(first_name)), '') || COALESCE(TRIM(LOWER(surname)), '') LIKE ? || '%')", (student, student)).fetchall()
     
         class_options = get_all_classes()
     
@@ -319,7 +319,7 @@ def search_student():
     elif which_search == "card_search":
         attendance_cards_d = {}
         class_options = get_all_classes()
-        acards = db.execute("SELECT STUDENTS.student_id, STUDENTS.first_name, STUDENTS.surname, STUDENTS.attendance_card_id, ATTENDANCES.attendance_count FROM STUDENTS JOIN ATTENDANCES ON STUDENTS.attendance_card_id = ATTENDANCES.attendance_card_id WHERE TRIM(LOWER(STUDENTS.first_name)) LIKE ? || '%' OR TRIM(LOWER(STUDENTS.surname)) LIKE ? || '%'", (student, student)).fetchall()
+        acards = db.execute("SELECT STUDENTS.student_id, STUDENTS.first_name, STUDENTS.surname, STUDENTS.attendance_card_id, ATTENDANCES.attendance_count FROM STUDENTS JOIN ATTENDANCES ON STUDENTS.attendance_card_id = ATTENDANCES.attendance_card_id WHERE (TRIM(LOWER(surname)) LIKE ? || '%') OR (COALESCE(TRIM(LOWER(first_name)), '') || COALESCE(TRIM(LOWER(surname)), '') LIKE ? || '%')", (student, student)).fetchall()
         for h in acards:
             card_id = h[3]
             if card_id in attendance_cards_d:
