@@ -75,7 +75,7 @@ Sort by:
                               {% set dates = attendance_dates.get(attendance_cards_d[i][0][3], []) %}
 
                                 {% if b < dates|length %}
-                                   {{ dates[b] }}
+                                   {{ dates[b][0] }}
                 
                                 {% endif %}
                           </button>
