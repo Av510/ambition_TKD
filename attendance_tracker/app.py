@@ -30,17 +30,26 @@ def get_all_classes():
 @app.route("/")
 def home():  
     db = get_db()
+    attendance_dates = {}
     attendance_cards_d = {}
     class_options = get_all_classes()
     acards = db.execute("SELECT STUDENTS.student_id, STUDENTS.first_name, STUDENTS.surname, STUDENTS.attendance_card_id, ATTENDANCES.attendance_count FROM STUDENTS JOIN ATTENDANCES ON STUDENTS.attendance_card_id = ATTENDANCES.attendance_card_id").fetchall()
     for h in acards:
-        card_id = h[3]
+        card_id = h["attendance_card_id"]
         if card_id in attendance_cards_d:
             attendance_cards_d[card_id].append(h)
         else:
             attendance_cards_d[card_id] = [h]
-    return render_template("cardpage.html", attendance_cards_d=attendance_cards_d, class_options=class_options)
-    
+
+    attendance_records = db.execute("SELECT * FROM ATTENDANCE_RECORDS").fetchall()
+    for r in attendance_records:
+        c_id = r["attendance_card_id"]
+        if c_id in attendance_dates:
+            attendance_dates[c_id].append(r["date"])
+        else:
+            attendance_dates[c_id] = [r["date"]]
+    return render_template("cardpage.html", attendance_cards_d=attendance_cards_d, class_options=class_options, attendance_dates=attendance_dates)
+
 #SORT CARD-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 @app.route("/sortcards", methods = ['GET'])
 def sort_cards():
