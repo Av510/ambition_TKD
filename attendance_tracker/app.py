@@ -45,9 +45,9 @@ def home():
     for r in attendance_records:
         c_id = r["attendance_card_id"]
         if c_id in attendance_dates:
-            attendance_dates[c_id].append(r["date"])
+            attendance_dates[c_id].append((r["attendance_id"], r["date"]))
         else:
-            attendance_dates[c_id] = [r["date"]]
+            attendance_dates[c_id] = [(r["attendance_id"], r["date"])]
     return render_template("cardpage.html", attendance_cards_d=attendance_cards_d, class_options=class_options, attendance_dates=attendance_dates)
 
 #SORT CARD-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -103,7 +103,7 @@ def update_attendance():
         count = count[0]["attendance_count"]
 
     if change == 1:
-        timestamp = datetime.now().strftime("%A-%d/%m/%Y")
+        timestamp = datetime.now().strftime("%A-%d/%m/%Y-%H:%M:%S")
         db.execute("INSERT INTO ATTENDANCE_RECORDS (attendance_card_id, date) VALUES (?, ?)", (card_id, timestamp))
 
     db.execute("UPDATE ATTENDANCES SET attendance_count = ? WHERE attendance_card_id = ?", (count, card_id))
