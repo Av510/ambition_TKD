@@ -106,7 +106,7 @@ def update_attendance():
     num_records = db.execute("SELECT COUNT(*) FROM ATTENDANCE_RECORDS WHERE attendance_card_id = ?", (card_id)).fetchone()[0]
     # set that number as the student's attendance count
     db.execute("UPDATE ATTENDANCES SET attendance_count = ?", (num_records,))
-   # db.execute("UPDATE ATTENDANCES SET attendance_count = COALESCE(attendance_count, 0) + ? WHERE attendance_card_id = ?", (change, card_id))
+    # db.execute("UPDATE ATTENDANCES SET attendance_count = COALESCE(attendance_count, 0) + ? WHERE attendance_card_id = ?", (change, card_id))
 
     db.commit()
     return redirect(og_page + "#" + card_id)
