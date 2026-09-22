@@ -106,8 +106,12 @@ def update_attendance():
         timestamp = datetime.now().strftime("%A-%d/%m/%Y-%H:%M:%S")
         db.execute("INSERT INTO ATTENDANCE_RECORDS (attendance_card_id, date) VALUES (?, ?)", (card_id, timestamp))
 
+    elif change == -1: #delete specific attendance record
+        attendance_id = request.form["attendance_id"]
+        db.execute("DELETE FROM ATTENDANCE_RECORDS WHERE attendance_id = ?",(attendance_id,))
+
     db.execute("UPDATE ATTENDANCES SET attendance_count = ? WHERE attendance_card_id = ?", (count, card_id))
-    db.commit()
+
     db.execute("UPDATE ATTENDANCES SET attendance_count = attendance_count + ? WHERE attendance_card_id = ?", (change, card_id))
     db.commit()
     return redirect(og_page + "#" + card_id)
