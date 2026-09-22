@@ -95,13 +95,6 @@ def update_attendance():
 
     db = get_db()
 
-    count = db.execute("SELECT attendance_count FROM ATTENDANCES WHERE attendance_card_id = ?", (card_id,)).fetchall()
-    
-    if count[0]["attendance_count"] == None:
-        count = 0
-    else:
-        count = count[0]["attendance_count"]
-
     if change == 1:
         timestamp = datetime.now().strftime("%A-%d/%m/%Y-%H:%M:%S")
         db.execute("INSERT INTO ATTENDANCE_RECORDS (attendance_card_id, date) VALUES (?, ?)", (card_id, timestamp))
@@ -110,9 +103,9 @@ def update_attendance():
         attendance_id = request.form["attendance_id"]
         db.execute("DELETE FROM ATTENDANCE_RECORDS WHERE attendance_id = ?",(attendance_id,))
 
-    db.execute("UPDATE ATTENDANCES SET attendance_count = ? WHERE attendance_card_id = ?", (count, card_id))
 
-    db.execute("UPDATE ATTENDANCES SET attendance_count = attendance_count + ? WHERE attendance_card_id = ?", (change, card_id))
+    db.execute("UPDATE ATTENDANCES SET attendance_count = COALESCE(attendance_count, 0) + ? WHERE attendance_card_id = ?", (change, card_id))
+
     db.commit()
     return redirect(og_page + "#" + card_id)
 
