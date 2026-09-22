@@ -65,21 +65,26 @@ Sort by:
 
                       <input type = "hidden" name ="og_page" value = {{ request.full_path }}>
 
+                      {% set dates = attendance_dates.get(attendance_cards_d[i][0][3], []) %}
+
                       {% if b < (attendance_cards_d[i][0][4] or 0) %}
 
                           <input type = "hidden" name ="attendancechange" value = "-1">
                           
+                          {% if b < dates|length %}
+
+                          <input type="hidden" name="attendance_id" value="{{ dates[b][0] }}">
 
                           <button type = "submit" onclick="return confirm('Delete 1 from {% for t in attendance_cards_d[i] %}{{t[1]}}{% if not loop.last %}{% if loop.index == attendance_cards_d[i]|length - 1 %} and {% else %}, {% endif %}{% endif %} {% endfor %}\'s attendance?')">
-                               o
-                              {% set dates = attendance_dates.get(attendance_cards_d[i][0][3], []) %}
-
-                                {% if b < dates|length %}
-                                   {{ dates[b][0] }}
-                
-                                {% endif %}
+                               o 
+                              {{ dates[b][1] }}
+   
                           </button>
-
+                          {% else %}
+                              <button type="submit">
+                                    o
+                              </button>
+                          {% endif %}
                           
                       {% else %}
 
