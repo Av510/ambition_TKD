@@ -50,7 +50,7 @@ def home():
             attendance_dates[c_id] = [(r["attendance_id"], r["date"])]
     return render_template("cardpage.html", attendance_cards_d=attendance_cards_d, class_options=class_options, attendance_dates=attendance_dates)
 
-#SORT CARD-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#SORT CARD------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 @app.route("/sortcards", methods = ['GET'])
 def sort_cards():
 
