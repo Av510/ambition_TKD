@@ -33,7 +33,7 @@ def home():
     attendance_dates = {}
     attendance_cards_d = {}
     class_options = get_all_classes()
-    acards = db.execute("SELECT STUDENTS.student_id, STUDENTS.first_name, STUDENTS.surname, STUDENTS.attendance_card_id, ATTENDANCES.attendance_count FROM STUDENTS JOIN ATTENDANCES ON STUDENTS.attendance_card_id = ATTENDANCES.attendance_card_id").fetchall()
+    acards = db.execute("SELECT STUDENTS.student_id, STUDENTS.first_name, STUDENTS.surname, STUDENTS.attendance_card_id, COUNT(ATTENDANCE_RECORDS.date) FROM STUDENTS JOIN ATTENDANCE_RECORDS ON STUDENTS.attendance_card_id = ATTENDANCE_RECORDS.attendance_card_id").fetchall()
     for h in acards:
         card_id = h["attendance_card_id"]
         if card_id in attendance_cards_d:
