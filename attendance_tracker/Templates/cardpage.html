@@ -75,7 +75,7 @@ Sort by:
 
                           <input type="hidden" name="attendance_id" value="{{ dates[b][0] }}">
 
-                          <button type = "submit" onclick="return confirm('Delete 1 from {% for t in attendance_cards_d[i] %}{{t[1]}}{% if not loop.last %}{% if loop.index == attendance_cards_d[i]|length - 1 %} and {% else %}, {% endif %}{% endif %} {% endfor %}\'s attendance?')">
+                          <button type = "submit" onclick="return confirm('⛔ Delete 1 from {% for t in attendance_cards_d[i] %}{{t[1]}}{% if not loop.last %}{% if loop.index == attendance_cards_d[i]|length - 1 %} and {% else %}, {% endif %}{% endif %} {% endfor %}\'s attendance?')">
                                📆 
                               {{ dates[b][1] }}
    
