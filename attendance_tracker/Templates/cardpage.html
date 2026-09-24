@@ -1,5 +1,5 @@
 
-<h3> Search </h3>
+<h3> Search 🔍 </h3>
 
 <form method = "GET" action = "{{ url_for('search_student') }}" >
 
@@ -34,7 +34,7 @@ Sort by:
 </form>
 <form method="GET" action="{{ url_for('sort_cards') }}">
          <select name="by_class" onchange="this.form.submit()">
-              <option value=""> Classes </option>
+              <option value=""> 📆 Classes </option>
             
             {% for c in class_options %}
               <option value="{{c[0]}}">
@@ -76,13 +76,13 @@ Sort by:
                           <input type="hidden" name="attendance_id" value="{{ dates[b][0] }}">
 
                           <button type = "submit" onclick="return confirm('⛔ Delete 1 from {% for t in attendance_cards_d[i] %}{{t[1]}}{% if not loop.last %}{% if loop.index == attendance_cards_d[i]|length - 1 %} and {% else %}, {% endif %}{% endif %} {% endfor %}\'s attendance?')">
-                               📆 
-                              {{ dates[b][1] }}
+                                ✅️
+                                {{ dates[b][1] }}
    
                           </button>
                           {% else %}
                               <button type="submit">
-                                    o
+                                    ✅️
                               </button>
                           {% endif %}
                           
