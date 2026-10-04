@@ -20,7 +20,8 @@
 Sort by: 
 <form method="GET" action="{{ url_for('sort_cards') }}">
          <select name="alphabetical" onchange="this.form.submit()">
-              <option value=""> A-Z </option>
+              
+              <option value="" disabled selected>A-Z</option>
 
               <option value="first_name">
                    First name
@@ -34,7 +35,7 @@ Sort by:
 </form>
 <form method="GET" action="{{ url_for('sort_cards') }}">
          <select name="by_class" onchange="this.form.submit()">
-              <option value=""> 📆 Classes </option>
+              <option value="" disabled selected> 📆 Classes </option>
             
             {% for c in class_options %}
               <option value="{{c[0]}}">
@@ -47,12 +48,16 @@ Sort by:
 </form>        
 
 
+
+      {% for i in card_d %}
+
         
-        {% for i in attendance_cards_d %}
+          {% set dates = card_d[i]["Records"] %}
           <div  style="display: block; padding: 5px;" id={{i}}>
           <tr>
               <td>{{i}} </td>
-              {% for t in attendance_cards_d[i] %}
+
+              {% for t in card_d[i]["Students"] %}
                     <td>{{t[1]}}</td>
                     <td>{{t[2]}}</td>
                     </br>
@@ -65,26 +70,21 @@ Sort by:
 
                       <input type = "hidden" name ="og_page" value = {{ request.full_path }}>
 
-                      {% set dates = attendance_dates.get(attendance_cards_d[i][0][3], []) %}
+                      
 
-                      {% if b < (attendance_cards_d[i][0][4] or 0) %}
+                      {% if b < (dates|length) %}
 
                           <input type = "hidden" name ="attendancechange" value = "-1">
-                          
-                          {% if b < dates|length %}
 
                           <input type="hidden" name="attendance_id" value="{{ dates[b][0] }}">
 
-                          <button type = "submit" onclick="return confirm('⛔ Delete 1 from {% for t in attendance_cards_d[i] %}{{t[1]}}{% if not loop.last %}{% if loop.index == attendance_cards_d[i]|length - 1 %} and {% else %}, {% endif %}{% endif %} {% endfor %}\'s attendance?')">
-                                ✅️
-                                {{ dates[b][1] }}
+                          <button type = "submit"  onclick="return confirm('⛔ Delete 1 from this card\'s attendance?')">
+                         
+                              ✅️
+                              {{ dates[b][1] }}
    
                           </button>
-                          {% else %}
-                              <button type="submit">
-                                    ✅️
-                              </button>
-                          {% endif %}
+                          
                           
                       {% else %}
 
@@ -101,9 +101,19 @@ Sort by:
                   {% endif %}
               {% endfor %}
             
-            <td> {{attendance_cards_d[i][0][4]}}/10 </td>
+            <td> {{ dates|length }}/10 </td>
          </tr>
          </div>
          </br>
+        
+          <form method="POST" action="/clearcard">
 
-          {% endfor %}
+            <input type="hidden" name="cardid" value="{{ i }}">
+            <input type="hidden" name="og_page" value="{{ request.path }}">
+
+            <button type="submit">
+               CLEAR
+            </button>
+
+          </form>
+      {% endfor %}
