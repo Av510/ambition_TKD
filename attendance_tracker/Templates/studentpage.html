@@ -21,7 +21,7 @@
 Sort by: 
 <form method="GET" action="{{ url_for('sorted_student') }}">
          <select name="alphabetical" onchange="this.form.submit()">
-              <option value=""> A-Z </option>
+              <option value="" disabled selected> A-Z </option>
 
               <option value="first_name">
                    First name
@@ -35,7 +35,7 @@ Sort by:
 </form>
 <form method="GET" action="{{ url_for('sorted_student') }}">
          <select name="by_class" onchange="this.form.submit()">
-              <option value=""> Classes </option>
+              <option value="" disabled selected> 📆 Classes </option>
             
             {% for c in class_options %}
               <option value="{{c[0]}}">
