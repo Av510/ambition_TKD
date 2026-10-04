@@ -23,17 +23,20 @@
 
 
     <label for="attendance_card_id">Attendance card ID:</label>
+
     <select name="attendance_card_id">
-      <p>card id | name | attendance count</p>
+      <option disabled>
+        card id | students | attendance count
+      </option>
       {% for cards in at_d %}
         <option value="{{cards}}" {% if cards == student[3] %}selected{% endif %}>
             {{cards}}: 
-            {% for i in at_d[cards] %}
+            {% for i in at_d[cards]["Students"] %}
               |
               {{i[0]}} {{i[1]}}
               |
             {% endfor %}
-            {{at_d[cards][0][3]}}
+            {{at_d[cards]["Count"]}}
         </option>
       {% endfor %}
     </select>
