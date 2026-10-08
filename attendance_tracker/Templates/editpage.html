@@ -14,12 +14,12 @@
     First name:
     <input type="text"
            name="first_name"
-           value="{{student[1]}}">
+           value="{{student["first_name"]}}">
 
     Surname:
     <input type="text"
            name="surname"
-           value="{{student[2]}}">
+           value="{{student["surname"]}}">
 
 
     <label for="attendance_card_id">Attendance card ID:</label>
@@ -29,7 +29,7 @@
         card id | students | attendance count
       </option>
       {% for cards in at_d %}
-        <option value="{{cards}}" {% if cards == student[3] %}selected{% endif %}>
+        <option value="{{cards}}" {% if cards == student["card_id"] %}selected{% endif %}>
             {{cards}}: 
             {% for i in at_d[cards]["Students"] %}
               |
@@ -62,13 +62,13 @@
         Contact ID: 
         <input type="hidden"
               name="contact_id"
-              value="{{c[0]}}">
+              value="{{c['contact_id']}}">
 
-        Phone: {{c[1]}}
+        Phone: {{c["phone"]}}
 
-        Email: {{c[2]}}
+        Email: {{c["email"]}}
        
-        Relationship to student: {{c[3]}}
+        Relationship to student: {{c["relationship_to_student"]}}
 
        <button type="submit">
           DELETE
@@ -79,6 +79,7 @@
 
 
 Existing contacts:
+<p> select an existing contact from the database to connect this student to:</p>
         <br>
       <form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
         <input type="hidden" name="which_form" value="select_contact">
@@ -88,10 +89,10 @@ Existing contacts:
         <select name="exist_contact">
           <option value=""> Select existing contact </option>
           {% for c in all_contacts %}
-            <option value="{{c[0]}}">
-                {{c[0]}} |
-                {{c[1]}} |
-                {{c[2]}}
+            <option value="{{c['contact_id']}}">
+                {{c['contact_id']}} |
+                {{c['phone']}} |
+                {{c['email']}}
             </option>
           {% endfor %}
         </select>
@@ -104,9 +105,10 @@ Existing contacts:
 
       </form>
 
-
+<p> enter a new contact into the database for this student</p>
 <details>
        <summary>Add contact</summary>
+
        <form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
          <input type="hidden" name="which_form" value="add_contact">
 
@@ -141,8 +143,8 @@ Existing contacts:
     <input type = "hidden" name ="og_page" value = {{ og_page }}>
 
     {% for c in classes %}
-        <input type="checkbox" name="class_ids" value="{{c[0]}}" {% if c[0] in student_classes %} checked {% endif %}> 
-        <label for="{{c[0]}}">{{c[1]}} - {{c[2]}} </label><br>
+        <input type="checkbox" name="class_ids" value="{{c['class_id']}}" {% if c['class_id'] in student_classes %} checked {% endif %}> 
+        <label for="{{c['class_id']}}">{{c['week_day']}} - {{c['time']}} </label><br>
         <br>
     {% endfor %}
     <button type="submit">
@@ -154,6 +156,8 @@ Existing contacts:
 
 <h4>DELETE STUDENT:</h4>
     
+<p>⚠️ WARNING: This will delete the student from the database permanantly. ⚠️</p>
+
 <form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
     <input type="hidden" name="which_form" value="delete_student">
 

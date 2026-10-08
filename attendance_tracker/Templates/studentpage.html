@@ -1,7 +1,7 @@
 <a href="{{ url_for('add_student', og_page=request.full_path)}}">ADD</a>
 
-<h3> Search </h3>
-
+<h3> Search 🔍 </h3>
+<p>Search for a student by name</p>
 <form method = "GET" action = "{{ url_for('search_student') }}" >
 
   <input type="hidden" name="which_search" value="student_search">
@@ -50,16 +50,16 @@ Sort by:
 
 
 {% for i in student_d %}
-    <p> ID: {{student_d[i]["Info"][0]}} Name: {{student_d[i]["Info"][1]}}  Surname: {{student_d[i]["Info"][2]}} | Card ID: {{student_d[i]["Info"][3]}}</p>
+    <p> ID: {{student_d[i]["Info"]["student_id"]}} Name: {{student_d[i]["Info"]["first_name"]}}  Surname: {{student_d[i]["Info"]["surname"]}} | Card ID: {{student_d[i]["Info"]["card_id"]}}</p>
 
     <h4>Classes: </h4>
     {% for classes in student_d[i]["Classes"] %}
-      <p>Day: {{classes[0]}} Time: {{classes[1]}}</p>
+      <p>Day: {{classes["week_day"]}} Time: {{classes["time"]}}</p>
     {% endfor %}
     <h4>Contacts: </h4>
     {% for contacts in student_d[i]["Contacts"] %}
-      <p>Phone: {{contacts[0]}} Email: {{contacts[1]}} Relation: {{contacts[2]}}</p>
+      <p>Phone: {{contacts["phone"]}} Email: {{contacts["email"]}} Relation: {{contacts["relationship_to_student"]}}</p>
     {% endfor %}
 
-    <a href="{{ url_for('edit_page', student_id=student_d[i]['Info'][0], og_page=request.full_path)}}">EDIT</a>
+    <a href="{{ url_for('edit_page', student_id=student_d[i]['Info']['student_id'], og_page=request.full_path)}}">EDIT</a>
 {% endfor %}

@@ -85,7 +85,9 @@ def sort_cards():
         else:                             #[:3] excludes card id
             card_d[card_id] = {"Students": [sc[:3]], "Records":[]}#add sc as the first value/student in a new list for that (new)card_id key
 
-    arecords = db.execute("SELECT * FROM ATTENDANCE_RECORDS ORDER BY attendance_id").fetchall()
+    arecords = db.execute("SELECT ATTENDANCE_RECORDS.* FROM ATTENDANCE_RECORDS JOIN ATTENDANCE_CARDS ON ATTENDANCE_RECORDS.card_id = " \
+                              "ATTENDANCE_CARDS.card_id WHERE ATTENDANCE_RECORDS.attendance_id > COALESCE(ATTENDANCE_CARDS.clear_id, 0) " \
+                              "ORDER BY ATTENDANCE_RECORDS.attendance_id").fetchall()
     for r in arecords:
         c_id = r["card_id"]
         if c_id in card_d:        
@@ -106,8 +108,17 @@ def update_attendance():
     db = get_db()
 
     if change == 1:
-        timestamp = datetime.now().strftime("%A-%d/%m/%Y-%H:%M:%S")
+        timestamp = datetime.now().strftime("%A-%d/%m/%Y")
+        #timestamp = datetime.now().strftime("%A-%d/%m/%Y-%H:%M:%S")
         db.execute("INSERT INTO ATTENDANCE_RECORDS (card_id, date) VALUES (?, ?)", (card_id, timestamp))
+
+        #count the cards records after new record added
+        count = db.execute("SELECT COUNT(*) AS count FROM ATTENDANCE_RECORDS WHERE card_id = ?", (card_id,)).fetchone()["count"]
+        #if count is over 30, delete the oldest record of that card
+        if count > 30:
+            db.execute(" DELETE FROM ATTENDANCE_RECORDS WHERE attendance_id = (SELECT MIN(attendance_id) FROM ATTENDANCE_RECORDS" \
+                         " WHERE card_id = ?)", (card_id,))
+
 
     elif change == -1: #delete specific attendance record
         attendance_id = request.form["attendance_id"]
@@ -136,6 +147,42 @@ def clear_card():
 
 
 
+#CARD HISTORY---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+@app.route("/cardhistory/<card_id>")
+def card_history(card_id):
+
+    db = get_db()
+
+    records = db.execute("SELECT * FROM ATTENDANCE_RECORDS WHERE card_id = ? ORDER BY attendance_id DESC", (card_id,)).fetchall()
+
+    students = db.execute("SELECT first_name, surname FROM STUDENTS WHERE card_id = ?", (card_id,)).fetchall()
+
+    return render_template("cardhistory.html", card_id=card_id, students=students, records=records)
+
+
+#PAYMENT NOTIFICATIONS---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+@app.route("/noticepage")
+def notice_page():
+    db = get_db()
+
+    student_d = {}
+
+    payment_due = db.execute("SELECT ATTENDANCE_CARDS.card_id FROM ATTENDANCE_CARDS JOIN ATTENDANCE_RECORDS ON " \
+    " ATTENDANCE_CARDS.card_id = ATTENDANCE_RECORDS.card_id WHERE ATTENDANCE_RECORDS.attendance_id > COALESCE(ATTENDANCE_CARDS.clear_id, 0) " \
+    " GROUP BY ATTENDANCE_CARDS.card_id HAVING COUNT(*) = 10").fetchall()
+
+    for row in payment_due:
+        card_id = row["card_id"]
+
+        students = db.execute(" SELECT first_name, surname FROM STUDENTS WHERE card_id = ?", (card_id,)).fetchall()
+
+        student_d[card_id] = []
+
+        for student in students:
+            student_d[card_id].append(student["first_name"] + " " + student["surname"])
+
+    return render_template("noticepage.html", student_d=student_d)
+
 
 
 #STUDENTS-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -154,7 +201,7 @@ def student():
         student_contacts = db.execute("SELECT CONTACTS.phone, CONTACTS.email, STUDENTS_CONTACTS.relationship_to_student FROM " \
     "STUDENTS_CONTACTS LEFT JOIN CONTACTS ON STUDENTS_CONTACTS.contact_id = CONTACTS.contact_id WHERE student_id =?", (y["student_id"],)).fetchall()
 
-        student_d[y["student_id"]] = {"Info" : tuple(y) , "Classes" : [tuple(row) for row in student_class] , "Contacts" : [tuple(row) for row in student_contacts]}
+        student_d[y["student_id"]] = {"Info" : y , "Classes" : student_class , "Contacts" : student_contacts}
 
     return render_template("studentpage.html", student_d=student_d, class_options=class_options)
 
@@ -190,7 +237,7 @@ def sorted_student():
         student_contacts = db.execute("SELECT CONTACTS.phone, CONTACTS.email, STUDENTS_CONTACTS.relationship_to_student FROM " \
     "STUDENTS_CONTACTS LEFT JOIN CONTACTS ON STUDENTS_CONTACTS.contact_id = CONTACTS.contact_id WHERE student_id =?", (s["student_id"],)).fetchall()
 
-        student_d[s["student_id"]] = {"Info" : tuple(s) , "Classes" : [tuple(row) for row in student_class] , "Contacts" : [tuple(row) for row in student_contacts]}
+        student_d[s["student_id"]] = {"Info" : s , "Classes" : student_class , "Contacts" : student_contacts}
 
 
     return render_template("studentpage.html", student_d=student_d, class_options=class_options)
@@ -232,7 +279,7 @@ def edit_page():
         if s["card_id"] in at_d:
             at_d[s["card_id"]]["Students"].append((s["first_name"], s["surname"]))
     
-    return render_template("editpage.html", student_id=student_id, student_classes=[row["class_id"] for row in student_classes], student=tuple(student), classes=[tuple(row) for row in classes], contacts=[tuple(row) for row in contacts], at_d=at_d, all_contacts=all_contacts, og_page=og_page)
+    return render_template("editpage.html", student_id=student_id, student_classes=[row["class_id"] for row in student_classes], student=student, classes=classes, contacts=contacts, at_d=at_d, all_contacts=all_contacts, og_page=og_page)
 
 
 
@@ -330,7 +377,7 @@ def update_student(student_id):
     return redirect(url_for(("edit_page"), student_id=student_id, og_page=og_page))
 
 
-#Seacrch student--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#SEARCH--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 @app.route("/searchstudent", methods=["GET"])
 def search_student():
@@ -359,7 +406,7 @@ def search_student():
             student_contacts = db.execute("SELECT CONTACTS.phone, CONTACTS.email, STUDENTS_CONTACTS.relationship_to_student FROM" \
     " STUDENTS_CONTACTS LEFT JOIN CONTACTS ON STUDENTS_CONTACTS.contact_id = CONTACTS.contact_id WHERE student_id =?", (y["student_id"],)).fetchall()
     
-            student_d[y["student_id"]] = {"Info" : tuple(y) , "Classes" : [tuple(row) for row in student_class] , "Contacts" : [tuple(row) for row in student_contacts]}
+            student_d[y["student_id"]] = {"Info" : y , "Classes" : student_class , "Contacts" : student_contacts}
 
         no_results = len(student_d) == 0
 
@@ -384,7 +431,9 @@ def search_student():
             else:                             #[:3] excludes card id
                 card_d[card_id] = {"Students": [h[:3]], "Records":[]}#add h as the first value/student in a new list for that (new)card_id key
 
-        arecords = db.execute("SELECT * FROM ATTENDANCE_RECORDS ORDER BY attendance_id").fetchall()
+        arecords = db.execute("SELECT ATTENDANCE_RECORDS.* FROM ATTENDANCE_RECORDS JOIN ATTENDANCE_CARDS ON ATTENDANCE_RECORDS.card_id = " \
+                                  "ATTENDANCE_CARDS.card_id WHERE ATTENDANCE_RECORDS.attendance_id > COALESCE(ATTENDANCE_CARDS.clear_id, 0) " \
+                                  "ORDER BY ATTENDANCE_RECORDS.attendance_id").fetchall()
 
         for r in arecords:
             c_id = r["card_id"]
@@ -430,7 +479,7 @@ def add_student():
 
     contacts = db.execute("SELECT * FROM CONTACTS").fetchall()
 
-    return render_template("addstudent.html", at_d=at_d, classes=classes, contacts=[tuple(row) for row in contacts], og_page=og_page)
+    return render_template("addstudent.html", at_d=at_d, classes=classes, contacts=contacts, og_page=og_page)
 
 
 

@@ -38,10 +38,10 @@
         <select name="existing_contact">
             <option value=""> Select existing contact </option>
           {% for c in contacts %}
-            <option value="{{c[0]}}">
-                {{c[0]}} |
-                {{c[1]}} |
-                {{c[2]}}
+            <option value="{{c['contact_id']}}">
+                {{c['contact_id']}} |
+                {{c['phone']}} |
+                {{c['email']}}
             </option>
           {% endfor %}
         </select>
@@ -68,10 +68,10 @@
         <select name="existing_contact2">
           <option value=""> Select existing contact </option>
           {% for c in contacts %}
-            <option value="{{c[0]}}">
-                {{c[0]}} |
-                {{c[1]}} |
-                {{c[2]}}
+            <option value="{{c['contact_id']}}">
+                {{c['contact_id']}} |
+                {{c['phone']}} |
+                {{c['email']}}
             </option>
           {% endfor %}
         </select>
@@ -93,8 +93,8 @@
     Classes:
         <input type="hidden" name="which_form" value="change_classes">
         {% for c in classes %}
-            <input type="checkbox" name="class_ids" value="{{c[0]}}" > 
-            <label for="{{c[0]}}">{{c[1]}} - {{c[2]}} </label><br>
+            <input type="checkbox" name="class_ids" value="{{c['class_id']}}" > 
+            <label for="{{c['class_id']}}">{{c['week_day']}} - {{c['time']}} </label><br>
             <br>
         {% endfor %}
 
