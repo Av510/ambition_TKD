@@ -1,21 +1,27 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Attendance cards
+{% endblock %}
+
+{% block content %}
+
 <link rel="stylesheet" href="{{ url_for('static', filename='cardpage.css') }}">
 <main>
-    
-    <section>
 
-      <h3> Search 🔍 </h3>
-      <p>Search for a student by name</p>
+  <div class="controls"> 
+    <section class="search-section">
+
+      <h3> Search:</h3>
 
       <form method = "GET" action = "{{ url_for('search_student') }}" >
 
         <input type="hidden" name="which_search" value="card_search">
-         
-        <label for="student-search">Student name:</label>
 
         <input type = "text" name ="user_search" placeholder="Enter student name...">
         
         <button type="submit">
-                Search
+                🔍︎
         </button>
       </form>
 
@@ -26,8 +32,10 @@
 
     </section>
 
-    <section>
-      Sort by: 
+    <section class="sort-section">
+
+      <h3>Sort by:</h3>
+
       <form method="GET" action="{{ url_for('sort_cards') }}">
             <select name="alphabetical" onchange="this.form.submit()">
               
@@ -58,7 +66,8 @@
       </form>        
 
     </section>
-
+  
+  </div>
 
     <section>
       <h3> Cards </h3>
@@ -104,7 +113,7 @@
 
                             <button type = "submit" class="attendance-button filled" onclick="return confirm('⛔ Delete 1 from this card\'s attendance?')">
                          
-                              ✅️
+                              ✓
    
                             </button>
 
@@ -129,11 +138,10 @@
               
                   </div>
                 {% endfor %}
+                
+                <p class ="attendance-count"> {{ dates|length }}/10 </p>
 
               </section>
-
-            <p class ="attendance-count"> {{ dates|length }}/10 </p>
-
             
 
                </br>
@@ -141,7 +149,7 @@
                 <form method="POST" action="/clearcard">
 
                     <input type="hidden" name="cardid" value="{{ i }}">
-                    <input type="hidden" name="og_page" value="{{ request.path }}">
+                    <input type="hidden" name="og_page" value="{{ request.full_path }}">
 
                     <button type="submit" class="clear-button" onclick="return confirm('Are you sure you want to clear this card\'s attendance?')">
                        CLEAR
@@ -166,3 +174,5 @@
 
     </section>
 </main>
+
+{% endblock %}

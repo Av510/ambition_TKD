@@ -1,7 +1,7 @@
 <a href="{{ url_for('add_student', og_page=request.full_path)}}">ADD</a>
 
 <h3> Search 🔍 </h3>
-<p>Search for a student by name</p>
+
 <form method = "GET" action = "{{ url_for('search_student') }}" >
 
   <input type="hidden" name="which_search" value="student_search">

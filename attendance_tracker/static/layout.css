@@ -1,0 +1,47 @@
+html, body, main {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    
+    font-family: sans-serif;
+}
+
+body {
+    padding-top: 10cqw;
+}
+
+    
+nav {
+    background-color: #ded0ff;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 10cqw;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+    box-sizing: border-box;
+
+    z-index: 1001;
+
+    margin: 0;
+}
+
+nav a {
+    text-decoration: none;
+    background-color: #f1e9ff;
+
+    border-radius: 2cqw;
+    padding: 1cqw 2cqw;
+}
+
+nav a:hover {
+    background-color: #7e40fa;
+    text-decoration: underline;
+    color: white;
+}
