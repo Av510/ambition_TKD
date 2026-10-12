@@ -1,105 +1,123 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Edit student
+{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='addstudent.css') }}">
+
 <a href="{{ og_page }}">Back</a>
 
-<form method="POST" action="{{ url_for('create_student') }}">
-    Name:
-        <input type = "text" name ="name">
-        <br>
-    Surname:
-        <input type = "text" name ="surname">
-        <br>
-    <label for="attendance_card_id">Attendance card ID:</label>
-        <select name="attendance_card_id">
+    <main>
 
-          <option disabled>
-            card id | students | attendance count
-          </option>  
-          
-          {% for cards in at_d %}
-            <option value="{{cards}}">
-                {{cards}}: 
-                {% for i in at_d[cards]["Students"] %}
-                  |
-                  {{i[0]}} {{i[1]}}
-                  |
-                {% endfor %}
-                {{at_d[cards]["Count"]}}
-            </option>
-          {% endfor %}
-        </select>
+            <form method="POST" action="{{ url_for('create_student') }}">
+                Name:
+                    <input type = "text" name ="name">
+                    <br>
+                Surname:
+                    <input type = "text" name ="surname">
+                    <br>
+                <label for="attendance_card_id">Attendance card ID:</label>
+                    <select name="attendance_card_id">
 
-    <label> ADD new card:</label>
-        <input type="checkbox" name="new_card">
-        <br>
+                    <option disabled>
+                        card id | students | attendance count
+                    </option>  
+                    
+                    {% for cards in at_d %}
+                        <option value="{{cards}}">
+                            {{cards}}: 
+                            {% for i in at_d[cards]["Students"] %}
+                            |
+                            {{i[0]}} {{i[1]}}
+                            |
+                            {% endfor %}
+                            {{at_d[cards]["Count"]}}
+                        </option>
+                    {% endfor %}
+                    </select>
 
-    Contact:
-    <br>
-    Existing contacts:
-        <br>
-        <select name="existing_contact">
-            <option value=""> Select existing contact </option>
-          {% for c in contacts %}
-            <option value="{{c['contact_id']}}">
-                {{c['contact_id']}} |
-                {{c['phone']}} |
-                {{c['email']}}
-            </option>
-          {% endfor %}
-        </select>
-        Relationship to student:
-        <input type="text"name="relationship_to_student_ex">
+                <label> ADD new card:</label>
+                    <input type="checkbox" name="new_card">
+                    <br>
 
-        <br>
-    Enter new contacts:
-        <br>
-        Phone:
-            <input type="text"name="phone">
-            <br>   
-        Email:
-            <input type="text"name="email">
-            <br>   
-        Relationship to student:
-            <input type="text"name="relationship_to_student"> 
-            <br>
+                Contact:
+                <br>
+                Existing contacts:
+                    <br>
+                    <select name="existing_contact">
+                        <option value=""> Select existing contact </option>
+                    {% for c in contacts %}
+                        <option value="{{c['contact_id']}}">
+                            {{c['contact_id']}} |
+                            {{c['phone']}} |
+                            {{c['email']}}
+                        </option>
+                    {% endfor %}
+                    </select>
+                    Relationship to student:
+                    <input type="text"name="relationship_to_student_ex">
 
-    Contact 2 (if there is):
-    <br>
-    Existing contacts:
-        <br>
-        <select name="existing_contact2">
-          <option value=""> Select existing contact </option>
-          {% for c in contacts %}
-            <option value="{{c['contact_id']}}">
-                {{c['contact_id']}} |
-                {{c['phone']}} |
-                {{c['email']}}
-            </option>
-          {% endfor %}
-        </select>
-        Relationship to student:
-        <input type="text"name="relationship_to_student_ex2">
+                    <br>
+                Enter new contacts:
+                    <br>
+                    Phone:
+                        <input type="text"name="phone">
+                        <br>   
+                    Email:
+                        <input type="text"name="email">
+                        <br>   
+                    Relationship to student:
+                        <input type="text"name="relationship_to_student"> 
+                        <br>
 
-        <br>
-        <br>
-        Phone:
-            <input type="text"name="phone2">
-            <br>   
-        Email:
-            <input type="text"name="email2">
-            <br>   
-        Relationship to student:
-            <input type="text"name="relationship_to_student2">
-            <br>
+                Contact 2 (if there is):
+                <br>
+                Existing contacts:
+                    <br>
+                    <select name="existing_contact2">
+                    <option value=""> Select existing contact </option>
+                    {% for c in contacts %}
+                        <option value="{{c['contact_id']}}">
+                            {{c['contact_id']}} |
+                            {{c['phone']}} |
+                            {{c['email']}}
+                        </option>
+                    {% endfor %}
+                    </select>
+                    Relationship to student:
+                    <input type="text"name="relationship_to_student_ex2">
 
-    Classes:
-        <input type="hidden" name="which_form" value="change_classes">
-        {% for c in classes %}
-            <input type="checkbox" name="class_ids" value="{{c['class_id']}}" > 
-            <label for="{{c['class_id']}}">{{c['week_day']}} - {{c['time']}} </label><br>
-            <br>
-        {% endfor %}
+                    <br>
+                    <br>
+                    Phone:
+                        <input type="text"name="phone2">
+                        <br>   
+                    Email:
+                        <input type="text"name="email2">
+                        <br>   
+                    Relationship to student:
+                        <input type="text"name="relationship_to_student2">
+                        <br>
+
+                Classes:
+                    <input type="hidden" name="which_form" value="change_classes">
+                    {% for c in classes %}
+                        <input type="checkbox" name="class_ids" value="{{c['class_id']}}" > 
+                        <label for="{{c['class_id']}}">{{c['week_day']}} - {{c['time']}} </label><br>
+                        <br>
+                    {% endfor %}
 
 
-    <button type="submit">
-      Save
+                <button type="submit">
+                Save
+                </button>
+            </form>
+
+    </main>
+
+{% endblock %}
     </button>
 </form>
