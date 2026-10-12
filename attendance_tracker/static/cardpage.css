@@ -1,5 +1,6 @@
 body {
     padding-top: 55cqw;
+    background-color: #f4f1fc;
 }
 
 .controls {
@@ -73,6 +74,8 @@ search-section {
 
     font-size: 4cqw;
 
+    background-color: #fcfcfc;
+
     padding: 4cqw;
     margin: 7cqw auto;
     scroll-margin-top: 240px;
@@ -101,13 +104,12 @@ header {
 
 .student-names p {
     margin: 0;
+    color: black;
 }
 .student-names {
     display: flex;
     flex-direction: column;
     gap: 0.1cqw;
-    
-
 
     font-size: 8cqw;
     font-weight: bold;
