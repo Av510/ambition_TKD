@@ -1,0 +1,243 @@
+body {
+    padding-top: 55cqw;
+    background-color: #f4f1fc;
+}
+
+.controls {
+    top: 0;
+    left: 0;
+
+    position: fixed;
+
+    width: 100%;
+    top: 10cqw;
+
+    box-sizing: border-box;
+
+    z-index: 1000;
+    background-color: rgb(88, 59, 126);
+    
+    padding: 3cqw;
+    margin: 0;
+
+    color: white;
+}
+
+.search-section h3 {
+    margin: 0;
+}
+
+
+
+.search-section input {
+    border-radius: 1cqw;
+    padding-top: 1.5cqw;
+    padding-bottom: 0.5cqw;
+}
+
+.sort-section select {
+    margin-bottom: 3cqw;
+
+    font-size: 4.5cqw;
+}
+
+.sort-section h3 {
+    margin-bottom: 0;
+}
+
+.controls button {
+    background-color: #b6a9d6;
+
+    border-radius: 2cqw;
+
+    font-size: 4cqw;
+    font-weight: bold;
+}
+
+search-section {
+    display: flex;
+    align-items: center;
+
+    gap: 2cqw;
+}
+
+.attendance-card {
+    width: 90%;
+    aspect-ratio: 1 / 1;
+
+    box-sizing: border-box;
+
+    border-radius: 2cqw;
+    border: 0.4cqw solid #515151;
+
+    container-type: inline-size;
+
+    font-size: 4cqw;
+
+    background-color: #fcfcfc;
+
+    padding: 4cqw;
+    margin: 7cqw auto;
+    scroll-margin-top: 240px;
+
+}
+
+
+
+header {
+    display: flex;
+    align-items: center;
+
+    gap: 3cqw;
+
+    margin-bottom: 4cqw;
+
+    font-size: 4cqw;
+    color: #555;
+}
+
+.card-id {
+    font-weight: normal;
+    font-size: 5cqw;
+}
+
+
+.student-names p {
+    margin: 0;
+    color: black;
+}
+.student-names {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1cqw;
+
+    font-size: 8cqw;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+
+.buttons-section {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 4cqw;
+
+    width: 100%;
+    margin: 0 auto;
+
+    container-type: inline-size;
+}
+
+
+/* EACH ATTENDANCE BOX */
+
+.buttons {
+    width: 100%;
+    text-align: center;
+}
+
+
+.buttons form {
+    width: 100%;
+    margin: 0;
+}
+
+/* ACTUAL BUTTON */
+
+.attendance-button {
+    width: 95%;
+    aspect-ratio: 1 / 1;
+    box-sizing: border-box;
+
+    border: 0.4cqw solid #545454;
+    border-radius: 2cqw;
+    padding: 0.5cqw;
+    margin: 2cqw auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    font-size: 10cqw;
+}
+
+
+
+.attendance-button.empty {
+    background-color: #eeeeee;
+    color: #6d6d6d;
+}
+
+
+
+
+.attendance-button.filled {
+    background-color: #a92c3a;
+    color: white;
+}
+
+
+.date {
+    margin: 8px 0 0 0;
+    font-size: 4cqw;
+    color: #555;
+}
+
+
+
+.attendance-count {
+    grid-column: span 2;
+    align-self: center;
+    justify-self: center;
+
+    margin: 0;
+
+    font-size: 8cqw;
+    font-weight: bold;
+    color: #555;
+}
+
+
+
+.card-actions {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-top: 5cqw;
+
+    padding: 0 2cqw;
+
+    gap: 4cqw;
+}
+
+
+.clear-button,
+.history-button {
+    width: 35cqw;
+
+    aspect-ratio: 3 / 1;
+
+    box-sizing: border-box;
+    border-radius: 2cqw;
+
+    font-size: 6cqw;
+    font-weight: bold;
+}
+
+
+.clear-button {
+    background-color: #b00000;
+    color: white;
+}
+
+
+.history-button {
+    background-color: #17609a;
+    color: white;
+}

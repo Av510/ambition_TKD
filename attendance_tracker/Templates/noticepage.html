@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Notice page
+{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='noticepage.css') }}">
+<main>
+
+<section>
+  
+    {% for id in student_d %}
+      <div class="due-rows"> 
+        <p>Card ID: {{ id }}</p>
+    
+        {% for name in student_d[id] %}
+        {% if loop.index > 1 %}
+            {% if loop.last %} and {% else %}, {% endif %}
+        {% endif %}
+        {{ name }}
+        {% endfor %}
+        's payment is due!
+
+          <form method="POST" action="/clearcard">
+
+              <input type="hidden" name="cardid" value="{{ id }}">
+              <input type="hidden" name="og_page" value="{{ request.path }}">
+
+              <button type="submit" onclick="return confirm('Are you sure you want to clear this card\'s attendance?')">
+                   CLEAR
+              </button>
+
+          </form>
+      </div>
+  {% endfor %}
+
+  </section>
+</main>
+
+{% endblock %}
