@@ -1,0 +1,9 @@
+<h2> Student(s):</h2>
+
+{% for student in students %}
+    <p>{{ student.first_name }} {{ student.surname }}</p>
+{% endfor %}
+
+{% for record in records %}
+    <p>Date: {{ record["date"] }}</p>
+{% endfor %}

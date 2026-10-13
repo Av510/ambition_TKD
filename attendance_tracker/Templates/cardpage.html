@@ -1,109 +1,178 @@
+{% extends "layout.html" %}
 
-<h3> Search </h3>
+{% block title %}
+Attendance cards
+{% endblock %}
 
-<form method = "GET" action = "{{ url_for('search_student') }}" >
+{% block content %}
 
-  <input type="hidden" name="which_search" value="card_search">
+<link rel="stylesheet" href="{{ url_for('static', filename='cardpage.css') }}">
+<main>
 
-  <input type = "text" name ="user_search" placeholder="Enter student name...">
-  <button type="submit">
-          Search
-  </button>
-</form>
+  <div class="controls"> 
+    <section class="search-section">
 
-{% if no_results %}
-    <h3>No results found</h3>
-    <p>make sure to check your spelling and search text only</p>
-{% endif %}
+      <h3> Search:</h3>
 
+      <form method = "GET" action = "{{ url_for('search_student') }}" >
 
-Sort by: 
-<form method="GET" action="{{ url_for('sort_cards') }}">
-         <select name="alphabetical" onchange="this.form.submit()">
-              <option value=""> A-Z </option>
+        <input type="hidden" name="which_search" value="card_search">
 
-              <option value="first_name">
-                   First name
-              </option>
-
-              <option value="surname">
-                   Surname
-              </option>
-
-         </select>
-</form>
-<form method="GET" action="{{ url_for('sort_cards') }}">
-         <select name="by_class" onchange="this.form.submit()">
-              <option value=""> Classes </option>
-            
-            {% for c in class_options %}
-              <option value="{{c[0]}}">
-                {{c[1]}} - {{c[2]}}
-              </option>
-            {% endfor %}
-
-         </select>
-
-</form>        
-
-
+        <input type = "text" name ="user_search" placeholder="Enter student name...">
         
-        {% for i in attendance_cards_d %}
-          <div  style="display: block; padding: 5px;" id={{i}}>
-          <tr>
-              <td>{{i}} </td>
-              {% for t in attendance_cards_d[i] %}
-                    <td>{{t[1]}}</td>
-                    <td>{{t[2]}}</td>
-                    </br>
-              {% endfor %}
+        <button type="submit">
+                🔍︎
+        </button>
+      </form>
+
+      {% if no_results %}
+          <h3>No results found</h3>
+          <p>make sure to check your spelling and search text only</p>
+      {% endif %}
+
+    </section>
+
+    <section class="sort-section">
+
+      <h3>Sort by:</h3>
+
+      <form method="GET" action="{{ url_for('sort_cards') }}">
+            <select name="alphabetical" onchange="this.form.submit()">
               
-              {% for b in range(10) %}
+                <option value="" disabled selected>A-Z</option>
+      
+                <option value="first_name">
+                      First name
+                </option>
 
-                  <form method="POST" action="/updateattendance" style="display: inline-block; margin: 5px;">
-                      <input type = "hidden" name ="cardid" value = "{{i}}">
+                <option value="surname">
+                      Surname
+                </option>
 
-                      <input type = "hidden" name ="og_page" value = {{ request.full_path }}>
+            </select>
+      </form>
 
-                      {% set dates = attendance_dates.get(attendance_cards_d[i][0][3], []) %}
-
-                      {% if b < (attendance_cards_d[i][0][4] or 0) %}
-
-                          <input type = "hidden" name ="attendancechange" value = "-1">
-                          
-                          {% if b < dates|length %}
-
-                          <input type="hidden" name="attendance_id" value="{{ dates[b][0] }}">
-
-                          <button type = "submit" onclick="return confirm('Delete 1 from {% for t in attendance_cards_d[i] %}{{t[1]}}{% if not loop.last %}{% if loop.index == attendance_cards_d[i]|length - 1 %} and {% else %}, {% endif %}{% endif %} {% endfor %}\'s attendance?')">
-                               o 
-                              {{ dates[b][1] }}
-   
-                          </button>
-                          {% else %}
-                              <button type="submit">
-                                    o
-                              </button>
-                          {% endif %}
-                          
-                      {% else %}
-
-                      <input type = "hidden" name ="attendancechange" value = "1">
-
-                      <button type = "submit">
-                           -
-                      </button>
-                      {% endif %}
-
-                  </form>
-                  {% if loop.index % 5 == 0 %}
-                        </br>
-                  {% endif %}
-              {% endfor %}
+      <form method="GET" action="{{ url_for('sort_cards') }}">
+            <select name="by_class" onchange="this.form.submit()">
+              <option value="" disabled selected> 📆 Classes </option>
             
-            <td> {{attendance_cards_d[i][0][4]}}/10 </td>
-         </tr>
-         </div>
-         </br>
+              {% for c in class_options %}
+                <option value="{{c[0]}}">
+                  {{c[1]}} - {{c[2]}}
+                </option>
+              {% endfor %}
 
-          {% endfor %}
+            </select>
+      </form>        
+
+    </section>
+  
+  </div>
+
+    <section>
+      <h3> Cards </h3>
+
+      {% for i in card_d %}
+        
+        {% set dates = card_d[i]["Records"] %}
+          <article class="attendance-card" id="{{i}}">
+              
+              <header>
+                  <span class="card-id">
+                      Card {{ i }}
+                  </span>
+
+                  <div class="student-names">
+                      {% for student in card_d[i]["Students"] %}
+                        <p>
+                            {{ student[1] }} {{ student[2] }}
+                        </p>
+                      {% endfor %}
+                  </div>
+
+              </header>
+
+              <section class="buttons-section">
+
+                {% for b in range(10) %}
+                 
+                  <div class="buttons">
+
+                    <form method="POST" action="/updateattendance">
+                        <input type = "hidden" name ="cardid" value = "{{i}}">
+
+                        <input type = "hidden" name ="og_page" value = {{ request.full_path }}>
+
+                      
+
+                        {% if b < (dates|length) %}
+
+                            <input type = "hidden" name ="attendancechange" value = "-1">
+
+                            <input type="hidden" name="attendance_id" value="{{ dates[b][0] }}">
+
+                            <button type = "submit" class="attendance-button filled" onclick="return confirm('⛔ Delete 1 from this card\'s attendance?')">
+                         
+                              ✓
+   
+                            </button>
+
+                            
+                            <p class="date">
+                                {{ dates[b][1] }}
+                            </p>
+                          
+                        {% else %}
+
+                        <input type = "hidden" name ="attendancechange" value = "1">
+
+                        <button type = "submit" class="attendance-button empty">
+
+                             ➕
+
+                        </button>
+
+                        {% endif %}
+
+                    </form>
+              
+                  </div>
+                {% endfor %}
+                
+                <p class ="attendance-count"> {{ dates|length }}/10 </p>
+
+              </section>
+            
+
+               </br>
+            <footer class="card-actions">
+                <form method="POST" action="/clearcard">
+
+                    <input type="hidden" name="cardid" value="{{ i }}">
+                    <input type="hidden" name="og_page" value="{{ request.full_path }}">
+
+                    <button type="submit" class="clear-button" onclick="return confirm('Are you sure you want to clear this card\'s attendance?')">
+                       CLEAR
+                    </button>
+
+                </form>
+
+
+                <form method="GET" action="{{ url_for('card_history', card_id=i) }}">
+
+                    <button type="submit" class="history-button">
+                        HISTORY
+                    </button>
+
+                </form>
+
+            </footer>
+
+          </article>
+
+        {% endfor %}
+
+    </section>
+</main>
+
+{% endblock %}
