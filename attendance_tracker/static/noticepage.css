@@ -1,0 +1,46 @@
+.due-rows {
+    width: 85%;
+    box-sizing: border-box;
+
+    background-color: #f4f1fc;
+    border: 1px solid;
+    border-radius: 12px;
+
+    padding: 4cqw;
+    margin: 4cqw auto;
+
+    font-size: 7cqw;
+}
+
+.due-rows p {
+    margin: 3cqw;
+
+    font-size: 6cqw;
+    font-weight: bold;
+
+    color: #4b3061;
+}
+
+.due-rows button {
+    display: block;
+
+    width: 40%;
+    box-sizing: border-box;
+
+    padding: 2.5cqw;
+    margin-top: 4cqw;
+
+    background-color: #a92c3a;
+    color: white;
+
+    border-radius: 8px;
+
+    font-size: 4.5cqw;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.due-rows button:hover {
+    background-color: #641821;
+}
