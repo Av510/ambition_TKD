@@ -3,22 +3,23 @@
     box-sizing: border-box;
 
     background-color: #f4f1fc;
-    border: 1px solid;
-    border-radius: 12px;
+    border: 0.3cqw solid;
+    border-radius: 3cqw;
 
     padding: 4cqw;
     margin: 4cqw auto;
 
     font-size: 7cqw;
+    color: #383344;
 }
 
 .due-rows p {
-    margin: 3cqw;
+    margin: 0 0 3cqw 0;
 
     font-size: 6cqw;
     font-weight: bold;
+    text-decoration: none;
 
-    color: #4b3061;
 }
 
 .due-rows button {
@@ -37,10 +38,8 @@
 
     font-size: 4.5cqw;
     font-weight: bold;
-
-    cursor: pointer;
 }
 
 .due-rows button:hover {
-    background-color: #641821;
+    background-color: #87212d;
 }
