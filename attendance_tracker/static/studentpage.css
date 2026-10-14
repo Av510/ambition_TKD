@@ -1,0 +1,27 @@
+body {
+    padding-top: 60cqw;
+}
+
+
+.add-button{
+    display: block;
+
+    width: 25%;
+
+    background-color: rgb(161, 171, 235);
+    color: white;
+
+    padding: 5cqw;
+    margin: 2cqw;
+
+    border: 0.3cqw solid rgb(48, 56, 93);
+    border-radius: 4cqw;
+
+    font-size: 7cqw;
+}
+
+.student-box{
+    padding: 5cqw;
+
+    border:solid;
+}
