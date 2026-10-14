@@ -83,9 +83,14 @@ Students
                     <h4> Class:</h4><p>{{classes["week_day"]}}</p>
                     <h4> Time:</h4><p>{{classes["time"]}}</p>
                   {% endfor %}
+                  
                   <h3>Contacts: </h3>
                   {% for contacts in student_d[i]["Contacts"] %}
-                    <p>Phone: {{contacts["phone"]}} Email: {{contacts["email"]}} Relation: {{contacts["relationship_to_student"]}}</p>
+                    
+                    <h4> Phone:</h4><p>{{contacts["phone"]}} </p>
+                    <h4> Email:</h4><p>{{contacts["email"]}}</p>
+                    <h4> Relationship to student:</h4><p>{{contacts["relationship_to_student"]}}</p>
+
                   {% endfor %}
 
                   <a href="{{ url_for('edit_page', student_id=student_d[i]['Info']['student_id'], og_page=request.full_path)}}">EDIT</a>
