@@ -18,10 +18,19 @@ body {
     border-radius: 4cqw;
 
     font-size: 7cqw;
+    text-align: center;
+}
+
+.add-button:hover{
+    background-color: rgb(102, 112, 175);
 }
 
 .student-box{
     padding: 5cqw;
 
     border:solid;
+}
+
+.student-box h3{
+    font-size: 5.5cqw;
 }

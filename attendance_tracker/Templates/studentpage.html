@@ -71,18 +71,24 @@ Students
 
             {% for i in student_d %}
               <div class="student-box">
-                <p> ID: {{student_d[i]["Info"]["student_id"]}} Name: {{student_d[i]["Info"]["first_name"]}}  Surname: {{student_d[i]["Info"]["surname"]}} | Card ID: {{student_d[i]["Info"]["card_id"]}}</p>
+                  <h3>Student: </h3>
+                  <h4> ID:</h4> <p> {{student_d[i]["Info"]["student_id"]}}</p>
+                  <h4> Name:</h4>  <p>{{student_d[i]["Info"]["first_name"]}}</p>  
+                  <h4> Surname:</h4> <p>{{student_d[i]["Info"]["surname"]}}</p>
 
-                <h4>Classes: </h4>
-                {% for classes in student_d[i]["Classes"] %}
-                  <p>Day: {{classes["week_day"]}} Time: {{classes["time"]}}</p>
-                {% endfor %}
-                <h4>Contacts: </h4>
-                {% for contacts in student_d[i]["Contacts"] %}
-                  <p>Phone: {{contacts["phone"]}} Email: {{contacts["email"]}} Relation: {{contacts["relationship_to_student"]}}</p>
-                {% endfor %}
+                  <h3>Card ID: </h3>  <p>{{student_d[i]["Info"]["card_id"]}}</p>
 
-                <a href="{{ url_for('edit_page', student_id=student_d[i]['Info']['student_id'], og_page=request.full_path)}}">EDIT</a>
+                  <h3>Classes: </h3>
+                  {% for classes in student_d[i]["Classes"] %}
+                    <h4> Class:</h4><p>{{classes["week_day"]}}</p>
+                    <h4> Time:</h4><p>{{classes["time"]}}</p>
+                  {% endfor %}
+                  <h3>Contacts: </h3>
+                  {% for contacts in student_d[i]["Contacts"] %}
+                    <p>Phone: {{contacts["phone"]}} Email: {{contacts["email"]}} Relation: {{contacts["relationship_to_student"]}}</p>
+                  {% endfor %}
+
+                  <a href="{{ url_for('edit_page', student_id=student_d[i]['Info']['student_id'], og_page=request.full_path)}}">EDIT</a>
               </div>
             {% endfor %}
 
