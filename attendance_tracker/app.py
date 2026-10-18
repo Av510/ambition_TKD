@@ -547,5 +547,5 @@ def create_student():
 
     db.commit()
 
-    return redirect(url_for("student"))
+    return redirect(url_for("student_page"))
 
