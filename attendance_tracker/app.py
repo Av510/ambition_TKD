@@ -151,13 +151,15 @@ def clear_card():
 @app.route("/cardhistory/<card_id>")
 def card_history(card_id):
 
+    og_page = request.args.get("og_page", "/")
+
     db = get_db()
 
     records = db.execute("SELECT * FROM ATTENDANCE_RECORDS WHERE card_id = ? ORDER BY attendance_id DESC", (card_id,)).fetchall()
 
     students = db.execute("SELECT first_name, surname FROM STUDENTS WHERE card_id = ?", (card_id,)).fetchall()
 
-    return render_template("cardhistory.html", card_id=card_id, students=students, records=records)
+    return render_template("cardhistory.html", card_id=card_id, students=students, records=records, og_page=og_page)
 
 
 #PAYMENT NOTIFICATIONS---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
