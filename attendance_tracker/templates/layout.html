@@ -1,0 +1,24 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="{{ url_for('static', filename='layout.css') }}">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Attendance Tracker{% endblock %}</title>
+<nav>
+        <a href="{{ url_for('student_page') }}">Students</a>
+        <a href="{{ url_for('card_page') }}">Attendance cards</a>
+        <a href="{{ url_for('notice_page') }}">Notices</a>
+</nav>
+
+
+<body>
+    
+    {% block content %}
+    {% endblock %}
+
+</body>
+
+</html>
