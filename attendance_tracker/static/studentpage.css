@@ -3,7 +3,7 @@ body {
 }
 
 
-.add-button{
+.add-button {
     display: block;
 
     width: 25%;
@@ -12,7 +12,7 @@ body {
     color: white;
 
     padding: 5cqw;
-    margin: 2cqw;
+    margin: 2.5cqw;
 
     border: 0.3cqw solid rgb(48, 56, 93);
     border-radius: 4cqw;
@@ -21,19 +21,125 @@ body {
     text-align: center;
 }
 
-.add-button:hover{
+.add-button:hover {
     background-color: rgb(102, 112, 175);
 }
 
-.student-box{
-    padding: 5cqw;
+.student-box {
+    container-type: inline-size;
 
-    border:solid;
+    background-color: #f4f1fc;
+    color: #383344;
+
+    border: 0.15cqw solid #5e5e5e;
+    border-radius: 5cqw;
+
+    padding: 3.5cqw;
+    margin: 7cqw auto;
+    width: 95%;
+
+    box-sizing: border-box;
 }
 
-.student-box h3{
-    font-size: 6cqw;
+.student-box h3 {
+    font-size: 6.5cqw;
+
+    margin-top: 0;
+    margin-bottom: 2cqw;
+    padding: 1cqw 0;
+
 }
-.student-box p{
+
+.student-box h4 {
+    font-size: 5cqw;
+    font-weight: none;
+
+    margin: 1cqw;
+}
+
+.student-box p {
     font-size: 4.5cqw;
+    margin: 1cqw 0;
+    overflow-wrap: anywhere;
+}
+
+.student-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.student-header p {
+    font-size: 7cqw;
+    margin: 0;
+}
+
+.edit-button {
+    background-color: #38761d;
+    
+    color: white;
+    font-size: 5cqw;
+    font-weight: bold;
+    text-decoration: none;
+
+    padding: 4.5cqw 6cqw;
+    margin: 2cqw 5cqw;
+    margin-bottom: 0;
+
+    border-radius: 3cqw;  
+    
+}
+
+.edit-button:hover {
+    background-color: #274e13;
+}
+
+.student-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 3cqw;
+
+    margin: 2cqw 0;
+}
+
+.student-details p {
+    font-size: 6cqw;
+    margin: 2cqw 1cqw;
+}
+
+.student-details p strong {
+    font-size: 7cqw;
+}
+
+.student-name {
+    overflow-wrap: anywhere;
+}
+
+.student-info {
+    padding: 1cqw 0;
+
+    border-radius: 2cqw;
+
+}
+
+.student-info p {
+    padding: 0.2cqw;
+}
+
+.student-info section{
+    border: 0.3cqw solid rgb(153, 153, 153);
+    border-radius: 3cqw;
+
+    margin: 1.5cqw 0cqw;
+    padding: 3cqw;
+
+    background-color: white;
+}
+
+.contacts {
+    border: 0.3cqw dashed rgb(150, 150, 150);
+
+    margin: 3cqw 1cqw;
+    padding: 1.5cqw;
 }

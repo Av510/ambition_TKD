@@ -71,30 +71,64 @@ Students
 
             {% for i in student_d %}
               <div class="student-box">
-                  <h3>Student: </h3>
-                  <h4> ID:</h4> <p> {{student_d[i]["Info"]["student_id"]}}</p>
-                  <h4> Name:</h4>  <p>{{student_d[i]["Info"]["first_name"]}}</p>  
-                  <h4> Surname:</h4> <p>{{student_d[i]["Info"]["surname"]}}</p>
 
-                  <h3>Card ID: </h3>  <p>{{student_d[i]["Info"]["card_id"]}}</p>
+                  <div class="student-header">
 
-                  <h3>Classes: </h3>
-                  {% for classes in student_d[i]["Classes"] %}
-                    <h4> Class:</h4><p>{{classes["week_day"]}}</p>
-                    <h4> Time:</h4><p>{{classes["time"]}}</p>
-                  {% endfor %}
-                  
-                  <h3>Contacts: </h3>
-                  {% for contacts in student_d[i]["Contacts"] %}
+                      <p>
+                        <strong>Student:</strong>
+                        ID: {{ student_d[i]["Info"]["student_id"] }}
+                      </p>
+                      
+                      <a class="edit-button" href="{{ url_for('edit_page', student_id=student_d[i]['Info']['student_id'], og_page=request.full_path)}}">EDIT</a>
+
+                  </div>
+
+                  <div class="student-details">
                     
-                    <h4> Phone:</h4><p>{{contacts["phone"]}} </p>
-                    <h4> Email:</h4><p>{{contacts["email"]}}</p>
-                    <h4> Relationship to student:</h4><p>{{contacts["relationship_to_student"]}}</p>
+                      <p class="student-name">
+                          <strong>Name:</strong> {{ student_d[i]["Info"]["first_name"] }} {{ student_d[i]["Info"]["surname"] }}
+                      </p>
 
-                  {% endfor %}
+                      <p>
+                          <strong>Card:</strong> {{ student_d[i]["Info"]["card_id"] }}
+                      </p>
 
-                  <a href="{{ url_for('edit_page', student_id=student_d[i]['Info']['student_id'], og_page=request.full_path)}}">EDIT</a>
+                      
+
+                  </div>
+                  
+
+                  <div class="student-info">
+
+                      <section>
+                          <h3>Classes:</h3>
+
+                          {% for classes in student_d[i]["Classes"] %}
+
+                              <p>{{ classes["week_day"] }} {{ classes["time"] }}</p>
+
+                          {% endfor %}
+                      </section>
+
+                      <section>
+                          <h3>Contacts:</h3>
+
+                          {% for contacts in student_d[i]["Contacts"] %}
+
+                            <div class="contacts">
+                              <p><strong>Phone:</strong>{{ contacts["phone"] }}</p>
+
+                              <p><strong>Email:</strong>{{ contacts["email"] }}</p>
+
+                              <p><strong>Relationship:</strong>{{ contacts["relationship_to_student"] }}</p>
+                            </div>
+                          {% endfor %}
+                      </section>
+
+                  </div>
+                  
               </div>
+
             {% endfor %}
 
     </main>
