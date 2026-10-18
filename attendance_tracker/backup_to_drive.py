@@ -16,7 +16,7 @@ BACKUP_FOLDER = "/home/daia12345/ambition_TKD/backups"
 
 TOKEN_FILE = "/home/daia12345/ambition_TKD/token.json"
 
-DRIVE_FOLDER_ID = "YOUR_GOOGLE_DRIVE_FOLDER_ID"
+DRIVE_FOLDER_ID = "171-Np8Oa0PYtJL1luZYruTW1JKNng8R6"
 
 SCOPES = [
     "https://www.googleapis.com/auth/drive.file"
