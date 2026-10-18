@@ -1,0 +1,139 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Add student
+{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='addstudent.css') }}">
+
+    <a class="back-button" href="{{ og_page }}">Back</a>
+
+
+    <form class="add-student-form" method="POST" action="{{ url_for('create_student') }}">
+        <section>
+                Name:
+                    <input type = "text" name ="name">
+                    <br>
+                Surname:
+                    <input type = "text" name ="surname">
+                
+                <div class="card-section">
+
+                    <label for="attendance_card_id">Attendance card ID:</label>
+                        <select name="attendance_card_id">
+
+                            <option disabled>
+                                card id | students | attendance count
+                            </option>  
+                            
+                            {% for cards in at_d %}
+                                <option value="{{cards}}">
+                                    {{cards}}: 
+                                    {% for i in at_d[cards]["Students"] %}
+                                    |
+                                    {{i[0]}} {{i[1]}}
+                                    |
+                                    {% endfor %}
+                                    {{at_d[cards]["Count"]}}
+                                </option>
+                            {% endfor %}
+
+                        </select>
+
+                    <h3> OR </h3>
+
+                    <label class="new-card"> ADD new card:</label>
+                        <input type="checkbox" name="new_card">
+
+                </div>
+
+        </section>
+
+        <section class="contact-section">
+            <h2> Contact:</h2>
+
+                <h3>Existing contacts:</h3>
+             
+                    <select name="existing_contact">
+
+                        <option value=""> Select existing contact </option>
+                        {% for c in contacts %}
+                            <option value="{{c['contact_id']}}">
+                                {{c['contact_id']}} |
+                                {{c['phone']}} |
+                                {{c['email']}}
+                            </option>
+                        {% endfor %}
+
+                    </select>
+
+                    Relationship to student:
+                    <input type="text"name="relationship_to_student_ex">
+
+                <h3>Enter new contacts:</h3>
+                
+                    Phone:
+                        <input type="text"name="phone">
+                      
+                    Email:
+                        <input type="text"name="email">
+                     
+                    Relationship to student:
+                        <input type="text"name="relationship_to_student"> 
+                   
+
+            <h2>Contact 2 (if there is):</h2>
+
+                <h3>Existing contacts:</h3>
+  
+                    <select name="existing_contact2">
+
+                        <option value=""> Select existing contact </option>
+                        {% for c in contacts %}
+                            <option value="{{c['contact_id']}}">
+                                {{c['contact_id']}} |
+                                {{c['phone']}} |
+                                {{c['email']}}
+                            </option>
+                        {% endfor %}
+
+                    </select>
+
+                    Relationship to student:
+                    <input type="text"name="relationship_to_student_ex2">
+                    
+                <h3>Enter new contacts:</h3>
+
+                    Phone:
+                        <input type="text"name="phone2">
+                        
+                    Email:
+                        <input type="text"name="email2">
+ 
+                    Relationship to student:
+                        <input type="text"name="relationship_to_student2">
+                       
+                        
+        </section>
+        
+        <section>
+
+                <h2>Classes:</h2>
+                    <input type="hidden" name="which_form" value="change_classes">
+                    {% for c in classes %}
+                        <input type="checkbox" name="class_ids" value="{{c['class_id']}}" > 
+                        <label for="{{c['class_id']}}">{{c['week_day']}} - {{c['time']}} </label><br>
+                        <br>
+                    {% endfor %}
+
+        </section>
+
+        <button type="submit">
+            Save
+        </button>
+
+    </form>
+
+{% endblock %}
