@@ -396,12 +396,12 @@ def search_student():
     if which_search == "student_search":
 
         student_d = {}
-
+        #find/select student that match search
         student_infos = db.execute("SELECT * FROM STUDENTS WHERE (TRIM(LOWER(surname)) LIKE ? || '%') OR " \
     "(COALESCE(TRIM(LOWER(first_name)), '') || COALESCE(TRIM(LOWER(surname)), '') LIKE ? || '%')", (student, student)).fetchall()
     
         class_options = get_all_classes()
-    
+        #find the found students' contacts and classes
         for y in student_infos:
             student_class = db.execute("SELECT week_day, time FROM STUDENTS_CLASSES LEFT JOIN CLASSES ON " \
     "STUDENTS_CLASSES.class_id = CLASSES.class_id WHERE student_id= ? ", (y["student_id"],)).fetchall()
@@ -420,11 +420,11 @@ def search_student():
 
         card_d = {}
         class_options = get_all_classes()
-
+        #find/select student that match search
         found_students = db.execute("SELECT * FROM STUDENTS WHERE (TRIM(LOWER(surname)) LIKE ? || '%') OR " \
     "(COALESCE(TRIM(LOWER(first_name)), '') || COALESCE(TRIM(LOWER(surname)), '') LIKE ? || '%')", (student, student)).fetchall()
         
-        for h in found_students:
+        for h in found_students: #put found students in dictionary with card id as key
 
             card_id = h["card_id"]
 
@@ -433,12 +433,12 @@ def search_student():
 
             else:                             #[:3] excludes card id
                 card_d[card_id] = {"Students": [h[:3]], "Records":[]}#add h as the first value/student in a new list for that (new)card_id key
-
+        #attendance records that have attendance id higher than the card's clear id
         arecords = db.execute("SELECT ATTENDANCE_RECORDS.* FROM ATTENDANCE_RECORDS JOIN ATTENDANCE_CARDS ON ATTENDANCE_RECORDS.card_id = " \
                                   "ATTENDANCE_CARDS.card_id WHERE ATTENDANCE_RECORDS.attendance_id > COALESCE(ATTENDANCE_CARDS.clear_id, 0) " \
                                   "ORDER BY ATTENDANCE_RECORDS.attendance_id").fetchall()
 
-        for r in arecords:
+        for r in arecords:#put current records into dictionary for the specific card id
             c_id = r["card_id"]
             if c_id in card_d:        
                 card_d[c_id]["Records"].append((r["attendance_id"], r["date"]))
