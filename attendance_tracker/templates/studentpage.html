@@ -69,7 +69,7 @@ Students
         </div>
 
         <a class="add-button" href="{{ url_for('add_student', og_page=request.full_path)}}">ADD/添加學生</a>
-
+            <!-- loop all students from query -->
             {% for i in student_d %}
               <div class="student-box">
 
@@ -100,7 +100,7 @@ Students
                   
 
                   <div class="student-info">
-
+                        <!-- loop all student classes -->
                       <section>
                           <h3>Classes/課:</h3>
 
@@ -110,10 +110,10 @@ Students
 
                           {% endfor %}
                       </section>
-
+                       <!-- loop all student contacts -->
                       <section>
                           <h3>Contacts/聯絡:</h3>
-
+                           
                           {% for contacts in student_d[i]["Contacts"] %}
 
                             <div class="contacts">
