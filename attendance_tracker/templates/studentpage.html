@@ -14,7 +14,7 @@ Students
 
           <section class="search-section">
 
-            <h3> Search:</h3>
+            <h3> Search/搜尋:</h3>
 
             <form method = "GET" action = "{{ url_for('search_student') }}" >
 
@@ -29,13 +29,14 @@ Students
             {% if no_results %}
                 <h3>No results found</h3>
                 <p>make sure to check your spelling and search text only</p>
+                <p>請務必檢查拼寫，並僅搜尋文字</p>
             {% endif %}
 
           </section>
 
           <section class="sort-section">
 
-            <h3>Sort by:</h3>
+            <h3>Sort by/篩選:</h3>
             <form method="GET" action="{{ url_for('sorted_student') }}">
                     <select name="alphabetical" onchange="this.form.submit()">
                           <option value="" disabled selected> A-Z </option>
@@ -67,7 +68,7 @@ Students
   
         </div>
 
-        <a class="add-button" href="{{ url_for('add_student', og_page=request.full_path)}}">ADD</a>
+        <a class="add-button" href="{{ url_for('add_student', og_page=request.full_path)}}">ADD/添加學生</a>
 
             {% for i in student_d %}
               <div class="student-box">
@@ -79,7 +80,7 @@ Students
                         ID: {{ student_d[i]["Info"]["student_id"] }}
                       </p>
                       
-                      <a class="edit-button" href="{{ url_for('edit_page', student_id=student_d[i]['Info']['student_id'], og_page=request.full_path)}}">EDIT</a>
+                      <a class="edit-button" href="{{ url_for('edit_page', student_id=student_d[i]['Info']['student_id'], og_page=request.full_path)}}">EDIT/修改</a>
 
                   </div>
 
@@ -101,7 +102,7 @@ Students
                   <div class="student-info">
 
                       <section>
-                          <h3>Classes:</h3>
+                          <h3>Classes/課:</h3>
 
                           {% for classes in student_d[i]["Classes"] %}
 
@@ -111,12 +112,12 @@ Students
                       </section>
 
                       <section>
-                          <h3>Contacts:</h3>
+                          <h3>Contacts/聯絡:</h3>
 
                           {% for contacts in student_d[i]["Contacts"] %}
 
                             <div class="contacts">
-                              <p><strong>Phone:</strong>{{ contacts["phone"] }}</p>
+                              <p><strong>Phone/電話:</strong>{{ contacts["phone"] }}</p>
 
                               <p><strong>Email:</strong>{{ contacts["email"] }}</p>
 

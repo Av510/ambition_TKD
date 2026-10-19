@@ -8,7 +8,7 @@ Add student
 
 <link rel="stylesheet" href="{{ url_for('static', filename='addstudent.css') }}">
 
-    <a class="back-button" href="{{ og_page }}">Back</a>
+    <a class="back-button" href="{{ og_page }}">回去</a>
 
 
     <form class="add-student-form" method="POST" action="{{ url_for('create_student') }}">
@@ -20,7 +20,8 @@ Add student
                     <input type = "text" name ="surname">
                 
                 <div class="card-section">
-
+                    
+                  <p>從資料庫中選擇一張卡片</p>
                     <label for="attendance_card_id">Attendance card ID:</label>
                         <select name="attendance_card_id">
 
@@ -42,9 +43,9 @@ Add student
 
                         </select>
 
-                    <h3> OR </h3>
+                    <h3> OR/或者 </h3>
 
-                    <label class="new-card"> ADD new card:</label>
+                    <label class="new-card"> 新增卡/ADD new card:</label>
                         <input type="checkbox" name="new_card">
 
                 </div>
@@ -52,11 +53,13 @@ Add student
         </section>
 
         <section class="contact-section">
-            <h2> Contact:</h2>
+            <h2> Contact/新增聯絡人:</h2>
 
                 <h3>Existing contacts:</h3>
              
                     <select name="existing_contact">
+
+                        <p>從資料庫中選擇一個現有聯絡人，將該學生與…聯繫起來</p>
 
                         <option value=""> Select existing contact </option>
                         {% for c in contacts %}
@@ -72,6 +75,8 @@ Add student
                     Relationship to student:
                     <input type="text"name="relationship_to_student_ex">
 
+                <p> 將這名學生的新聯絡人資訊輸入資料庫></p>    
+
                 <h3>Enter new contacts:</h3>
                 
                     Phone:
@@ -84,8 +89,9 @@ Add student
                         <input type="text"name="relationship_to_student"> 
                    
 
-            <h2>Contact 2 (if there is):</h2>
+            <h2>Contact 2 (if there is)/聯絡人 2（如有）:</h2>
 
+                <p>從資料庫中選擇一個現有聯絡人，將該學生與…聯繫起來</p>
                 <h3>Existing contacts:</h3>
   
                     <select name="existing_contact2">
@@ -103,7 +109,8 @@ Add student
 
                     Relationship to student:
                     <input type="text"name="relationship_to_student_ex2">
-                    
+                
+                <p> 將這名學生的新聯絡人資訊輸入資料庫></p> 
                 <h3>Enter new contacts:</h3>
 
                     Phone:
@@ -120,7 +127,7 @@ Add student
         
         <section>
 
-                <h2>Classes:</h2>
+                <h2>Classes/課:</h2>
                     <input type="hidden" name="which_form" value="change_classes">
                     {% for c in classes %}
                         <input type="checkbox" name="class_ids" value="{{c['class_id']}}" > 
@@ -131,7 +138,7 @@ Add student
         </section>
 
         <button type="submit">
-            Save
+            添加學生/Save
         </button>
 
     </form>

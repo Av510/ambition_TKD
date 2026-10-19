@@ -1,12 +1,12 @@
 body {
-    padding-top: 60cqw;
+    padding-top: 55cqw;
 }
 
 
 .add-button {
     display: block;
 
-    width: 25%;
+    width: 35%;
 
     background-color: rgb(161, 171, 235);
     color: white;
@@ -19,6 +19,8 @@ body {
 
     font-size: 7cqw;
     text-align: center;
+    font-weight: bolder;
+    text-decoration: none;
 }
 
 .add-button:hover {
@@ -78,7 +80,7 @@ body {
     background-color: #38761d;
     
     color: white;
-    font-size: 5cqw;
+    font-size: 5.5cqw;
     font-weight: bold;
     text-decoration: none;
 
