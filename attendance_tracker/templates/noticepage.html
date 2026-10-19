@@ -16,7 +16,7 @@ Notice page
         <p>Card ID: {{ id }}</p>
     
         {% for name in student_d[id] %}
-        {% if loop.index > 1 %}
+        {% if loop.index > 1 %} <!-- add and and comma after student names if more than one student -->
             {% if loop.last %} and {% else %}, {% endif %}
         {% endif %}
         {{ name }}
