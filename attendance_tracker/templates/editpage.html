@@ -8,19 +8,12 @@ Edit student
 
 <link rel="stylesheet" href="{{ url_for('static', filename='editpage.css') }}">
 
-<<<<<<< HEAD
     <a class="back-button" href="{{ og_page }}">回去</a>
     
     <section>
 
           <h2>Student info/學生資訊:</h2>
-=======
-    <a class="back-button" href="{{ og_page }}">Back</a>
-    
-    <section>
 
-          <h2>Student info:</h2>
->>>>>>> origin/main
 
           <form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
 
@@ -42,10 +35,9 @@ Edit student
                     value="{{student["surname"]}}">
 
               <div class="card-section">
-<<<<<<< HEAD
+
                   <p>從資料庫中選擇一張卡片</p>
-=======
->>>>>>> origin/main
+
                   <label for="attendance_card_id">Attendance card ID:</label>
 
                       <select name="attendance_card_id">
@@ -67,25 +59,18 @@ Edit student
 
                       </select>
 
-<<<<<<< HEAD
                   <h3> OR/或者 </h3>
 
                   <label class="new-card"> 新增卡/ADD new card:</label>
-=======
-                  <h3> OR </h3>
 
-                  <label class="new-card"> ADD new card:</label>
->>>>>>> origin/main
                     <input type="checkbox" name="new_card">
 
               </div> 
 
                   <button class="save-button" type="submit">
-<<<<<<< HEAD
+
                       Save/存
-=======
-                      Save
->>>>>>> origin/main
+
                   </button>
    
           </form>
@@ -94,11 +79,8 @@ Edit student
 
         <section>
 
-<<<<<<< HEAD
             <h2>Contacts info/聯絡資訊:</h2>
-=======
-            <h2>Contacts info:</h2>
->>>>>>> origin/main
+
 
                 {% for c in contacts %}
                   <div class="student-contacts">
@@ -118,11 +100,9 @@ Edit student
                           <p><strong>Relationship to student:</strong> {{c["relationship_to_student"]}} </p>
 
                           <button class="delete-button" type="submit">
-<<<<<<< HEAD
+
                             DELETE/刪除
-=======
-                            DELETE
->>>>>>> origin/main
+
                           </button>
 
                       </form>
@@ -130,18 +110,12 @@ Edit student
                   </div>
                 {% endfor %}
 
-<<<<<<< HEAD
             <h2>新增聯絡人/Add contacts:</h2>
 
             <h3>Existing contacts:</h3>
             <p> select an existing contact from the database to connect this student to:</p>
             <p>從資料庫中選擇一個現有聯絡人，將該學生與…聯繫起來</p>
-=======
-            <h2>Add contacts:</h2>
 
-            <h3>Existing contacts:</h3>
-            <p> select an existing contact from the database to connect this student to:</p>
->>>>>>> origin/main
               <div class="contact-section">
 
                     <form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
@@ -168,23 +142,19 @@ Edit student
                         <input type="text"name="relation_ex">
 
                         <button class="save-button" type="submit">
-<<<<<<< HEAD
+
                           Save/存
-=======
-                          Save
->>>>>>> origin/main
+
                         </button>
 
                     </form>
               </div>
 
             <h3>Add new contacts:</h3>
-<<<<<<< HEAD
+
             <p> enter a new contact into the database for this student</p>
             <p> 將這名學生的新聯絡人資訊輸入資料庫></p>    
-=======
-            <p> enter a new contact into the database for this student</p>    
->>>>>>> origin/main
+
             <div class="contact-section">
                 <details>
                       <summary>Add contact</summary>
@@ -207,11 +177,9 @@ Edit student
                                 name="relationship_to_student">
                       
                         <button class="save-button" type="submit">
-<<<<<<< HEAD
+
                                 ADD/加
-=======
-                                ADD
->>>>>>> origin/main
+
                         </button>
                       </form>
                 </details>
@@ -223,11 +191,8 @@ Edit student
 
         <section>
 
-<<<<<<< HEAD
             <h2>Classes/課:</h2>
-=======
-            <h2>Classes:</h2>
->>>>>>> origin/main
+
                 
             <form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
                 <input type="hidden" name="which_form" value="change_classes">
@@ -240,27 +205,21 @@ Edit student
                     <br>
                 {% endfor %}
                 <button class="save-button" type="submit">
-<<<<<<< HEAD
+
                       Save/存
-=======
-                      Save
->>>>>>> origin/main
+
                 </button>
             </form>
 
         </section>
  
       <div class ="delete">
-<<<<<<< HEAD
+
           <h4>DELETE STUDENT/刪除學生:</h4>
               
           <p>⚠️ WARNING: This will delete the student from the database permanantly. ⚠️</p>
           <p>這將從資料庫中永久刪除該學生資訊</p>
-=======
-          <h4>DELETE STUDENT:</h4>
-              
-          <p>⚠️ WARNING: This will delete the student from the database permanantly. ⚠️</p>
->>>>>>> origin/main
+
 
           <form method="POST" action="{{ url_for('update_student', student_id=student_id) }}">
               <input type="hidden" name="which_form" value="delete_student">
@@ -268,11 +227,9 @@ Edit student
               <input type = "hidden" name ="og_page" value = {{ og_page }}>
 
               <button class="delete-button" type="submit" onclick="return confirm('Are you sure you want to delete this student?')">
-<<<<<<< HEAD
+
                     ! DELETE/刪除 STUDENT !
-=======
-                    ! DELETE STUDENT !
->>>>>>> origin/main
+
               </button>
           </form>
           

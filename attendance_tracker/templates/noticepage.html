@@ -21,24 +21,18 @@ Notice page
         {% endif %}
         {{ name }}
         {% endfor %}
-<<<<<<< HEAD
+
         's payment is due/款項已到期!
-=======
-        's payment is due!
->>>>>>> origin/main
+
 
           <form method="POST" action="/clearcard">
 
               <input type="hidden" name="cardid" value="{{ id }}">
               <input type="hidden" name="og_page" value="{{ request.path }}">
 
-<<<<<<< HEAD
               <button type="submit" onclick="return confirm('Are you sure you want to clear this card\'s attendance/您確定要清除這張卡的考勤記錄嗎？')">
                    CLEAR/清空
-=======
-              <button type="submit" onclick="return confirm('Are you sure you want to clear this card\'s attendance?')">
-                   CLEAR
->>>>>>> origin/main
+
               </button>
 
           </form>

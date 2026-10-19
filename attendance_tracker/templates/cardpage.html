@@ -12,11 +12,8 @@ Attendance cards
   <div class="controls"> 
     <section class="search-section">
 
-<<<<<<< HEAD
       <h3> Search/搜尋:</h3>
-=======
-      <h3> Search:</h3>
->>>>>>> origin/main
+
 
       <form method = "GET" action = "{{ url_for('search_student') }}" >
 
@@ -32,21 +29,17 @@ Attendance cards
       {% if no_results %}
           <h3>No results found</h3>
           <p>make sure to check your spelling and search text only</p>
-<<<<<<< HEAD
+
           <p>請務必檢查拼寫，並僅搜尋文字</p>
-=======
->>>>>>> origin/main
+
       {% endif %}
 
     </section>
 
     <section class="sort-section">
 
-<<<<<<< HEAD
       <h3>Sort by/篩選:</h3>
-=======
-      <h3>Sort by:</h3>
->>>>>>> origin/main
+
 
       <form method="GET" action="{{ url_for('sort_cards') }}">
             <select name="alphabetical" onchange="this.form.submit()">
