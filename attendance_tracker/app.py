@@ -20,6 +20,7 @@ def close_db(e=None):
     db = g.pop("db", None)
     if db is not None:
         db.close()
+#functions for commonly used queries
 def get_all_students():
     db = get_db()
     return db.execute("SELECT * FROM STUDENTS").fetchall()
@@ -42,7 +43,7 @@ def card_page():
             card_d[card_id]["Students"].append(h[:3])#add h into the list of students for that card_id key
         else:                             #[:3] excludes card id
             card_d[card_id] = {"Students": [h[:3]], "Records":[]}#add h as the first value/student in a new list for that (new)card_id key
-
+    #select only attendances with higher attendance id than clear id
     arecords = db.execute("SELECT ATTENDANCE_RECORDS.* FROM ATTENDANCE_RECORDS JOIN ATTENDANCE_CARDS ON ATTENDANCE_RECORDS.card_id = " \
                           "ATTENDANCE_CARDS.card_id WHERE ATTENDANCE_RECORDS.attendance_id > COALESCE(ATTENDANCE_CARDS.clear_id, 0) " \
                           "ORDER BY ATTENDANCE_RECORDS.attendance_id").fetchall()
@@ -223,7 +224,7 @@ def sorted_student():
     sort_az = request.args.get("alphabetical")
     sort_c = request.args.get("by_class")
 
-
+#which sorting form was submitted
     if sort_az == "first_name":
         sort_student = db.execute("SELECT * FROM STUDENTS ORDER BY first_name, surname").fetchall()
     if sort_az == "surname":
@@ -501,7 +502,7 @@ def create_student():
     email2 = request.form["email2"]
     relation2 = request.form["relationship_to_student2"]
     contact_ex = request.form["existing_contact"]
-    relation_ex = request.form["relationship_to_student_ex"] #MAKE CLEAR BUTTON!!!!!!!!!!!!!!!!!!!!!!!!!
+    relation_ex = request.form["relationship_to_student_ex"]
     contact_ex2 = request.form["existing_contact2"]
     relation_ex2 = request.form["relationship_to_student_ex2"]
 
