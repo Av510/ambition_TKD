@@ -72,7 +72,7 @@ Attendance cards
 
     <section>
       <h3> Cards </h3>
-
+      <!-- loop for all cards from query -->
       {% for i in card_d %}
         
         {% set dates = card_d[i]["Records"] %}
@@ -83,7 +83,7 @@ Attendance cards
                       Card {{ i }}
                   </span>
 
-                  <div class="student-names">
+                  <div class="student-names">  <!-- loop for all students of this card -->
                       {% for student in card_d[i]["Students"] %}
                         <p>
                             {{ student[1] }} {{ student[2] }}
@@ -105,7 +105,7 @@ Attendance cards
                         <input type = "hidden" name ="og_page" value = {{ request.full_path }}>
 
                       
-
+                        <!-- for button that should be filled/have dates under them -->
                         {% if b < (dates|length) %}
 
                             <input type = "hidden" name ="attendancechange" value = "-1">
@@ -123,7 +123,7 @@ Attendance cards
                                 {{ dates[b][1] }}
                             </p>
                           
-                        {% else %}
+                        {% else %} <!-- empty buttons -->
 
                         <input type = "hidden" name ="attendancechange" value = "1">
 
@@ -144,7 +144,7 @@ Attendance cards
 
               </section>
             
-
+           <!-- card buttons -->
                </br>
             <footer class="card-actions">
                 <form method="POST" action="/clearcard">
