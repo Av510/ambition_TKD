@@ -28,7 +28,7 @@ Add student
                             <option disabled>
                                 card id | students | attendance count
                             </option>  
-                            
+                            <!-- dropdown list of cards in database -->
                             {% for cards in at_d %}
                                 <option value="{{cards}}">
                                     {{cards}}: 
@@ -60,7 +60,7 @@ Add student
                     <select name="existing_contact">
 
                         <p>從資料庫中選擇一個現有聯絡人，將該學生與…聯繫起來</p>
-
+                         <!-- dropdown list of contacts in database -->
                         <option value=""> Select existing contact </option>
                         {% for c in contacts %}
                             <option value="{{c['contact_id']}}">
@@ -95,7 +95,7 @@ Add student
                 <h3>Existing contacts:</h3>
   
                     <select name="existing_contact2">
-
+                        <!-- dropdown list of contacts in database -->
                         <option value=""> Select existing contact </option>
                         {% for c in contacts %}
                             <option value="{{c['contact_id']}}">
@@ -126,10 +126,10 @@ Add student
         </section>
         
         <section>
-
+               
                 <h2>Classes/課:</h2>
                     <input type="hidden" name="which_form" value="change_classes">
-                    {% for c in classes %}
+                    {% for c in classes %} <!-- loop for class checkboxes -->
                         <input type="checkbox" name="class_ids" value="{{c['class_id']}}" > 
                         <label for="{{c['class_id']}}">{{c['week_day']}} - {{c['time']}} </label><br>
                         <br>
