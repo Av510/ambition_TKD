@@ -1,0 +1,168 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Students
+{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='studentpage.css') }}">
+
+    <main>
+
+        <div class="controls"> 
+
+          <section class="search-section">
+
+<<<<<<< HEAD
+            <h3> Search/搜尋:</h3>
+=======
+            <h3> Search:</h3>
+>>>>>>> origin/main
+
+            <form method = "GET" action = "{{ url_for('search_student') }}" >
+
+              <input type="hidden" name="which_search" value="student_search">
+
+              <input type = "text" name ="user_search" placeholder="Enter student name...">
+              <button type="submit">
+                      🔍︎
+              </button>
+            </form>
+
+            {% if no_results %}
+                <h3>No results found</h3>
+                <p>make sure to check your spelling and search text only</p>
+<<<<<<< HEAD
+                <p>請務必檢查拼寫，並僅搜尋文字</p>
+=======
+>>>>>>> origin/main
+            {% endif %}
+
+          </section>
+
+          <section class="sort-section">
+
+<<<<<<< HEAD
+            <h3>Sort by/篩選:</h3>
+=======
+            <h3>Sort by:</h3>
+>>>>>>> origin/main
+            <form method="GET" action="{{ url_for('sorted_student') }}">
+                    <select name="alphabetical" onchange="this.form.submit()">
+                          <option value="" disabled selected> A-Z </option>
+
+                          <option value="first_name">
+                              First name
+                          </option>
+
+                          <option value="surname">
+                              Surname
+                          </option>
+
+                    </select>
+            </form>
+            <form method="GET" action="{{ url_for('sorted_student') }}">
+                    <select name="by_class" onchange="this.form.submit()">
+                          <option value="" disabled selected> 📆 Classes </option>
+                        
+                        {% for c in class_options %}
+                          <option value="{{c[0]}}">
+                            {{c[1]}} - {{c[2]}}
+                          </option>
+                        {% endfor %}
+
+                    </select>
+
+            </form>
+          </section>
+  
+        </div>
+
+<<<<<<< HEAD
+        <a class="add-button" href="{{ url_for('add_student', og_page=request.full_path)}}">ADD/添加學生</a>
+=======
+        <a class="add-button" href="{{ url_for('add_student', og_page=request.full_path)}}">ADD</a>
+>>>>>>> origin/main
+
+            {% for i in student_d %}
+              <div class="student-box">
+
+                  <div class="student-header">
+
+                      <p>
+                        <strong>Student:</strong>
+                        ID: {{ student_d[i]["Info"]["student_id"] }}
+                      </p>
+                      
+<<<<<<< HEAD
+                      <a class="edit-button" href="{{ url_for('edit_page', student_id=student_d[i]['Info']['student_id'], og_page=request.full_path)}}">EDIT/修改</a>
+=======
+                      <a class="edit-button" href="{{ url_for('edit_page', student_id=student_d[i]['Info']['student_id'], og_page=request.full_path)}}">EDIT</a>
+>>>>>>> origin/main
+
+                  </div>
+
+                  <div class="student-details">
+                    
+                      <p class="student-name">
+                          <strong>Name:</strong> {{ student_d[i]["Info"]["first_name"] }} {{ student_d[i]["Info"]["surname"] }}
+                      </p>
+
+                      <p>
+                          <strong>Card:</strong> {{ student_d[i]["Info"]["card_id"] }}
+                      </p>
+
+                      
+
+                  </div>
+                  
+
+                  <div class="student-info">
+
+                      <section>
+<<<<<<< HEAD
+                          <h3>Classes/課:</h3>
+=======
+                          <h3>Classes:</h3>
+>>>>>>> origin/main
+
+                          {% for classes in student_d[i]["Classes"] %}
+
+                              <p>{{ classes["week_day"] }} {{ classes["time"] }}</p>
+
+                          {% endfor %}
+                      </section>
+
+                      <section>
+<<<<<<< HEAD
+                          <h3>Contacts/聯絡:</h3>
+=======
+                          <h3>Contacts:</h3>
+>>>>>>> origin/main
+
+                          {% for contacts in student_d[i]["Contacts"] %}
+
+                            <div class="contacts">
+<<<<<<< HEAD
+                              <p><strong>Phone/電話:</strong>{{ contacts["phone"] }}</p>
+=======
+                              <p><strong>Phone:</strong>{{ contacts["phone"] }}</p>
+>>>>>>> origin/main
+
+                              <p><strong>Email:</strong>{{ contacts["email"] }}</p>
+
+                              <p><strong>Relationship:</strong>{{ contacts["relationship_to_student"] }}</p>
+                            </div>
+                          {% endfor %}
+                      </section>
+
+                  </div>
+                  
+              </div>
+
+            {% endfor %}
+
+    </main>
+
+{% endblock %}

@@ -1,0 +1,187 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Add student
+{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='addstudent.css') }}">
+
+<<<<<<< HEAD
+    <a class="back-button" href="{{ og_page }}">回去</a>
+=======
+    <a class="back-button" href="{{ og_page }}">Back</a>
+>>>>>>> origin/main
+
+
+    <form class="add-student-form" method="POST" action="{{ url_for('create_student') }}">
+        <section>
+                Name:
+                    <input type = "text" name ="name">
+                    <br>
+                Surname:
+                    <input type = "text" name ="surname">
+                
+                <div class="card-section">
+<<<<<<< HEAD
+                    
+                  <p>從資料庫中選擇一張卡片</p>
+=======
+
+>>>>>>> origin/main
+                    <label for="attendance_card_id">Attendance card ID:</label>
+                        <select name="attendance_card_id">
+
+                            <option disabled>
+                                card id | students | attendance count
+                            </option>  
+                            
+                            {% for cards in at_d %}
+                                <option value="{{cards}}">
+                                    {{cards}}: 
+                                    {% for i in at_d[cards]["Students"] %}
+                                    |
+                                    {{i[0]}} {{i[1]}}
+                                    |
+                                    {% endfor %}
+                                    {{at_d[cards]["Count"]}}
+                                </option>
+                            {% endfor %}
+
+                        </select>
+
+<<<<<<< HEAD
+                    <h3> OR/或者 </h3>
+
+                    <label class="new-card"> 新增卡/ADD new card:</label>
+=======
+                    <h3> OR </h3>
+
+                    <label class="new-card"> ADD new card:</label>
+>>>>>>> origin/main
+                        <input type="checkbox" name="new_card">
+
+                </div>
+
+        </section>
+
+        <section class="contact-section">
+<<<<<<< HEAD
+            <h2> Contact/新增聯絡人:</h2>
+=======
+            <h2> Contact:</h2>
+>>>>>>> origin/main
+
+                <h3>Existing contacts:</h3>
+             
+                    <select name="existing_contact">
+
+<<<<<<< HEAD
+                        <p>從資料庫中選擇一個現有聯絡人，將該學生與…聯繫起來</p>
+
+=======
+>>>>>>> origin/main
+                        <option value=""> Select existing contact </option>
+                        {% for c in contacts %}
+                            <option value="{{c['contact_id']}}">
+                                {{c['contact_id']}} |
+                                {{c['phone']}} |
+                                {{c['email']}}
+                            </option>
+                        {% endfor %}
+
+                    </select>
+
+                    Relationship to student:
+                    <input type="text"name="relationship_to_student_ex">
+
+<<<<<<< HEAD
+                <p> 將這名學生的新聯絡人資訊輸入資料庫></p>    
+
+=======
+>>>>>>> origin/main
+                <h3>Enter new contacts:</h3>
+                
+                    Phone:
+                        <input type="text"name="phone">
+                      
+                    Email:
+                        <input type="text"name="email">
+                     
+                    Relationship to student:
+                        <input type="text"name="relationship_to_student"> 
+                   
+
+<<<<<<< HEAD
+            <h2>Contact 2 (if there is)/聯絡人 2（如有）:</h2>
+
+                <p>從資料庫中選擇一個現有聯絡人，將該學生與…聯繫起來</p>
+=======
+            <h2>Contact 2 (if there is):</h2>
+
+>>>>>>> origin/main
+                <h3>Existing contacts:</h3>
+  
+                    <select name="existing_contact2">
+
+                        <option value=""> Select existing contact </option>
+                        {% for c in contacts %}
+                            <option value="{{c['contact_id']}}">
+                                {{c['contact_id']}} |
+                                {{c['phone']}} |
+                                {{c['email']}}
+                            </option>
+                        {% endfor %}
+
+                    </select>
+
+                    Relationship to student:
+                    <input type="text"name="relationship_to_student_ex2">
+<<<<<<< HEAD
+                
+                <p> 將這名學生的新聯絡人資訊輸入資料庫></p> 
+=======
+                    
+>>>>>>> origin/main
+                <h3>Enter new contacts:</h3>
+
+                    Phone:
+                        <input type="text"name="phone2">
+                        
+                    Email:
+                        <input type="text"name="email2">
+ 
+                    Relationship to student:
+                        <input type="text"name="relationship_to_student2">
+                       
+                        
+        </section>
+        
+        <section>
+
+<<<<<<< HEAD
+                <h2>Classes/課:</h2>
+=======
+                <h2>Classes:</h2>
+>>>>>>> origin/main
+                    <input type="hidden" name="which_form" value="change_classes">
+                    {% for c in classes %}
+                        <input type="checkbox" name="class_ids" value="{{c['class_id']}}" > 
+                        <label for="{{c['class_id']}}">{{c['week_day']}} - {{c['time']}} </label><br>
+                        <br>
+                    {% endfor %}
+
+        </section>
+
+        <button type="submit">
+<<<<<<< HEAD
+            添加學生/Save
+=======
+            Save
+>>>>>>> origin/main
+        </button>
+
+    </form>
+
+{% endblock %}

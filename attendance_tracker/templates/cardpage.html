@@ -12,7 +12,11 @@ Attendance cards
   <div class="controls"> 
     <section class="search-section">
 
+<<<<<<< HEAD
       <h3> Search/搜尋:</h3>
+=======
+      <h3> Search:</h3>
+>>>>>>> origin/main
 
       <form method = "GET" action = "{{ url_for('search_student') }}" >
 
@@ -28,14 +32,21 @@ Attendance cards
       {% if no_results %}
           <h3>No results found</h3>
           <p>make sure to check your spelling and search text only</p>
+<<<<<<< HEAD
           <p>請務必檢查拼寫，並僅搜尋文字</p>
+=======
+>>>>>>> origin/main
       {% endif %}
 
     </section>
 
     <section class="sort-section">
 
+<<<<<<< HEAD
       <h3>Sort by/篩選:</h3>
+=======
+      <h3>Sort by:</h3>
+>>>>>>> origin/main
 
       <form method="GET" action="{{ url_for('sort_cards') }}">
             <select name="alphabetical" onchange="this.form.submit()">
@@ -112,7 +123,11 @@ Attendance cards
 
                             <input type="hidden" name="attendance_id" value="{{ dates[b][0] }}">
 
+<<<<<<< HEAD
                             <button type = "submit" class="attendance-button filled" onclick="return confirm('⛔ Delete 1 from this card\'s attendance/從這張卡片的考勤記錄中刪除 1 次？?')">
+=======
+                            <button type = "submit" class="attendance-button filled" onclick="return confirm('⛔ Delete 1 from this card\'s attendance?')">
+>>>>>>> origin/main
                          
                               ✓
    
@@ -152,8 +167,13 @@ Attendance cards
                     <input type="hidden" name="cardid" value="{{ i }}">
                     <input type="hidden" name="og_page" value="{{ request.full_path }}">
 
+<<<<<<< HEAD
                     <button type="submit" class="clear-button" onclick="return confirm('Are you sure you want to clear this card\'s attendance/您確定要清除這張卡的考勤記錄嗎？')">
                        CLEAR/清空
+=======
+                    <button type="submit" class="clear-button" onclick="return confirm('Are you sure you want to clear this card\'s attendance?')">
+                       CLEAR
+>>>>>>> origin/main
                     </button>
 
                 </form>
